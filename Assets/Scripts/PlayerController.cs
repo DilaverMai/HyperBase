@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
         targetPos.z += Time.fixedDeltaTime * playerData.MoveSpeed;
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, playerData.MoveSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x,0.5f,targetPos.z), playerData.MoveSpeed * Time.deltaTime);
     }
 
     //Gizmos for targetPos

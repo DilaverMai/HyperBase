@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using static Enums;
 
 public class FinishMenu : BaseMenu
 {
@@ -19,18 +18,18 @@ public class FinishMenu : BaseMenu
     {
         EventManager.FinishGame -= OpenScreen;
     }
-    private void OpenScreen(GameBase.GameStat stat)
+    private void OpenScreen(GameStat stat)
     {
         WinEmoji.gameObject.SetActive(false);
         LoseEmoji.gameObject.SetActive(false);
         switch (stat)
         {
-            case GameBase.GameStat.Lose:
+            case GameStat.Lose:
                 FinishText.text = "YOU LOSE";
                 FinishText.color = Color.red;
                 LoseEmoji.gameObject.SetActive(true);
                 break;
-            case GameBase.GameStat.Win:
+            case GameStat.Win:
                 FinishText.text = "YOU WIN";
                 FinishText.color = Color.green;
                 WinEmoji.gameObject.SetActive(true);

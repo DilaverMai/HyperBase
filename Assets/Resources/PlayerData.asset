@@ -16,5 +16,5 @@ MonoBehaviour:
   yMoving: 0
   xMoving: 1
   zMoving: 0
-  clampX: {x: 3, y: -3}
+  clampX: {x: -3, y: 3}
   clampY: {x: 0, y: 0}

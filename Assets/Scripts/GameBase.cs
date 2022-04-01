@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using static Enums;
 public class GameBase : MonoBehaviour
 {
     public static GameBase Instance;
@@ -14,14 +15,6 @@ public class GameBase : MonoBehaviour
     public LevelManager LevelManager;
     [HideInInspector]
     public MenuManager MenuManager;
-    public enum GameStat
-    {
-        Start,
-        Playing,
-        Lose,
-        Win
-    }
-
     public GameStat _GameStat => gameStat;
     private GameStat gameStat;
 
@@ -50,9 +43,16 @@ public class GameBase : MonoBehaviour
         LevelManager.LoadLevel();
     }
 
-    public bool IsPlaying()
-    {
-        return gameStat == GameStat.Playing;
+    private void StartGame(){
+        gameStat = GameStat.Playing;
+    }
+
+    private void OnEnable() {
+        EventManager.WhenStartGame += StartGame;
+    }
+
+    private void OnDisable() {
+        EventManager.WhenStartGame -= StartGame;
     }
 }
 
@@ -60,14 +60,13 @@ public static class EventManager
 {
     public static Action NextLevel;
     public static Action RestartLevel;
-    public static Action<GameBase.GameStat> FinishGame;
+    public static Action<GameStat> FinishGame;
     public static Action WhenStartGame;
 }
 
 public static class Base { 
     public static bool IsPlaying()
     {
-        return GameBase.Instance.IsPlaying();
+        return GameBase.Instance._GameStat == GameStat.Playing;
     }
-
 }
