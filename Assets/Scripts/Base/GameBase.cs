@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
@@ -43,30 +41,73 @@ public class GameBase : MonoBehaviour
         LevelManager.LoadLevel();
     }
 
-    private void StartGame(){
+    public void ChangeStat(GameStat stat)
+    {
+        gameStat = stat;
+    }
+
+    private void StartGame()
+    {
         gameStat = GameStat.Playing;
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         EventManager.WhenStartGame += StartGame;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         EventManager.WhenStartGame -= StartGame;
     }
 }
 
 public static class EventManager
 {
+    public static Action WhenLose;
+    public static Action WhenWin;
     public static Action NextLevel;
     public static Action RestartLevel;
     public static Action<GameStat> FinishGame;
     public static Action WhenStartGame;
+    public static Action<int> OnLevelChanged;
+    public static Action<bool> OnPause;
+    public static Action OnBeforeLoadedLevel;
+    public static Action OnAfterLoadedLevel;
 }
 
-public static class Base { 
+public static class Base
+{
     public static bool IsPlaying()
     {
         return GameBase.Instance._GameStat == GameStat.Playing;
+    }
+
+    public async static void FinisGame(GameStat gameStat, float time = 0f)
+    {
+        if (GameBase.Instance._GameStat == GameStat.Playing) GameBase.Instance.ChangeStat(gameStat);
+        await Task.Delay((int)time * 1000);
+        if (!Application.isPlaying) return;
+        EventManager.FinishGame?.Invoke(gameStat);
+    }
+
+    public static void StartGameAddFunc(Action func)
+    {
+        EventManager.WhenStartGame += func;
+    }
+
+    public static void NextLevelAddFunc(Action func)
+    {
+        EventManager.NextLevel += func;
+    }
+
+    public static void RestartLevelAddFunc(Action func)
+    {
+        EventManager.RestartLevel += func;
+    }
+
+    public static void FinishGameAddFunc(Action<GameStat> func)
+    {
+        EventManager.FinishGame += func;
     }
 }

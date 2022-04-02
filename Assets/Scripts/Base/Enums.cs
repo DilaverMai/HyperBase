@@ -4,6 +4,7 @@ public static class Enums
     {
         Start,
         Playing,
+        Paused,
         Lose,
         Win
     }

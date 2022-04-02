@@ -38,6 +38,7 @@ public class LevelManager : MonoBehaviour
 
     private void NextLevelFunc()
     {
+        EventManager.OnBeforeLoadedLevel?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
         GameBase.Instance.DataManager.PlayerData.showingLevel += 1;
         var nextLevel = currentLevel + 1;
@@ -54,12 +55,35 @@ public class LevelManager : MonoBehaviour
 
         var lvl = Instantiate(levels[nextLevel - 1]);
         lvl.transform.SetParent(transform);
+        EventManager.OnAfterLoadedLevel?.Invoke();
+
         GameBase.Instance.DataManager.SaveGame();
     }
 
     private void RestartLevelFunc()
     {
+        EventManager.OnBeforeLoadedLevel?.Invoke();
+        var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
+        GameBase.Instance.DataManager.PlayerData.showingLevel = currentLevel;
+        var nextLevel = currentLevel;
 
+        if (transform.childCount > 0)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
+
+        var lvl = Instantiate(levels[nextLevel - 1]);
+        lvl.transform.SetParent(transform);
+        EventManager.OnAfterLoadedLevel?.Invoke();
+        GameBase.Instance.DataManager.SaveGame();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.NextLevel += NextLevelFunc;
+        EventManager.RestartLevel += RestartLevelFunc;
+        // EventManager.WhenLose += RestartLevelFunc;
+        // EventManager.WhenWin += NextLevelFunc;
     }
 
 #if UNITY_EDITOR

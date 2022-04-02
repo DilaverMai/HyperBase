@@ -5,9 +5,16 @@ using static Enums;
 
 public class FinishMenu : BaseMenu
 {
-    public Transform BG;
+    public Button thisButton;
     public TextMeshProUGUI FinishText;
     public Image WinEmoji, LoseEmoji;
+
+    protected override void Awake()
+    {
+        thisButton = GetComponentInChildren<Button>();
+
+        base.Awake();
+    }
 
     private void OnEnable()
     {
@@ -28,14 +35,31 @@ public class FinishMenu : BaseMenu
                 FinishText.text = "YOU LOSE";
                 FinishText.color = Color.red;
                 LoseEmoji.gameObject.SetActive(true);
+                EventManager.WhenLose?.Invoke();
+
+                thisButton.onClick.RemoveAllListeners();
+                thisButton.onClick.AddListener(() =>
+                {
+                    EventManager.RestartLevel?.Invoke();
+                    Hide();
+                });
                 break;
             case GameStat.Win:
                 FinishText.text = "YOU WIN";
                 FinishText.color = Color.green;
                 WinEmoji.gameObject.SetActive(true);
+                EventManager.WhenWin?.Invoke();
+
+                thisButton.onClick.RemoveAllListeners();
+                thisButton.onClick.AddListener(() =>
+                {
+                    EventManager.NextLevel?.Invoke();
+                    Hide();
+                });
                 break;
         }
 
         BG.gameObject.SetActive(true);
     }
+
 }

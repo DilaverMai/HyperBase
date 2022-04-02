@@ -421,6 +421,8 @@ GameObject:
   - component: {fileID: 904187649}
   - component: {fileID: 904187652}
   - component: {fileID: 904187653}
+  - component: {fileID: 904187654}
+  - component: {fileID: 904187655}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -455,7 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData:
-    coin: 5
+    coin: 0
     level: 1
     showingLevel: 1
 --- !u!114 &904187650
@@ -517,6 +519,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineVirtualCameras: []
   virtualCameras: []
+--- !u!114 &904187654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904187647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abb6c801d80235418ad53ad9ca6e9bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoolObjects: []
+--- !u!114 &904187655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904187647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 751e228e5b4b6ef448d9f640a01018ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1102298988
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,15 +2,16 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using System;
+
 public class StartMenu : BaseMenu
 {
     public TextMeshProUGUI StartText;
-    private Transform BG;
-
     protected override void Awake()
     {
-        BG = transform.Find("BG");
         StartText = GetComponentInChildren<TextMeshProUGUI>();
+
+        base.Awake();
     }
 
     private void Start()
@@ -20,21 +21,17 @@ public class StartMenu : BaseMenu
 
     private void OnEnable()
     {
-        EventManager.WhenStartGame += CloseMenu;
+        EventManager.WhenStartGame += Hide;
     }
 
     private void OnDisable()
     {
-        EventManager.WhenStartGame -= CloseMenu;
-    }
-
-    private void CloseMenu(){
-        BG.gameObject.SetActive(false);
+        EventManager.WhenStartGame -= Hide;
     }
 
     private void StartTextAnim()
     {
-        StartText.transform.DOScale(Vector3.one * 0.99F, 0.5F).
+        StartText.transform.DOScale(Vector3.one * 0.95F, 0.5F).
         SetLoops(-1, LoopType.Yoyo);
     }
 

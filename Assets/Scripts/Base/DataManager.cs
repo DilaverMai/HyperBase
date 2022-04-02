@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Sirenix.OdinInspector;
@@ -5,6 +6,9 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    public static Action<int, int> OnSetData;
+    public static Action<int> AddCoin;
+
     private string path;
     [SerializeField]
     private Data playerData;
@@ -33,12 +37,45 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path, JsonUtility.ToJson(playerData));
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveGame();
+    }
+
+    private void SetData()
+    {
+        OnSetData?.Invoke(playerData.showingLevel, playerData.coin);
+    }
+
+    private void AddCoinFunc(int _gold)
+    {
+        playerData.coin += _gold;
+        SetData();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.OnBeforeLoadedLevel += SetData;
+        AddCoin += AddCoinFunc;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnBeforeLoadedLevel -= SetData;
+        AddCoin -= AddCoinFunc;
+    }
+
 #if UNITY_EDITOR
 
     [Button]
     private void ClearData()
     {
-        playerData.Res();
+        if (File.Exists(Application.persistentDataPath + "/gamedata.json"))
+        {
+            var data = JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
+            data.Res();
+            File.WriteAllText(Application.persistentDataPath + "/gamedata.json", JsonUtility.ToJson(data));
+        }
     }
     [Button]
     private void LoadData()
