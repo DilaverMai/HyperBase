@@ -14,7 +14,6 @@ public class DataManager : MonoBehaviour
     [SerializeField]
     private Data playerData;
     public Data PlayerData => playerData;
-    [SerializeField]
     private Data backupData;
     public Task CheckSave()
     {

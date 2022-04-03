@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ParticleItem : PoolItem
+public class ParticleItem
 {
     private ParticleSystem _particleSystem;
     private void Awake() {

@@ -9,7 +9,7 @@ public static class EnumCreator
 
     public static void CreateEnum(string ItemName, string[] ItemsToEnum)
     {
-        if(!Directory.Exists(BasePath)) 
+        if (!Directory.Exists(BasePath))
         {
             Directory.CreateDirectory(BasePath);
         }
@@ -19,13 +19,17 @@ public static class EnumCreator
 
         var FileInside = "public enum Enum_" + ItemName + "{";
         if (ItemsToEnum.Length > 0)
+        {
             foreach (var item in ItemsToEnum)
             {
-                FileInside += " " + item;
-                if (item != ItemsToEnum.Last())
+                var _item = item.Replace(" ", "_");
+
+                FileInside += " " + _item;
+                if (_item != ItemsToEnum.Last())
                     FileInside += ",";
-                else FileInside += "}";
             }
+            FileInside += "}";
+        }
         else FileInside += "}";
         File.WriteAllText(AllPath, FileInside);
         AssetDatabase.Refresh();

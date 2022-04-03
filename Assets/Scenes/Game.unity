@@ -459,11 +459,7 @@ MonoBehaviour:
   playerData:
     coin: 0
     level: 1
-    showingLevel: 25
-  backupData:
-    coin: 0
-    level: 0
-    showingLevel: 0
+    showingLevel: 1
 --- !u!114 &904187650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,7 +530,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1abb6c801d80235418ad53ad9ca6e9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PoolObjects: []
+  PoolObjects:
+  - Enum: 0
+    Prefab: {fileID: 6831673810787009572, guid: 3faa3a995067ab248a3f6edddd2e13aa, type: 3}
+    pool: []
+    SpawnCount: 0
+    isActive: 0
+  - Enum: 1
+    Prefab: {fileID: 2193793226338280945, guid: f874b6292d66b1f479455d147103a662, type: 3}
+    pool: []
+    SpawnCount: 15
+    isActive: 0
 --- !u!114 &904187655
 MonoBehaviour:
   m_ObjectHideFlags: 0

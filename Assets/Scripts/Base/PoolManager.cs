@@ -7,7 +7,8 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     public List<PoolObject<Enum_PoolObject, PoolItem>>
-    PoolObjects = new List<PoolObject<Enum_PoolObject, PoolItem>>();
+    PoolObjects = new List<PoolObject<
+    Enum_PoolObject, PoolItem>>();
     public static PoolManager Instance;
 
     private void Awake()
@@ -22,9 +23,26 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public void AddObject(PoolItem poolObject)
+    private void Start()
     {
-        PoolObjects[poolObject._poolID].AddObject(poolObject.gameObject);
+        foreach (var item in PoolObjects)
+        {
+            item.Setup();
+        }
+    }
+
+
+    public void BackToList(PoolItem poolItem)
+    {
+        foreach (var item in PoolObjects)
+        {
+            if (item.Enum == poolItem._PoolEnum)
+            {
+                item.AddObject(poolItem.gameObject);
+                break;
+            }
+        }
+
     }
 
 #if UNITY_EDITOR
@@ -52,6 +70,7 @@ public static class PoolEvents
             var itemName = item.Prefab.name.Split(' ');
             if (itemName[0] == poolObject.ToString())
             {
+                item.GetObject().gameObject.SetActive(true);
                 return item.GetObject();
             }
         }
@@ -65,6 +84,7 @@ public static class PoolEvents
 [System.Serializable]
 public class PoolObject<T, F> where F : Component
 {
+    [HideInInspector]
     public T Enum;
     public GameObject Prefab;
     public List<GameObject> pool = new List<GameObject>();
@@ -81,15 +101,16 @@ public class PoolObject<T, F> where F : Component
         pool.Add(obj);
         obj.SetActive(false);
     }
+
     public void Setup()
     {
         for (int i = 0; i < SpawnCount; i++)
         {
             var spawned = GameObject.Instantiate(Prefab);
 
-            if (spawned.GetComponent<F>() == null)
+            if (spawned.GetComponent<PoolItem>() == null)
             {
-                spawned.AddComponent<F>();
+                spawned.AddComponent<PoolItem>();
             }
 
             pool.Add(spawned);
