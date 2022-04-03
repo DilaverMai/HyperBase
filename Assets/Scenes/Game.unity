@@ -459,7 +459,11 @@ MonoBehaviour:
   playerData:
     coin: 0
     level: 1
-    showingLevel: 1
+    showingLevel: 25
+  backupData:
+    coin: 0
+    level: 0
+    showingLevel: 0
 --- !u!114 &904187650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6dc23c0fb63226418fee6be29904de6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachineVirtualCameras: []
   virtualCameras: []
 --- !u!114 &904187654
 MonoBehaviour:

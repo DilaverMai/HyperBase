@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
         if (health <= 0) {
             health = 0;
             Debug.Log("You are dead");
+            Base.FinisGame(Enums.GameStat.Lose,0);
             return;
         }
     }

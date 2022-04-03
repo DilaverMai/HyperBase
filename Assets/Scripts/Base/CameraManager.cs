@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using static Enums;
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField]
     private CinemachineVirtualCamera[] cinemachineVirtualCameras;
     [SerializeField]
     private List<VirtualCamera> virtualCameras = new List<VirtualCamera>();

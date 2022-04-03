@@ -33,14 +33,35 @@ public class LevelManager : MonoBehaviour
             currentLevel = 1;
         }
 
-        NextLevelFunc();
+        LoadLevelFunc();
     }
-
-    private void NextLevelFunc()
+    private void LoadLevelFunc()
     {
         EventManager.OnBeforeLoadedLevel?.Invoke();
+
+        var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
+        if (levels.Length == 0)
+        {
+            Debug.LogError("No Levels Found");
+        }
+
+        if (levels.Length < currentLevel)
+        {
+            currentLevel = 1;
+        }
+
+        var level = levels[currentLevel - 1];
+        var levelObject = Instantiate(level, Vector3.zero, Quaternion.identity);
+        levelObject.transform.SetParent(transform);
+        EventManager.OnAfterLoadedLevel?.Invoke();
+
+    }
+    private void NextLevelFunc()
+    {
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
         GameBase.Instance.DataManager.PlayerData.showingLevel += 1;
+        EventManager.OnBeforeLoadedLevel?.Invoke();
+
         var nextLevel = currentLevel + 1;
 
         if (nextLevel > levels.Length)
@@ -63,8 +84,10 @@ public class LevelManager : MonoBehaviour
     private void RestartLevelFunc()
     {
         EventManager.OnBeforeLoadedLevel?.Invoke();
+        DataManager.ReLoadData?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
-        GameBase.Instance.DataManager.PlayerData.showingLevel = currentLevel;
+        //GameBase.Instance.DataManager.PlayerData.showingLevel = currentLevel;
+
         var nextLevel = currentLevel;
 
         if (transform.childCount > 0)
@@ -75,7 +98,6 @@ public class LevelManager : MonoBehaviour
         var lvl = Instantiate(levels[nextLevel - 1]);
         lvl.transform.SetParent(transform);
         EventManager.OnAfterLoadedLevel?.Invoke();
-        GameBase.Instance.DataManager.SaveGame();
     }
 
     private void OnEnable()

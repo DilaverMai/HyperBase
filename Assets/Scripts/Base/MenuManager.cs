@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
+    [HideInInspector]
     public StartMenu StartMenu;
+    [HideInInspector]
+
     public PlayTimeMenu PlayTimeMenu;
+    [HideInInspector]
     public PauseMenu PauseMenu;
+    [HideInInspector]
     public FinishMenu FinishMenu;
     public static MenuManager Instance;
-    private void Awake() {
-        if(Instance == null) {
+    private void Awake()
+    {
+        if (Instance == null)
+        {
             Instance = this;
-        } else {
+        }
+        else
+        {
             Destroy(gameObject);
         }
     }
-    public void Setup() {
+    public void Setup()
+    {
         StartMenu = FindObjectOfType<StartMenu>();
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
         PauseMenu = FindObjectOfType<PauseMenu>();
@@ -24,24 +34,28 @@ public class MenuManager : MonoBehaviour
     }
 
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         EventManager.WhenStartGame += ShowPlayTimeMenu;
         EventManager.OnPause += Pause;
         EventManager.FinishGame += WhenFinish;
         EventManager.OnAfterLoadedLevel += ShowStartMenu;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         EventManager.WhenStartGame -= ShowPlayTimeMenu;
         EventManager.FinishGame -= WhenFinish;
         EventManager.OnPause -= Pause;
         EventManager.OnAfterLoadedLevel -= ShowStartMenu;
     }
-    public void ShowStartMenu() {
+    public void ShowStartMenu()
+    {
         StartMenu.Show();
     }
 
-    public void ShowPlayTimeMenu() {
+    public void ShowPlayTimeMenu()
+    {
         PlayTimeMenu.Show();
     }
 
@@ -52,12 +66,16 @@ public class MenuManager : MonoBehaviour
         PauseMenu.Hide();
     }
 
-    private void Pause(bool pause){
-        if(pause) {
+    private void Pause(bool pause)
+    {
+        if (pause)
+        {
             GameBase.Instance.ChangeStat(Enums.GameStat.Paused);
             Time.timeScale = 0;
             PauseMenu.Show();
-        } else {
+        }
+        else
+        {
             GameBase.Instance.ChangeStat(Enums.GameStat.Playing);
             Time.timeScale = 1;
             PauseMenu.Hide();

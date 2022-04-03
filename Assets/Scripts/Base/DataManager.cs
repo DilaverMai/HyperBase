@@ -8,11 +8,14 @@ public class DataManager : MonoBehaviour
 {
     public static Action<int, int> OnSetData;
     public static Action<int> AddCoin;
+    public static Action ReLoadData;
 
     private string path;
     [SerializeField]
     private Data playerData;
     public Data PlayerData => playerData;
+    [SerializeField]
+    private Data backupData;
     public Task CheckSave()
     {
         path = Application.persistentDataPath + "/gamedata.json";
@@ -21,13 +24,17 @@ public class DataManager : MonoBehaviour
             if (File.Exists(path))
             {
                 playerData = JsonUtility.FromJson<Data>(File.ReadAllText(path));
+                backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
             }
             else
             {
-                playerData = new Data();
-                playerData.Res();
+                playerData = new Data(0,1,1);
+                Debug.Log("No save file found so we created a new one");
                 SaveGame();
             }
+            
+            Debug.Log("SAVE LOADED");
+
         });
     }
 
@@ -35,11 +42,7 @@ public class DataManager : MonoBehaviour
     public void SaveGame()
     {
         File.WriteAllText(path, JsonUtility.ToJson(playerData));
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveGame();
+        backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
     }
 
     private void SetData()
@@ -47,6 +50,12 @@ public class DataManager : MonoBehaviour
         OnSetData?.Invoke(playerData.showingLevel, playerData.coin);
     }
 
+    //reload save
+    private void ReLoadSave()
+    {
+        Debug.Log("Reloading save");
+        playerData = new Data(backupData.coin, backupData.level, backupData.showingLevel);
+    }
     private void AddCoinFunc(int _gold)
     {
         playerData.coin += _gold;
@@ -55,14 +64,16 @@ public class DataManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnBeforeLoadedLevel += SetData;
+        EventManager.OnAfterLoadedLevel += SetData;
         AddCoin += AddCoinFunc;
+        ReLoadData += ReLoadSave;
     }
 
     private void OnDisable()
     {
-        EventManager.OnBeforeLoadedLevel -= SetData;
+        EventManager.OnAfterLoadedLevel -= SetData;
         AddCoin -= AddCoinFunc;
+        ReLoadData -= ReLoadSave;
     }
 
 #if UNITY_EDITOR
@@ -103,6 +114,12 @@ public class Data
     public int level;
     public int showingLevel;
 
+    public Data(int _coin, int _level, int _showingLevel)
+    {
+        coin = _coin;
+        level = _level;
+        showingLevel = _showingLevel;
+    }
     public void Res()
     {
         coin = 0;
