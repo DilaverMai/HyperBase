@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolItem<T> : MonoBehaviour
+public class PoolItem : MonoBehaviour
 {
-    public T _PoolEnum;
+    public Enum_PoolObject _PoolEnum;
     protected virtual void OnDisable()
     {
         PoolManager.Instance.BackToList(this);

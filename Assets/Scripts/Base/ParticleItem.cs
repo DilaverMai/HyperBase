@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ParticleItem
+public class ParticleItem: MonoBehaviour
 {
     private ParticleSystem _particleSystem;
     private void Awake() {
@@ -20,10 +20,5 @@ public class ParticleItem
         await Task.Delay((int)(delay * 1000));
 
         _particleSystem.Play();
-    }
-
-    public void Stop()
-    {
-        _particleSystem.Stop();
     }
 }

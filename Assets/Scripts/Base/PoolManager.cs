@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public List<PoolObject<Enum_PoolObject, PoolItem>>
-    PoolObjects = new List<PoolObject<
-    Enum_PoolObject, PoolItem>>();
+    public List<PoolObject>
+    PoolObjects = new List <PoolObject>();
     public static PoolManager Instance;
 
     private void Awake()
@@ -82,10 +81,10 @@ public static class PoolEvents
 }
 
 [System.Serializable]
-public class PoolObject<T, F> where F : Component
+public class PoolObject
 {
     [HideInInspector]
-    public T Enum;
+    public Enum_PoolObject Enum;
     public GameObject Prefab;
     public List<GameObject> pool = new List<GameObject>();
     public int SpawnCount = 25;
@@ -119,7 +118,7 @@ public class PoolObject<T, F> where F : Component
         }
     }
 
-    public F GetObject()
+    public PoolItem GetObject()
     {
         GameObject obj = null;
 
@@ -128,14 +127,14 @@ public class PoolObject<T, F> where F : Component
             obj = pool[0];
             pool.RemoveAt(0);
             obj.SetActive(true);
-            return obj.GetComponent<F>();
+            return obj.GetComponent<PoolItem>();
         }
         else
         {
             obj = GameObject.Instantiate(Prefab);
             pool.Add(obj);
             obj.SetActive(true);
-            return obj.GetComponent<F>();
+            return obj.GetComponent<PoolItem>();
         }
 
     }

@@ -594,6 +594,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: LETAI_TRUESHADOW;ODIN_INSPECTOR;ODIN_INSPECTOR_3;DREAMTECK_SPLINES
+    4: DREAMTECK_SPLINES;ODIN_INSPECTOR;ODIN_INSPECTOR_3
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -639,6 +640,7 @@ PlayerSettings:
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: 
+  vcxProjDefaultLanguage: 
   XboxOneProductId: 
   XboxOneUpdateKey: 
   XboxOneSandboxId: 

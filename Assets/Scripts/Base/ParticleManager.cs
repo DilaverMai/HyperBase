@@ -7,11 +7,7 @@ public class ParticleManager : MonoBehaviour
     
 }
 
-public class PoolParticle : PoolObject<Enum_PoolObject,ParticleItem>
+public class PoolParticle
 {
-    public PoolParticle(GameObject gameObject) : base(gameObject)
-    {
-    }
-
-
+   
 }
