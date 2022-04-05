@@ -20,6 +20,11 @@ public class PoolItem : MonoBehaviour
         transform.rotation = rotation;
     }
 
+    public void SetRotation(Vector3 eulerAngles)
+    {
+        transform.rotation = Quaternion.Euler(eulerAngles);
+    }
+
     public void SetScale(Vector3 scale)
     {
         transform.localScale = scale;
@@ -55,5 +60,9 @@ public class PoolItem : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void AddPower(Vector3 pow)
+    {
+        GetComponent<Rigidbody>().velocity = pow;
+    }
 
 }

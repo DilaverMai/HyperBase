@@ -47,7 +47,7 @@ public class Door : MonoBehaviour
                 doorText = "-";
                 break;
             case Enums.Maths.Multiply:
-                doorText = "*";
+                doorText = "X";
                 break;
             case Enums.Maths.Divide:
                 doorText = "%";
@@ -63,6 +63,8 @@ public class Door : MonoBehaviour
 
     public int DoorAdd(int getVal)
     {
+        if(getVal <= 0) getVal = 1;
+
         switch (_Maths)
         {
             case Enums.Maths.Add:

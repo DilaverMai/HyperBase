@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void AddPower(int _add)
+    public void _AddPower(int _add)
     {
         power += _add;
     }
@@ -80,6 +80,6 @@ public static class PlayerExtension
     public static void AddPower(this Player player, int power)
     {
         player = Player.Instance;
-        player.AddPower(power);
+        player._AddPower(power);
     }
 }

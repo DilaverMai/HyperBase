@@ -14,7 +14,7 @@ public class RunnerDoor : MonoBehaviour
     {
         foreach (var item in GetComponentsInChildren<Collider>())
         {
-            if (!item.isTrigger)
+            if (item.transform != transform)
             {
                 _colliders.Add(item);
             }
