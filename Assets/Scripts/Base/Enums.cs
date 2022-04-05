@@ -54,5 +54,13 @@ public static class Enums
         Normal,
         Heavy
     }
+
+    public enum Maths
+    {
+        Add,
+        Subtract,
+        Multiply,
+        Divide
+    }
     
 }

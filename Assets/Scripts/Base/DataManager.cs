@@ -9,7 +9,7 @@ public class DataManager : MonoBehaviour
     public static Action<int, int> OnSetData;
     public static Action<int> AddCoin;
     public static Action ReLoadData;
-
+    
     private string path;
     [SerializeField]
     private Data playerData;
