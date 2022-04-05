@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 
     private void OnDisable()
     {
+        Instance = null;
         TakeDamage -= HealthSystem;
     }
 
@@ -81,5 +82,10 @@ public static class PlayerExtension
     {
         player = Player.Instance;
         player._AddPower(power);
+    }
+
+    public static void ResetPos(this Player player)
+    {
+        Player.Instance.GetComponent<PlayerController>().ResetPos();
     }
 }

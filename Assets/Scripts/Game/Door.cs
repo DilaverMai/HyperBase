@@ -11,13 +11,14 @@ public class Door : MonoBehaviour
     private Collider _collider;
     private TextMeshPro _textOnDoor;
     private RunnerDoor _doorManager;
+    private bool _isOpen;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
     void Awake()
     {
         _collider = GetComponent<Collider>();
-        _textOnDoor = GetComponentInChildren<TextMeshPro>();
+        _textOnDoor = transform.parent.GetComponentInChildren<TextMeshPro>();
         _doorManager = GetComponentInParent<RunnerDoor>();
 
         if(!_collider.isTrigger) {
@@ -81,18 +82,15 @@ public class Door : MonoBehaviour
         }
     }
 
-    private void CloseTheDoors()
-    {
-        _doorManager.CloseTheDoors();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Player>(out Player player))
         {
+            if(_isOpen) return;
+            _isOpen = true;
             player.AddPower(DoorAdd(player.Power));
             ExtraFunctions.Invoke();
-            CloseTheDoors();
+            //_doorManager.CloseTheDoors();
         }
     }
 }

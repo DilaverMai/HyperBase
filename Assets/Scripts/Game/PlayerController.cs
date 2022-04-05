@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Vector3 targetPos = Vector3.zero;
+    [SerializeField]
+    private Vector3 targetRot = Vector3.zero;
     private Vector2 ClampX;
     private Vector2 ClampY;
     public float offsetY = 0.5f;
@@ -15,11 +17,14 @@ public class PlayerController : MonoBehaviour
     {
         ClampX = new Vector2(playerData.ClampX.x, playerData.ClampX.y);
         ClampY = new Vector2(playerData.ClampY.x, playerData.ClampY.y);
+
+        firstPosition = transform.position;
     }
 
     public void Move(Vector2 target)
     {
-        if (!Base.IsPlaying()) return;
+        if (!Base.IsPlaying() | !playerData.Move) return;
+        RotationMove(target);
 
         var targetToVector3 = new Vector3(target.x, target.y + offsetY, 0);
 
@@ -33,13 +38,37 @@ public class PlayerController : MonoBehaviour
         //if(!playerData.YMoving) targetPos.y = transform.position.y;
     }
 
+    public void RotationMove(Vector2 rot)
+    {
+        if (playerData.MoveRotation)
+        {
+            targetRot = new Vector3(0, playerData.RotationSpeed * rot.x, 0);
+
+            if (Mathf.Abs(targetRot.y) > playerData.MaxYangle)
+            {
+                if (targetRot.y > 0) targetRot.y = playerData.MaxYangle;
+                else targetRot.y = -playerData.MaxYangle;
+            }
+        }
+    }
+
     private void Update()
     {
         if (!Base.IsPlaying()) return;
 
         targetPos.z += Time.fixedDeltaTime * playerData.MoveSpeed;
 
-        transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x,0.5f,targetPos.z), playerData.MoveSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x, 0.5f, targetPos.z), playerData.MoveSpeed * Time.deltaTime);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), playerData.MoveSpeed * Time.deltaTime);
+        //Vector3.Lerp(transform.eulerAngles, targetRot, Time.deltaTime * playerData.MoveSpeed);
+    }
+
+    private Vector3 firstPosition;
+    public void ResetPos()
+    {
+        targetPos = firstPosition;
+        transform.position = firstPosition;
     }
 
     //Gizmos for targetPos

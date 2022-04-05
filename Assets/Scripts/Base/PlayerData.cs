@@ -9,7 +9,29 @@ public class PlayerData : Settings<PlayerData>
     [SerializeField]
     private float moveSpeed;
     public float MoveSpeed => moveSpeed;
+    [SerializeField]
+    private float rotationSpeed;
+    public float RotationSpeed => rotationSpeed;
 
+    [Header("Limits")]
+    [SerializeField]
+    private float maxYangle;
+    public float MaxYangle => maxYangle;
+
+    [SerializeField]
+    private Vector2 clampX;
+    public Vector2 ClampX => clampX;
+    [SerializeField]
+    private Vector2 clampY;
+    public Vector2 ClampY => clampY;
+
+    [Header("Locks")]
+    [SerializeField]
+    private bool move;
+    public bool Move => move;
+    public bool MoveRotation => moveRotation;
+    [SerializeField]
+    private bool moveRotation;
 
     [SerializeField]
     private bool yMoving = false;
@@ -21,10 +43,5 @@ public class PlayerData : Settings<PlayerData>
     private bool zMoving = false;
     public bool ZMoving => zMoving;
 
-    [SerializeField]
-    private Vector2 clampX;
-    public Vector2 ClampX => clampX;
-    [SerializeField]
-    private Vector2 clampY;
-    public Vector2 ClampY => clampY;
+
 }

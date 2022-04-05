@@ -9,7 +9,7 @@ public abstract class Weapon : MonoBehaviour
     public Transform Barrel;
     public WeaponData data;
     protected float _timeToNextShot;
-    protected int _sameTimeBullet;    
+    protected int _sameTimeBullet;
     protected float _bulletAngle;
     protected float _bulletSpeed;
     protected Enum_PoolObject bullet;
@@ -39,7 +39,7 @@ public abstract class Weapon : MonoBehaviour
     /// </summary>
     void OnDisable()
     {
-        
+
     }
 
     private void OnFingerDown(LeanFinger finger)
@@ -61,10 +61,10 @@ public abstract class Weapon : MonoBehaviour
         {
             for (int i = 0; i < _sameTimeBullet; i++)
             {
-                          bullet.GetObject().SetRotation(WeaponExtension.
-            AngleBullet(Barrel.position, _bulletAngle));
+                bullet.GetObject().SetRotation(WeaponExtension.
+                AngleBullet(Barrel.position, _bulletAngle));
             }
-  
+
             yield return new WaitForSeconds(_timeToNextShot);
         }
     }

@@ -58,6 +58,7 @@ public class LevelManager : MonoBehaviour
     }
     private void NextLevelFunc()
     {
+        Debug.Log("Next Level");
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
         GameBase.Instance.DataManager.PlayerData.showingLevel += 1;
         EventManager.OnBeforeLoadedLevel?.Invoke();
@@ -83,6 +84,7 @@ public class LevelManager : MonoBehaviour
 
     private void RestartLevelFunc()
     {
+        Debug.Log("Restart Level");
         EventManager.OnBeforeLoadedLevel?.Invoke();
         DataManager.ReLoadData?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
