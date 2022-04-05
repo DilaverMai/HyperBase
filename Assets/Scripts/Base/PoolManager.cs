@@ -80,62 +80,8 @@ public static class PoolEvents
 
 }
 
-[System.Serializable]
-public class PoolObject
-{
-    [HideInInspector]
+ [System.Serializable]
+ public class PoolObject: AbstractPoolObject<PoolItem>
+ {
     public Enum_PoolObject Enum;
-    public GameObject Prefab;
-    public List<GameObject> pool = new List<GameObject>();
-    public int SpawnCount = 25;
-    public bool isActive = false;
-    public PoolObject(GameObject gameObject)
-    {
-        this.Prefab = gameObject;
-        isActive = true;
-    }
-
-    public void AddObject(GameObject obj)
-    {
-        pool.Add(obj);
-        obj.SetActive(false);
-    }
-
-    public void Setup()
-    {
-        for (int i = 0; i < SpawnCount; i++)
-        {
-            var spawned = GameObject.Instantiate(Prefab);
-
-            if (spawned.GetComponent<PoolItem>() == null)
-            {
-                spawned.AddComponent<PoolItem>();
-            }
-
-            pool.Add(spawned);
-            spawned.SetActive(false);
-
-        }
-    }
-
-    public PoolItem GetObject()
-    {
-        GameObject obj = null;
-
-        if (pool.Count > 0)
-        {
-            obj = pool[0];
-            pool.RemoveAt(0);
-            obj.SetActive(true);
-            return obj.GetComponent<PoolItem>();
-        }
-        else
-        {
-            obj = GameObject.Instantiate(Prefab);
-            pool.Add(obj);
-            obj.SetActive(true);
-            return obj.GetComponent<PoolItem>();
-        }
-
-    }
-}
+ }   

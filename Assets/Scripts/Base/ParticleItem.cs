@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ParticleItem: MonoBehaviour
 {
+    public Enum_PoolParticle _Enum;
     private ParticleSystem _particleSystem;
     private void Awake() {
         _particleSystem = GetComponent<ParticleSystem>();
