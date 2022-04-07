@@ -110,6 +110,17 @@ public class LevelManager : MonoBehaviour
         // EventManager.WhenWin += NextLevelFunc;
     }
 
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    void OnDisable()
+    {
+        EventManager.NextLevel -= NextLevelFunc;
+        EventManager.RestartLevel -= RestartLevelFunc;
+        // EventManager.WhenLose -= RestartLevelFunc;
+        // EventManager.WhenWin -= NextLevelFunc;
+    }
+
 #if UNITY_EDITOR
     [Button]
     private void OverrideLoadLevels()

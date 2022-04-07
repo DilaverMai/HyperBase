@@ -23,7 +23,7 @@ public abstract class Weapon : MonoBehaviour
         _sameTimeBullet = data.sameTimeBullet;
         _bulletAngle = data.bulletAngle;
         _bulletSpeed = data.bulletSpeed;
-        bullet = data.bullet;
+        bullet = data.DefualtBullet;
     }
 
     /// <summary>
@@ -39,20 +39,21 @@ public abstract class Weapon : MonoBehaviour
     /// </summary>
     void OnDisable()
     {
+        LeanTouch.OnFingerDown -= OnFingerDown;
+    }
 
+    private void OnFingerUp(LeanFinger finger)
+    {
+        if (finger.IsOverGui) return;
+
+        StopCoroutine("Shoot");
     }
 
     private void OnFingerDown(LeanFinger finger)
     {
-        if (finger.IsOverGui)
-        {
-            return;
-        }
+        if (finger.IsOverGui) return;
 
-        if (Time.time > _timeToNextShot)
-        {
-            StartCoroutine("Shoot");
-        }
+        StartCoroutine("Shoot");
     }
 
     IEnumerator Shoot()

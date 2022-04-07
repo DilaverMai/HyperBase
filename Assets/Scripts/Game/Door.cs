@@ -5,12 +5,13 @@ using TMPro;
 using UnityEngine.Events;
 public class Door : MonoBehaviour
 {
-    public UnityEvent ExtraFunctions = new UnityEvent();
+    public UnityEvent<GameObject> ExtraFunctions = new UnityEvent<GameObject>();
     public int Value;
     public Enums.Maths _Maths = Enums.Maths.Subtract;
     private Collider _collider;
     private TextMeshPro _textOnDoor;
     private RunnerDoor _doorManager;
+    public LayerMask DetectMask;
     private bool _isOpen;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
@@ -18,7 +19,7 @@ public class Door : MonoBehaviour
     void Awake()
     {
         _collider = GetComponent<Collider>();
-        _textOnDoor = transform.parent.GetComponentInChildren<TextMeshPro>();
+        _textOnDoor = GetComponentInChildren<TextMeshPro>();
         _doorManager = GetComponentInParent<RunnerDoor>();
 
         if(!_collider.isTrigger) {
@@ -84,12 +85,13 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>(out Player player))
+        if ((DetectMask.value & (1 << other.gameObject.layer)) > 0)
         {
             if(_isOpen) return;
             _isOpen = true;
+            var player = other.GetComponent<Player>();
             player.AddPower(DoorAdd(player.Power));
-            ExtraFunctions.Invoke();
+            ExtraFunctions.Invoke(other.gameObject);
             //_doorManager.CloseTheDoors();
         }
     }

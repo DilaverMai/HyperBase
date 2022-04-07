@@ -9,6 +9,7 @@ public abstract class Contactable : MonoBehaviour
     private Collider _collider;
     public bool MakeTrigger = true;
     public bool AfterDestory = true;
+    public LayerMask DetectedMask;
 
     private void Awake()
     {
@@ -38,20 +39,20 @@ public abstract class Contactable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!_collider.isTrigger) return;
-
-        if (other.TryGetComponent<Player>(out var player))
+        if ((DetectedMask.value & (1 << other.gameObject.layer)) > 0)
         {
+            if (!MakeTrigger | !Base.IsPlaying()) return;
+
             Contant(other.gameObject);
         }
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (_collider.isTrigger) return;
-
-        if (other.gameObject.TryGetComponent<Player>(out var player))
+        if ((DetectedMask.value & (1 << other.gameObject.layer)) > 0)
         {
+            if (MakeTrigger | !Base.IsPlaying()) return;
+
             Contant(other.gameObject);
         }
     }

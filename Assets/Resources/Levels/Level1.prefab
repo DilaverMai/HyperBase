@@ -295,6 +295,49 @@ MonoBehaviour:
   _subscribers:
   - {fileID: 2105619705474178970}
   nodes: []
+--- !u!1 &4731953047630065168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6291307810546366547}
+  - component: {fileID: 8979104533464248959}
+  m_Layer: 7
+  m_Name: Weapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6291307810546366547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731953047630065168}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3472774278732376559}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8979104533464248959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731953047630065168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8911f1d6fc4a4f04a6d9b66555a4c52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6768663526315134885
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +355,7 @@ GameObject:
   - component: {fileID: 8809633015602357484}
   - component: {fileID: 1425684976721800544}
   - component: {fileID: 5722245945564250731}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +372,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0.99999994}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6291307810546366547}
   m_Father: {fileID: 6831673810787009573}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -880,6 +924,10 @@ PrefabInstance:
       propertyPath: Data
       value: 
       objectReference: {fileID: 11400000, guid: 974cec740c09e794daf26480a4dce415, type: 2}
+    - target: {fileID: 3657684906137802052, guid: f874b6292d66b1f479455d147103a662, type: 3}
+      propertyPath: DetectedMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 5159587542836376556, guid: f874b6292d66b1f479455d147103a662, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1022,6 +1070,10 @@ PrefabInstance:
       propertyPath: Data
       value: 
       objectReference: {fileID: 11400000, guid: ae095b3c9c139fc4bbad8a7dbbfd5343, type: 2}
+    - target: {fileID: -1591877734992128777, guid: 5543a3bd53cddc24da2d17b17aed1078, type: 3}
+      propertyPath: DetectedMask.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 2193793226338280945, guid: 5543a3bd53cddc24da2d17b17aed1078, type: 3}
       propertyPath: m_Name
       value: Test Collectable

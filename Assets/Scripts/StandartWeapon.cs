@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeftDoor : Door
+public class StandartWeapon : Weapon
 {
     
 }

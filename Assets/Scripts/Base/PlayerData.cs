@@ -10,6 +10,9 @@ public class PlayerData : Settings<PlayerData>
     private float moveSpeed;
     public float MoveSpeed => moveSpeed;
     [SerializeField]
+    private float rotationTurnSpeed;
+    public float RotationTurnSpeed => rotationTurnSpeed;
+    [SerializeField]
     private float rotationSpeed;
     public float RotationSpeed => rotationSpeed;
 
