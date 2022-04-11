@@ -15,7 +15,7 @@ public abstract class AbstractPoolObject<T> where T : Component
         obj.SetActive(false);
     }
 
-    public void Setup(Transform parent = null, Enum_PoolObject en = Enum_PoolObject.Test_Obstacle)
+    public void Setup(Transform parent = null, Enum_PoolObject en = Enum_PoolObject.Empty)
     {
         for (int i = 0; i < SpawnCount; i++)
         {

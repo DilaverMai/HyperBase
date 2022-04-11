@@ -17,9 +17,10 @@ public static class EnumCreator
         var Item = ItemName + ".cs";
         var AllPath = BasePath + Item;
 
-        var FileInside = "public enum Enum_" + ItemName + "{";
+        var FileInside = "public enum Enum_" + ItemName + "{ Empty,";
         if (ItemsToEnum.Length > 0)
         {
+            
             foreach (var item in ItemsToEnum)
             {
                 var _item = item.Replace(" ", "_");
