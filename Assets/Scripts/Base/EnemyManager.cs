@@ -101,7 +101,7 @@ public class EnemyManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += FindThePlayer;
-        EventManager.WhenStartGame += WhenStartSpawn;
+        EventManager.FirstTouch += WhenStartSpawn;
     }
 
     private void WhenStartSpawn()
@@ -117,7 +117,7 @@ public class EnemyManager : MonoBehaviour
     {
         Instance = null;
         EventManager.OnAfterLoadedLevel -= FindThePlayer;
-        EventManager.WhenStartGame -= WhenStartSpawn;
+        EventManager.FirstTouch -= WhenStartSpawn;
     }
 
     private void FindThePlayer()

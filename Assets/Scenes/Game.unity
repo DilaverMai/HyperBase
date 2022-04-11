@@ -534,16 +534,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolObjects:
-  - Prefab: {fileID: 6831673810787009572, guid: 3faa3a995067ab248a3f6edddd2e13aa, type: 3}
-    pool: []
-    SpawnCount: 0
-    isActive: 0
-    Enum: 0
   - Prefab: {fileID: 2193793226338280945, guid: f874b6292d66b1f479455d147103a662, type: 3}
     pool: []
-    SpawnCount: 0
+    SpawnCount: 15
     isActive: 0
-    Enum: 1
+    Enum: 0
   PoolParticles: []
   holdPool: {fileID: 0}
 --- !u!114 &904187655

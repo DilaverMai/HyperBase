@@ -41,7 +41,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.WhenStartGame += ShowPlayTimeMenu;
+        EventManager.FirstTouch += ShowPlayTimeMenu;
         EventManager.OnPause += Pause;
         EventManager.FinishGame += WhenFinish;
         EventManager.OnAfterLoadedLevel += ShowStartMenu;
@@ -49,7 +49,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.WhenStartGame -= ShowPlayTimeMenu;
+        EventManager.FirstTouch -= ShowPlayTimeMenu;
         EventManager.FinishGame -= WhenFinish;
         EventManager.OnPause -= Pause;
         EventManager.OnAfterLoadedLevel -= ShowStartMenu;

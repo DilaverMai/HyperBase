@@ -21,12 +21,12 @@ public class StartMenu : BaseMenu
 
     private void OnEnable()
     {
-        EventManager.WhenStartGame += Hide;
+        EventManager.FirstTouch += Hide;
     }
 
     private void OnDisable()
     {
-        EventManager.WhenStartGame -= Hide;
+        EventManager.FirstTouch -= Hide;
     }
 
     private void StartTextAnim()

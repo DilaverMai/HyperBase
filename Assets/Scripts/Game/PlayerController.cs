@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     private void OnFingerUp(LeanFinger finger)
     {
         if (!Base.IsPlaying() | !playerData.MoveRotation) return;
-        transform.DORotate(targetRot, 0.2f);
+        targetRot = Vector3.zero;
     }
     public void RotationMove(Vector2 rot)
     {
@@ -83,7 +83,8 @@ public class PlayerController : MonoBehaviour
         if (!Base.IsPlaying()) return;
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x, 0.5f, targetPos.z), playerData.MoveSpeed * Time.deltaTime);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), playerData.RotationTurnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), 
+        playerData.RotationTurnSpeed * Time.deltaTime);
         //Vector3.Lerp(transform.eulerAngles, targetRot, Time.deltaTime * playerData.MoveSpeed);
     }
 

@@ -6,6 +6,6 @@ public class ClickArea : MonoBehaviour, IPointerDownHandler
 {
     public void OnPointerDown(PointerEventData eventData)
     {
-        EventManager.WhenStartGame.Invoke();
+        EventManager.FirstTouch.Invoke();
     }
 }

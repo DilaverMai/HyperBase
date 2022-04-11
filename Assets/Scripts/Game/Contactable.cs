@@ -18,15 +18,14 @@ public abstract class Contactable : MonoBehaviour
 
     protected virtual void Setup()
     {
+        _collider = GetComponent<Collider>();
+        _collider.isTrigger = MakeTrigger;
+
         if (Data == null)
         {
-            Debug.LogError("Data is null");
+            Debug.LogWarning("Data is null");
             return;
         }
-
-        _collider = GetComponent<Collider>();
-
-        _collider.isTrigger = MakeTrigger;
 
         var prefab = Instantiate(Data.Prefab, transform);
         prefab.transform.localPosition = Data.Pos;

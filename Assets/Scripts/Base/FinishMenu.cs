@@ -35,7 +35,6 @@ public class FinishMenu : BaseMenu
                 FinishText.text = "YOU LOSE";
                 FinishText.color = Color.red;
                 LoseEmoji.gameObject.SetActive(true);
-                EventManager.WhenLose?.Invoke();
                 buttonText.text = "Try Again";
                 thisButton.onClick.RemoveAllListeners();
                 thisButton.onClick.AddListener(() =>
@@ -48,7 +47,6 @@ public class FinishMenu : BaseMenu
                 FinishText.text = "YOU WIN";
                 FinishText.color = Color.green;
                 WinEmoji.gameObject.SetActive(true);
-                EventManager.WhenWin?.Invoke();
                 buttonText.text = "Next Level";
                 thisButton.onClick.RemoveAllListeners();
                 thisButton.onClick.AddListener(() =>
