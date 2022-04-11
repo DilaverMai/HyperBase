@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class ParticleManager : MonoBehaviour
 {
     public List<PoolParticle> PoolParticles = new List<PoolParticle>();
     public static ParticleManager Instance;
+    public ParticleCamera particleCamera;
 
     private void Awake()
     {
@@ -17,6 +19,8 @@ public class ParticleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        particleCamera = FindObjectOfType<ParticleCamera>();
     }
 
     private void Start()
@@ -40,6 +44,27 @@ public class ParticleManager : MonoBehaviour
 
     }
 
+    private void WinEffect(Enums.GameStat gameStat)
+    {
+
+        if (gameStat == Enums.GameStat.Win)
+        {
+            Enums.CameraParticle.Confetti.ConfettiPlay();
+        }
+
+    }
+
+
+    void OnEnable()
+    {
+        EventManager.BeforeFinishGame += WinEffect;
+    }
+
+    void OnDisable()
+    {
+        EventManager.BeforeFinishGame -= WinEffect;
+    }
+
 }
 
 public static class ParticleManagerExtension
@@ -59,9 +84,14 @@ public static class ParticleManagerExtension
         Debug.LogError("Not found particle");
         return null;
     }
+
+    public static void ConfettiPlay(this Enums.CameraParticle particleManager)
+    {
+        ParticleManager.Instance.particleCamera.PlayParticle(Enums.CameraParticle.Confetti);
+    }
 }
 
-public class PoolParticle: AbstractPoolObject<ParticleItem>
+public class PoolParticle : AbstractPoolObject<ParticleItem>
 {
     [HideInInspector]
     public Enum_PoolParticle Enum;

@@ -1,5 +1,9 @@
 public static class Enums
 {
+    public enum CameraParticle
+    {
+        Confetti
+    }
     public enum GameStat
     {
         Start,
@@ -9,8 +13,9 @@ public static class Enums
         Win
     }
 
-    public enum Cameras{
-        cam1,cam2,cam3
+    public enum Cameras
+    {
+        cam1, cam2, cam3
     }
 
     public enum PlayerStat
@@ -69,5 +74,5 @@ public static class Enums
         DoorPower,
         BagSpeed
     }
-    
+
 }
