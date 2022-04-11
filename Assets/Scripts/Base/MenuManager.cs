@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class MenuManager : MonoBehaviour
 {
     [HideInInspector]
@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     [HideInInspector]
     public FinishMenu FinishMenu;
     public static MenuManager Instance;
+    private Canvas canvas;
     private void Awake()
     {
         if (Instance == null)
@@ -24,6 +25,7 @@ public class MenuManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
     public void Setup()
     {
@@ -31,6 +33,9 @@ public class MenuManager : MonoBehaviour
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
         PauseMenu = FindObjectOfType<PauseMenu>();
         FinishMenu = FindObjectOfType<FinishMenu>();
+
+        canvas = PlayTimeMenu.transform.GetComponentInParent<Canvas>();
+
     }
 
 
@@ -80,5 +85,20 @@ public class MenuManager : MonoBehaviour
             Time.timeScale = 1;
             PauseMenu.Hide();
         }
+    }
+
+
+    [SerializeField]
+    private Transform fakeGold;
+    public void CoinEffect(Vector3 pos)
+    {
+        var _fakeGold = Instantiate(fakeGold,canvas.transform);
+        pos = Camera.main.WorldToScreenPoint(pos);
+        _fakeGold.position = pos;
+
+        _fakeGold.DOMove(PlayTimeMenu.GoldImage.transform.position,0.5f).OnComplete(()=>
+        {
+            Destroy(_fakeGold.gameObject);
+        });
     }
 }

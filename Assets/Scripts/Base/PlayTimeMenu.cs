@@ -8,6 +8,7 @@ public class PlayTimeMenu : BaseMenu
     public Button PauseButton;
     public TextMeshProUGUI LevelText;
     public TextMeshProUGUI GoldText;
+    public Image GoldImage;
 
     private void Start() {
         PauseButton.onClick.AddListener(PauseButtonFunc);

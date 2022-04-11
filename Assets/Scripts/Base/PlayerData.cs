@@ -15,6 +15,10 @@ public class PlayerData : Settings<PlayerData>
     [SerializeField]
     private float rotationSpeed;
     public float RotationSpeed => rotationSpeed;
+    [SerializeField]
+    private bool controllReverse;
+    public bool ControlReverse => controllReverse;
+
 
     [Header("Limits")]
     [SerializeField]

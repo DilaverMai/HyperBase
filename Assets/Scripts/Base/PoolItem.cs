@@ -9,6 +9,9 @@ public class PoolItem : MonoBehaviour
     {
         PoolManager.Instance.BackToList(this);
     }
+    public void SetEnum(Enum_PoolObject en){
+        _PoolEnum = en;
+    }
 
     public void SetPosition(Vector3 position)
     {

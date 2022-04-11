@@ -6,12 +6,17 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public List<PoolObject>
-    PoolObjects = new List <PoolObject>();
+    public List<PoolObject> PoolObjects = new List<PoolObject>();
+    public List<ParticleItem> PoolParticles = new List<ParticleItem>();
     public static PoolManager Instance;
-
+    [HideInInspector]
+    public Transform holdPool;
     private void Awake()
     {
+        holdPool = new GameObject("Pool").transform;
+        holdPool.SetParent(transform);
+
+
         if (Instance == null)
         {
             Instance = this;
@@ -22,11 +27,11 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void StartPool()
     {
         foreach (var item in PoolObjects)
         {
-            item.Setup();
+            item.Setup(holdPool,item.Enum);
         }
     }
 
@@ -41,7 +46,29 @@ public class PoolManager : MonoBehaviour
                 break;
             }
         }
+    }
 
+    public void ReLoad()
+    {
+        foreach (Transform item in holdPool)
+        {
+            item.gameObject.SetActive(false);
+        }        
+    }
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable()
+    {
+        EventManager.OnBeforeLoadedLevel += ReLoad;
+    }
+
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    void OnDisable()
+    {
+        EventManager.OnBeforeLoadedLevel -= ReLoad;
     }
 
 #if UNITY_EDITOR
@@ -55,6 +82,14 @@ public class PoolManager : MonoBehaviour
         {
             PoolObjects[i].Enum = (Enum_PoolObject)i;
         }
+
+        EnumCreator.CreateEnum("PoolParticle",
+        PoolParticles.Select(x => x.name).ToArray());
+
+        for (int i = 0; i < PoolParticles.Count; i++)
+        {
+            PoolParticles[i]._Enum = (Enum_PoolParticle)i;
+        }
     }
 #endif
 
@@ -66,11 +101,13 @@ public static class PoolEvents
     {
         foreach (var item in PoolManager.Instance.PoolObjects)
         {
-            var itemName = item.Prefab.name.Split(' ');
-            if (itemName[0] == poolObject.ToString())
+
+            if (item.Enum == poolObject)
             {
-                item.GetObject().gameObject.SetActive(true);
-                return item.GetObject();
+                //item.GetObject().gameObject.SetActive(true);
+                var obj = item.GetObject();
+                obj.SetEnum(poolObject);
+                return obj;
             }
         }
 
@@ -80,8 +117,9 @@ public static class PoolEvents
 
 }
 
- [System.Serializable]
- public class PoolObject: AbstractPoolObject<PoolItem>
- {
+[System.Serializable]
+public class PoolObject : AbstractPoolObject<PoolItem>
+{
+    [HideInInspector]
     public Enum_PoolObject Enum;
- }   
+}

@@ -62,5 +62,12 @@ public static class Enums
         Multiply,
         Divide
     }
+
+    public enum Skills
+    {
+        DoorSpeed,
+        DoorPower,
+        BagSpeed
+    }
     
 }

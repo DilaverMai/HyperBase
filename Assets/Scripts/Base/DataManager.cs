@@ -9,12 +9,28 @@ public class DataManager : MonoBehaviour
     public static Action<int, int> OnSetData;
     public static Action<int> AddCoin;
     public static Action ReLoadData;
-    
     private string path;
     [SerializeField]
     private Data playerData;
     public Data PlayerData => playerData;
     private Data backupData;
+    public int Coin => playerData.coin;
+    public static DataManager Instance;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public Task CheckSave()
     {
         path = Application.persistentDataPath + "/gamedata.json";
@@ -27,11 +43,11 @@ public class DataManager : MonoBehaviour
             }
             else
             {
-                playerData = new Data(0,1,1);
+                playerData = new Data(0, 1, 1);
                 Debug.Log("No save file found so we created a new one");
                 SaveGame();
             }
-            
+
             Debug.Log("SAVE LOADED");
 
         });

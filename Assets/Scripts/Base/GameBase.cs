@@ -13,6 +13,8 @@ public class GameBase : MonoBehaviour
     public LevelManager LevelManager;
     [HideInInspector]
     public MenuManager MenuManager;
+    [HideInInspector]
+    public PoolManager PoolManager;
     public GameStat _GameStat => gameStat;
     private GameStat gameStat;
 
@@ -29,6 +31,7 @@ public class GameBase : MonoBehaviour
 
         DataManager = GetComponent<DataManager>();
         LevelManager = GetComponent<LevelManager>();
+        PoolManager = GetComponent<PoolManager>();
 
         gameStat = GameStat.Start;
         SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
@@ -39,6 +42,7 @@ public class GameBase : MonoBehaviour
         //First DataManager
         await DataManager.CheckSave();
         LevelManager.LoadLevel();
+        PoolManager.StartPool();
     }
 
     public void ChangeStat(GameStat stat)
@@ -64,6 +68,7 @@ public class GameBase : MonoBehaviour
 
 public static class EventManager
 {
+    public static Action<GameStat> BeforeFinishGame;
     public static Action WhenLose;
     public static Action WhenWin;
     public static Action NextLevel;
@@ -78,6 +83,11 @@ public static class EventManager
 
 public static class Base
 {
+
+    public static Transform GetLevelHolder()
+    {
+        return GameBase.Instance.LevelManager.LevelHolder;
+    }
     public static bool IsPlaying()
     {
         return GameBase.Instance._GameStat == GameStat.Playing;
@@ -86,6 +96,7 @@ public static class Base
     public async static void FinisGame(GameStat gameStat, float time = 0f)
     {
         if (GameBase.Instance._GameStat == GameStat.Playing) GameBase.Instance.ChangeStat(gameStat);
+        EventManager.BeforeFinishGame.Invoke(gameStat);
         await Task.Delay((int)time * 1000);
         if (!Application.isPlaying) return;
         EventManager.FinishGame?.Invoke(gameStat);

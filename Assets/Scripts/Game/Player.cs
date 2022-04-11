@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void HealthSystem(int damage)
+    public void HealthSystem(int damage)
     {
         if (health <= 0) return;
         if (health > maxHealth) health = maxHealth;
@@ -87,5 +87,11 @@ public static class PlayerExtension
     public static void ResetPos(this Player player)
     {
         Player.Instance.GetComponent<PlayerController>().ResetPos();
+    }
+
+    public static void HealthSystem(this Player player, int damage)
+    {
+        player = Player.Instance;
+        player.HealthSystem(damage);
     }
 }

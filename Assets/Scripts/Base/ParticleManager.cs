@@ -63,5 +63,6 @@ public static class ParticleManagerExtension
 
 public class PoolParticle: AbstractPoolObject<ParticleItem>
 {
+    [HideInInspector]
     public Enum_PoolParticle Enum;
 }

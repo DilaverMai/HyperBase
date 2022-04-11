@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[] _Levels => levels;
     [SerializeField]
     private GameObject[] levels;
+    public Transform LevelHolder;
 
     public void LoadLevel()
     {
@@ -52,6 +53,7 @@ public class LevelManager : MonoBehaviour
 
         var level = levels[currentLevel - 1];
         var levelObject = Instantiate(level, Vector3.zero, Quaternion.identity);
+        LevelHolder = levelObject.transform;
         levelObject.transform.SetParent(transform);
         EventManager.OnAfterLoadedLevel?.Invoke();
 
@@ -70,13 +72,15 @@ public class LevelManager : MonoBehaviour
             nextLevel = 1;
         }
 
-        if (transform.childCount > 0)
+        if (LevelHolder != null)
         {
-            Destroy(transform.GetChild(0).gameObject);
+            Destroy(LevelHolder.gameObject);
         }
 
         var lvl = Instantiate(levels[nextLevel - 1]);
         lvl.transform.SetParent(transform);
+        LevelHolder = lvl.transform;
+
         EventManager.OnAfterLoadedLevel?.Invoke();
 
         GameBase.Instance.DataManager.SaveGame();
@@ -92,13 +96,14 @@ public class LevelManager : MonoBehaviour
 
         var nextLevel = currentLevel;
 
-        if (transform.childCount > 0)
+        if (LevelHolder != null)
         {
-            Destroy(transform.GetChild(0).gameObject);
+            Destroy(LevelHolder.gameObject);
         }
 
         var lvl = Instantiate(levels[nextLevel - 1]);
         lvl.transform.SetParent(transform);
+        LevelHolder = lvl.transform;
         EventManager.OnAfterLoadedLevel?.Invoke();
     }
 
