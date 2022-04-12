@@ -5,11 +5,8 @@ using UnityEngine;
 public class PoolItem : MonoBehaviour
 {
     public Enum_PoolObject _PoolEnum;
-    protected virtual void OnDisable()
+    public void SetEnum(Enum_PoolObject en)
     {
-        PoolManager.Instance.BackToList(this);
-    }
-    public void SetEnum(Enum_PoolObject en){
         _PoolEnum = en;
     }
 
@@ -66,6 +63,23 @@ public class PoolItem : MonoBehaviour
     public void AddPower(Vector3 pow)
     {
         GetComponent<Rigidbody>().velocity = pow;
+    }
+
+    private void OnEnable()
+    {
+        EventManager.OnBeforeLoadedLevel += KillForNewLevel;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnBeforeLoadedLevel -= KillForNewLevel;
+        PoolManager.Instance.BackToList(this);
+    }
+
+    private void KillForNewLevel()
+    {
+        transform.position = Vector3.zero;
+        gameObject.SetActive(false);
     }
 
 }

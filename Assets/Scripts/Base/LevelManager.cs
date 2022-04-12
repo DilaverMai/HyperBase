@@ -62,6 +62,9 @@ public class LevelManager : MonoBehaviour
     private void NextLevelFunc()
     {
         Debug.Log("Next Level");
+        if (LevelHolder != null)
+            Destroy(LevelHolder.gameObject);
+
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
         GameBase.Instance.DataManager.PlayerData.showingLevel += 1;
         EventManager.OnBeforeLoadedLevel?.Invoke();
@@ -71,11 +74,6 @@ public class LevelManager : MonoBehaviour
         if (nextLevel > levels.Length)
         {
             nextLevel = 1;
-        }
-
-        if (LevelHolder != null)
-        {
-            Destroy(LevelHolder.gameObject);
         }
 
         var lvl = Instantiate(levels[nextLevel - 1]);
@@ -90,17 +88,17 @@ public class LevelManager : MonoBehaviour
     private void RestartLevelFunc()
     {
         Debug.Log("Restart Level");
+
+        if (LevelHolder != null)
+            Destroy(LevelHolder.gameObject);
+
+
         EventManager.OnBeforeLoadedLevel?.Invoke();
         DataManager.ReLoadData?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
         //GameBase.Instance.DataManager.PlayerData.showingLevel = currentLevel;
 
         var nextLevel = currentLevel;
-
-        if (LevelHolder != null)
-        {
-            Destroy(LevelHolder.gameObject);
-        }
 
         var lvl = Instantiate(levels[nextLevel - 1]);
         lvl.transform.SetParent(transform);
