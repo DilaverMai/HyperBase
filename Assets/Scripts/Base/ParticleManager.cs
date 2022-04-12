@@ -7,6 +7,7 @@ public class ParticleManager : MonoBehaviour
 {
     public List<PoolParticle> PoolParticles = new List<PoolParticle>();
     public static ParticleManager Instance;
+    [HideInInspector]
     public ParticleCamera particleCamera;
 
     private void Awake()

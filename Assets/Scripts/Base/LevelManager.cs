@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[] _Levels => levels;
     [SerializeField]
     private GameObject[] levels;
+    [HideInInspector]
     public Transform LevelHolder;
 
     public void LoadLevel()

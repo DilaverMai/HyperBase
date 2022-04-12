@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class GameBase : MonoBehaviour
 {
     public static GameBase Instance;
-
     [HideInInspector]
     public DataManager DataManager;
     [HideInInspector]
@@ -98,7 +97,6 @@ public static class EventManager
 
 public static class Base
 {
-
     public static Transform GetLevelHolder()
     {
         return GameBase.Instance.LevelManager.LevelHolder;
