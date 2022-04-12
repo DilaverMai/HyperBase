@@ -116,6 +116,7 @@ public abstract class Enemy : MonoBehaviour
 
         _animator.SetFloat("Speed", _agent.velocity.magnitude);
         var movePos = target.position;
+
         distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
          new Vector3(movePos.x, 0, movePos.z));
 

@@ -46,7 +46,6 @@ public abstract class AbstractPoolObject<T> where T : Component
         else
         {
             obj = GameObject.Instantiate(Prefab, PoolManager.Instance.holdPool);
-            pool.Add(obj);
             obj.SetActive(true);
 
             return obj.GetComponent<T>();

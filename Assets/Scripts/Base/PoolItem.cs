@@ -65,21 +65,9 @@ public class PoolItem : MonoBehaviour
         GetComponent<Rigidbody>().velocity = pow;
     }
 
-    private void OnEnable()
-    {
-        EventManager.OnBeforeLoadedLevel += KillForNewLevel;
-    }
-
     private void OnDisable()
     {
-        EventManager.OnBeforeLoadedLevel -= KillForNewLevel;
         PoolManager.Instance.BackToList(this);
-    }
-
-    private void KillForNewLevel()
-    {
-        transform.position = Vector3.zero;
-        gameObject.SetActive(false);
     }
 
 }
