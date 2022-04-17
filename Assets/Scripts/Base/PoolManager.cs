@@ -55,17 +55,11 @@ public class PoolManager : MonoBehaviour
             item.gameObject.SetActive(false);
         }        
     }
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
+
     void OnEnable()
     {
         EventManager.OnBeforeLoadedLevel += ReLoad;
     }
-
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
     void OnDisable()
     {
         EventManager.OnBeforeLoadedLevel -= ReLoad;
@@ -104,7 +98,6 @@ public static class PoolEvents
 
             if (item.Enum == poolObject)
             {
-                //item.GetObject().gameObject.SetActive(true);
                 var obj = item.GetObject();
                 obj.SetEnum(poolObject);
                 return obj;

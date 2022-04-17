@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Enums;
 using System;
 public class ParticleCamera : MonoBehaviour
 {

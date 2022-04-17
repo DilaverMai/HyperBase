@@ -17,9 +17,6 @@ public class DataManager : MonoBehaviour
     public int Coin => playerData.coin;
     public static DataManager Instance;
 
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
     void Awake()
     {
         if (Instance == null)
@@ -58,6 +55,7 @@ public class DataManager : MonoBehaviour
     {
         File.WriteAllText(path, JsonUtility.ToJson(playerData));
         backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
+        //CreateData<Data>.CreateMyAsset("backupData");
     }
 
     private void SetData()
@@ -91,37 +89,35 @@ public class DataManager : MonoBehaviour
         ReLoadData -= ReLoadSave;
     }
 
-#if UNITY_EDITOR
+}
 
-    [Button]
-    private void ClearData()
+public static class DataExtension
+{
+    public static void ClearData()
     {
         if (File.Exists(Application.persistentDataPath + "/gamedata.json"))
         {
             var data = JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
-            data.Res();
+            data.coin = 0;
+            data.level = 1;
+            data.showingLevel = 1;
             File.WriteAllText(Application.persistentDataPath + "/gamedata.json", JsonUtility.ToJson(data));
+            Debug.LogWarning("Cleared data");
         }
+        else Debug.LogWarning("NO DATA FOUND");
     }
-    [Button]
-    private void LoadData()
-    {
-        if (File.Exists(Application.persistentDataPath + "/gamedata.json"))
-        {
-            playerData = JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
-        }
-    }
-    [Button]
-    private void SaveData()
+
+    public static void SaveData(Data playerData)
     {
         File.WriteAllText(Application.persistentDataPath + "/gamedata.json", JsonUtility.ToJson(playerData));
     }
 
-
-
-
-#endif
+    public static Data GetData()
+    {
+        return JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
+    }
 }
+
 [System.Serializable]
 public class Data
 {

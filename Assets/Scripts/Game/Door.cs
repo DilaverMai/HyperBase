@@ -7,7 +7,7 @@ public class Door : MonoBehaviour
 {
     public UnityEvent<GameObject> ExtraFunctions = new UnityEvent<GameObject>();
     public int Value;
-    public Enums.Maths _Maths = Enums.Maths.Subtract;
+    public Maths _Maths = Maths.Subtract;
     private Collider _collider;
     private TextMeshPro _textOnDoor;
     private RunnerDoor _doorManager;
@@ -36,22 +36,22 @@ public class Door : MonoBehaviour
         SetDoorOnText(_Maths);
     }
 
-    private void SetDoorOnText(Enums.Maths math)
+    private void SetDoorOnText(Maths math)
     {
         string doorText = "";
 
         switch (math)
         {
-            case Enums.Maths.Add:
+            case Maths.Add:
                 doorText = "+";
                 break;
-            case Enums.Maths.Subtract:
+            case Maths.Subtract:
                 doorText = "-";
                 break;
-            case Enums.Maths.Multiply:
+            case Maths.Multiply:
                 doorText = "X";
                 break;
-            case Enums.Maths.Divide:
+            case Maths.Divide:
                 doorText = "%";
                 break;
             default:
@@ -69,13 +69,13 @@ public class Door : MonoBehaviour
 
         switch (_Maths)
         {
-            case Enums.Maths.Add:
+            case Maths.Add:
                 return Value + getVal;
-            case Enums.Maths.Subtract:
+            case Maths.Subtract:
                 return Value - getVal;
-            case Enums.Maths.Multiply:
+            case Maths.Multiply:
                 return Value * getVal;
-            case Enums.Maths.Divide:
+            case Maths.Divide:
                 return Value / getVal;
             default:
             Debug.LogError("No return 0");

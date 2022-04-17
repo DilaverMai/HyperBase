@@ -183,9 +183,9 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
-    private void WhenWin(Enums.GameStat stat)
+    private void WhenWin(GameStat stat)
     {
-        if (stat == Enums.GameStat.Win)
+        if (stat == GameStat.Win)
         {
             TakeDamage();
         }

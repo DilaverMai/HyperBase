@@ -45,12 +45,12 @@ public class ParticleManager : MonoBehaviour
 
     }
 
-    private void WinEffect(Enums.GameStat gameStat)
+    private void WinEffect(GameStat gameStat)
     {
 
-        if (gameStat == Enums.GameStat.Win)
+        if (gameStat == GameStat.Win)
         {
-            Enums.CameraParticle.Confetti.ConfettiPlay();
+            CameraParticle.Confetti.ConfettiPlay();
         }
 
     }
@@ -86,9 +86,9 @@ public static class ParticleManagerExtension
         return null;
     }
 
-    public static void ConfettiPlay(this Enums.CameraParticle particleManager)
+    public static void ConfettiPlay(this CameraParticle particleManager)
     {
-        ParticleManager.Instance.particleCamera.PlayParticle(Enums.CameraParticle.Confetti);
+        ParticleManager.Instance.particleCamera.PlayParticle(CameraParticle.Confetti);
     }
 }
 

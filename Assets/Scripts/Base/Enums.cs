@@ -1,5 +1,3 @@
-public static class Enums
-{
     public enum CameraParticle
     {
         Confetti
@@ -74,5 +72,3 @@ public static class Enums
         DoorPower,
         BagSpeed
     }
-
-}

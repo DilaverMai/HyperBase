@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static CameraManager;
-using static Enums;
+
 
 public class Player : MonoBehaviour
 {
@@ -64,7 +61,7 @@ public class Player : MonoBehaviour
         {
             health = 0;
             Debug.Log("You are dead");
-            Base.FinisGame(Enums.GameStat.Lose, 0);
+            Base.FinisGame(GameStat.Lose, 0);
             return;
         }
     }

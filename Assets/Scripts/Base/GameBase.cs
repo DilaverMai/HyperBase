@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
-using static Enums;
 using System.Collections.Generic;
 public class GameBase : MonoBehaviour
 {
@@ -68,7 +67,7 @@ public class GameBase : MonoBehaviour
         EventManager.BeforeFinishGame -= ClearActions;
     }
 
-    private void ClearActions(Enums.GameStat stat)
+    private void ClearActions(GameStat stat)
     {
         if (stat == GameStat.Win)
             foreach (var item in OnWin)

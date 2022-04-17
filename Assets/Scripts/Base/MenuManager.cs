@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
         PlayTimeMenu.Show();
     }
 
-    private void WhenFinish(Enums.GameStat stat)
+    private void WhenFinish(GameStat stat)
     {
         StartMenu.Hide();
         PlayTimeMenu.Hide();
@@ -75,13 +75,13 @@ public class MenuManager : MonoBehaviour
     {
         if (pause)
         {
-            GameBase.Instance.ChangeStat(Enums.GameStat.Paused);
+            GameBase.Instance.ChangeStat(GameStat.Paused);
             Time.timeScale = 0;
             PauseMenu.Show();
         }
         else
         {
-            GameBase.Instance.ChangeStat(Enums.GameStat.Playing);
+            GameBase.Instance.ChangeStat(GameStat.Playing);
             Time.timeScale = 1;
             PauseMenu.Hide();
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemySpawnerManager : MonoBehaviour
 {
     private Enum_PoolObject enemyObject;
     [SerializeField]
@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour
     private float spawnTime;
     [SerializeField]
     private int sameTime;
-    public static EnemyManager Instance;
+    public static EnemySpawnerManager Instance;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>

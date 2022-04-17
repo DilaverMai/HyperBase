@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Threading.Tasks;
-using static Enums;
+
 public class CameraManager : MonoBehaviour
 {
     private CinemachineVirtualCamera[] cinemachineVirtualCameras;
