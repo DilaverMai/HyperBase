@@ -74,7 +74,7 @@ public class PoolManager : MonoBehaviour
 
         for (int i = 0; i < PoolObjects.Count; i++)
         {
-            PoolObjects[i].Enum = (Enum_PoolObject)i;
+            PoolObjects[i].Enum = (Enum_PoolObject)i+1;
         }
 
         EnumCreator.CreateEnum("PoolParticle",
@@ -82,7 +82,7 @@ public class PoolManager : MonoBehaviour
 
         for (int i = 0; i < PoolParticles.Count; i++)
         {
-            PoolParticles[i]._Enum = (Enum_PoolParticle)i;
+            PoolParticles[i]._Enum = (Enum_PoolParticle)i+1;
         }
     }
 #endif
