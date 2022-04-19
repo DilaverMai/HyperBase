@@ -93,6 +93,11 @@ public class DataManager : MonoBehaviour
 
 public static class DataExtension
 {
+    public static Data RunTimeGetData()
+    {
+        return DataManager.Instance.PlayerData;
+    }
+
     public static void ClearData()
     {
         if (File.Exists(Application.persistentDataPath + "/gamedata.json"))
@@ -119,7 +124,7 @@ public static class DataExtension
 }
 
 [System.Serializable]
-public class Data
+public partial class Data
 {
     public int coin;
     public int level;
