@@ -25,6 +25,8 @@ public class BaseEditor : OdinEditorWindow
         DataExtension.SaveData(playerData);
     }
 
+    [Title("Level System")]
+    
     protected override void OnEnable()
     {
         base.OnEnable();

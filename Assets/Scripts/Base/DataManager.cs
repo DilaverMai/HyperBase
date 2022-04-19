@@ -134,7 +134,7 @@ public class Data
     public void Res()
     {
         coin = 0;
-        level = 1;
+        level = 0;
         showingLevel = 1;
     }
 
