@@ -82,11 +82,6 @@ public static class PlayerExtension
         player._AddPower(power);
     }
 
-    public static void ResetPos(this Player player)
-    {
-        Player.Instance.GetComponent<PlayerController>().ResetPos();
-    }
-
     public static void HealthSystem(this Player player, int damage)
     {
         player = Player.Instance;

@@ -92,10 +92,16 @@ public static class EventManager
     public static Action<bool> OnPause;
     public static Action OnBeforeLoadedLevel;
     public static Action OnAfterLoadedLevel;
+    public static Action FinishLine;
 }
 
 public static class Base
 {
+    public static void ChangeStat(GameStat stat)
+    {
+        GameBase.Instance.ChangeStat(stat);
+    }
+
     public static Transform GetLevelHolder()
     {
         return GameBase.Instance.LevelManager.LevelHolder;

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
 using System;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
@@ -68,7 +65,7 @@ public class LevelManager : MonoBehaviour
 
         if (nextLevel >= levels.Length)
         {
-            nextLevel = Random.Range(0, levels.Length);
+            nextLevel = RandomSelectedLevel(levels.Length);
             DataManager.Instance.PlayerData.level = nextLevel;
         }
 
@@ -117,6 +114,17 @@ public class LevelManager : MonoBehaviour
         EventManager.RestartLevel -= RestartLevelFunc;
         // EventManager.WhenLose -= RestartLevelFunc;
         // EventManager.WhenWin -= NextLevelFunc;
+    }
+
+    private int RandomSelectedLevel(int currentLevel)
+    {
+        if(levels.Length == 1) return 0;
+        var newLevel = Random.Range(0, levels.Length);
+        if (newLevel == currentLevel)
+        {
+            return RandomSelectedLevel(currentLevel);
+        }
+        return newLevel;
     }
 
 #if UNITY_EDITOR

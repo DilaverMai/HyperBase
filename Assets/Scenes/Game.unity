@@ -148,13 +148,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13934602}
-  m_LocalRotation: {x: 0.14735058, y: 0.43913648, z: -0.07326119, w: -0.88322127}
-  m_LocalPosition: {x: -5.1253033, y: 0.15935278, z: 13.968489}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000007450581, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1564016018}
-  m_Father: {fileID: 173037974}
-  m_RootOrder: 1
+  m_Father: {fileID: 904187648}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &13934604
 Camera:
@@ -383,14 +383,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 173037972}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.14735058, y: -0.43913648, z: 0.07326119, w: -0.88322127}
+  m_LocalPosition: {x: -7.4816008, y: 4.383876, z: -12.092152}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 113647258}
-  - {fileID: 13934603}
-  m_Father: {fileID: 1102298991}
-  m_RootOrder: 0
+  m_Father: {fileID: 904187648}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470851581
 GameObject:
@@ -602,7 +601,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 13934603}
+  - {fileID: 173037974}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -795,8 +796,7 @@ Transform:
   m_LocalRotation: {x: -0.14735058, y: -0.43913648, z: 0.07326119, w: -0.88322127}
   m_LocalPosition: {x: -7.4816008, y: 4.383876, z: -12.092152}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 173037974}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1125,6 +1125,10 @@ PrefabInstance:
     - target: {fileID: 7144638493239861538, guid: eb821fdbfce80e3488c57c84962cef5a, type: 3}
       propertyPath: m_Name
       value: JoyStick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144638493239861538, guid: eb821fdbfce80e3488c57c84962cef5a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7144638493239861542, guid: eb821fdbfce80e3488c57c84962cef5a, type: 3}
       propertyPath: m_Pivot.x
