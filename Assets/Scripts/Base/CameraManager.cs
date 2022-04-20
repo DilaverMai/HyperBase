@@ -31,6 +31,21 @@ public class CameraManager : MonoBehaviour
 
     }
 
+    public void SetFocusCam(Cameras camera)
+    {
+        foreach (var item in virtualCameras)
+        {
+            if (item.camera == camera)
+            {
+                item.virtualCamera.Priority = 1;
+            }
+            else
+            {
+                item.virtualCamera.Priority = 0;
+            }
+        }
+    }
+
     public CinemachineVirtualCamera GetCinemachineVirtualCamera(Cameras camera)
     {
         return virtualCameras[(int)camera].virtualCamera;
@@ -46,6 +61,10 @@ public static class CameraEvents{
     public static VirtualCamera GetVirtualCamera(this Cameras camera)
     {
         return CameraManager.Instance.GetVirtualCamera(camera);
+    }
+    public static void SetFocusCam(this Cameras camera)
+    {
+        CameraManager.Instance.SetFocusCam(camera);
     }
 }
 
