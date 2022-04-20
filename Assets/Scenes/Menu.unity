@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 373246765}
   - component: {fileID: 373246767}
   - component: {fileID: 373246766}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PauseIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2071,6 +2071,7 @@ MonoBehaviour:
   PauseButton: {fileID: 2008647378}
   LevelText: {fileID: 1495210441}
   GoldText: {fileID: 1288545689}
+  GoldImage: {fileID: 0}
 --- !u!1 &1579214165
 GameObject:
   m_ObjectHideFlags: 0
@@ -2726,7 +2727,7 @@ GameObject:
   - component: {fileID: 2008647376}
   - component: {fileID: 2008647375}
   - component: {fileID: 2008647378}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -73,6 +73,8 @@ public class JoyStick : MonoBehaviour
 
     private void OnFingerDown(LeanFinger obj)
     {
+        if(obj.IsOverGui) return;
+        
         foreach (var item in _images)
         {
             item.enabled = true;

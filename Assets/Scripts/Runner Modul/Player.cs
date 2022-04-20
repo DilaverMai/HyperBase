@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private int power;
     public int Power => power;
     internal static Player Instance;
+    public int LocalMoney;
 
     private void Awake() 
     {
