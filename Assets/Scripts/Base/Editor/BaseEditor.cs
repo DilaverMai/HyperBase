@@ -1,4 +1,3 @@
-using System.IO;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
@@ -11,25 +10,35 @@ public class BaseEditor : OdinEditorWindow
     {
         GetWindow<BaseEditor>().Show();
     }
-
+    [InfoBox("F1 = GAME PAUSE // GAME RESUME")]
     [Title("Data System")]
     public Data playerData;
     [Button]
     public void ClearData()
     {
         DataExtension.ClearData();
+        playerData = DataExtension.GetData();
     }
     [Button]
     public void SaveData()
     {
         DataExtension.SaveData(playerData);
     }
-
-    [Title("Level System")]
-    
     protected override void OnEnable()
     {
         base.OnEnable();
         playerData = DataExtension.GetData();
+    }
+    [Title("Level System")]
+    [Button]
+    public void NextLevel()
+    {
+        EventManager.NextLevel?.Invoke();
+    }
+
+    [Button]
+    public void RestartLevel()
+    {
+        EventManager.RestartLevel?.Invoke();
     }
 }

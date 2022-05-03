@@ -1,6 +1,6 @@
     public enum CameraParticle
     {
-        Confetti
+        Confetti,Money,Coin
     }
     public enum GameStat
     {
@@ -72,4 +72,18 @@
         DoorSpeed,
         DoorPower,
         BagSpeed
+    }
+    
+    public enum Menus
+    {
+        MarketMenu,
+        PauseMenu,
+        GameOverMenu
+        
+    }
+
+    public enum Datas
+    {
+        Level,
+        Coin
     }

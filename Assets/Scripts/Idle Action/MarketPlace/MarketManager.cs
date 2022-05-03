@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,19 @@ public class MarketManager : MonoBehaviour
     public List<AreData> areDatas = new List<AreData>();
     [SerializeField]
     private List<PurchasableArea> purchasableAreas = new List<PurchasableArea>();
+
+    public static MarketManager Instance;
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
         purchasableAreas = GetComponentsInChildren<PurchasableArea>().ToList();
     }
     private void Start()
@@ -23,12 +35,18 @@ public class MarketManager : MonoBehaviour
             if (areData != null) {
                 purchasableArea.Setup(areData.Bought,areData.Deposit);
             }
-
+            else {
+                purchasableArea.Setup(false,0);
+            }
         }
     }
 
-    [Button]
-    private void SendData()
+    private void OnDisable()
+    {
+        Instance = null;
+    }
+    
+    public void SendData()
     {
         areDatas.Clear();
         foreach (var purchasableArea in purchasableAreas)
@@ -40,6 +58,14 @@ public class MarketManager : MonoBehaviour
         DataExtension.SaveData(DataExtension.RunTimeGetData());
     }
 
+}
+
+public static class MarketExtension
+{   
+    public static void SendData(this MarketManager marketManager)
+    {
+        marketManager.SendData();
+    }
 }
 
 public partial class Data

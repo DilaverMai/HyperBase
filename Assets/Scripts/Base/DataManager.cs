@@ -7,7 +7,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static Action<int, int> OnSetData;
-    public static Action<int> AddCoin;
+    // public static Action<int> AddCoin;
     public static Action ReLoadData;
     private string path;
     [SerializeField]
@@ -58,7 +58,7 @@ public class DataManager : MonoBehaviour
         //CreateData<Data>.CreateMyAsset("backupData");
     }
 
-    private void SetData()
+    public void SetData()
     {
         OnSetData?.Invoke(playerData.showingLevel, playerData.coin);
     }
@@ -78,14 +78,14 @@ public class DataManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += SetData;
-        AddCoin += AddCoinFunc;
+        // AddCoin += AddCoinFunc;
         ReLoadData += ReLoadSave;
     }
 
     private void OnDisable()
     {
         EventManager.OnAfterLoadedLevel -= SetData;
-        AddCoin -= AddCoinFunc;
+        // AddCoin -= AddCoinFunc;
         ReLoadData -= ReLoadSave;
     }
 
@@ -104,8 +104,9 @@ public static class DataExtension
         {
             var data = JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
             data.coin = 0;
-            data.level = 1;
+            data.level = 0;
             data.showingLevel = 1;
+            data.areDatas.Clear();
             File.WriteAllText(Application.persistentDataPath + "/gamedata.json", JsonUtility.ToJson(data));
             Debug.LogWarning("Cleared data");
         }
@@ -120,6 +121,40 @@ public static class DataExtension
     public static Data GetData()
     {
         return JsonUtility.FromJson<Data>(File.ReadAllText(Application.persistentDataPath + "/gamedata.json"));
+    }
+
+    public static int GetData(this Datas data)
+    {
+        switch (data)
+        {
+            case Datas.Level:
+                return DataManager.Instance.PlayerData.level;
+            case Datas.Coin:
+                return DataManager.Instance.PlayerData.coin;
+        }
+
+        return -1;
+    }
+    
+    public static void SetData(this Datas data, int value)
+    {
+        switch (data)
+        {
+            case Datas.Level:
+                DataManager.Instance.PlayerData.level = value;
+                break;
+            case Datas.Coin:
+                DataManager.Instance.PlayerData.coin = value;
+                DataManager.Instance.SetData();
+                break;
+        }
+    }
+    
+    public static void CoinAdd(this Datas data, int _coin)
+    {
+        if(data != Datas.Coin) return;
+        DataManager.Instance.PlayerData.coin += _coin;
+        DataManager.Instance.SetData();
     }
 }
 

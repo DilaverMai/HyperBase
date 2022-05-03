@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,9 @@ public class MenuManager : MonoBehaviour
     public PauseMenu PauseMenu;
     [HideInInspector]
     public FinishMenu FinishMenu;
+    [HideInInspector]
+    public MarketPlaceMenu MarketPlaceMenu;
+    
     public static MenuManager Instance;
     private Canvas canvas;
     private void Awake()
@@ -33,6 +37,7 @@ public class MenuManager : MonoBehaviour
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
         PauseMenu = FindObjectOfType<PauseMenu>();
         FinishMenu = FindObjectOfType<FinishMenu>();
+        MarketPlaceMenu = FindObjectOfType<MarketPlaceMenu>();
 
         canvas = PlayTimeMenu.transform.GetComponentInParent<Canvas>();
 
@@ -88,17 +93,39 @@ public class MenuManager : MonoBehaviour
     }
 
 
-    [SerializeField]
-    private Transform fakeGold;
-    public void CoinEffect(Vector3 pos)
-    {
-        var _fakeGold = Instantiate(fakeGold,canvas.transform);
-        pos = Camera.main.WorldToScreenPoint(pos);
-        _fakeGold.position = pos;
 
-        _fakeGold.DOMove(PlayTimeMenu.GoldImage.transform.position,0.5f).OnComplete(()=>
+}
+
+public static class ExtensionMenuManager
+{
+    public static void Show(this Menus menu)
+    {
+        switch (menu)
         {
-            Destroy(_fakeGold.gameObject);
-        });
+            case Menus.MarketMenu:
+                MenuManager.Instance.MarketPlaceMenu.Show();
+                break;
+            case Menus.PauseMenu:
+                break;
+            case Menus.GameOverMenu:
+                break;
+        }
+     
     }
+    
+    public static void Hide(this Menus menu)
+    {
+        switch (menu)
+        {
+            case Menus.MarketMenu:
+                MenuManager.Instance.MarketPlaceMenu.Hide();
+                break;
+            case Menus.PauseMenu:
+                break;
+            case Menus.GameOverMenu:
+                break;
+        }
+     
+    }
+
 }

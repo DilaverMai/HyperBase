@@ -1,28 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 public class ParticleCamera : MonoBehaviour
 {
-    public Transform confetti;
-    public static Action<CameraParticle> PlayCameraParticle;
+    private Transform confetti, money;
+    public static ParticleCamera Instance;
+    [SerializeField]
+    private Transform fakeGold;
+    private Canvas canvas;
 
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
-    void OnEnable()
+    private void Awake()
     {
-        PlayCameraParticle += PlayParticle;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        money = transform.Find("Money");
+        confetti = transform.Find("Confetti");
+
+        canvas = FindObjectOfType<Canvas>();
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
-    void OnDisable()
+    private void OnEnable()
     {
-        PlayCameraParticle -= PlayParticle;
+        EventManager.FinishGame += FinishParticle;
     }
 
+    private void OnDisable()
+    {
+        EventManager.FinishGame -= FinishParticle;
+    }
 
     public void PlayParticle(CameraParticle particle)
     {
@@ -33,16 +44,51 @@ public class ParticleCamera : MonoBehaviour
                 {
                     confetti.GetChild(i).GetComponent<ParticleSystem>().Play();
                 }
-                
-                break;
 
+                break;
+            case CameraParticle.Money:
+                for (int i = 0; i < money.childCount; i++)
+                {
+                    money.GetChild(i).GetComponent<ParticleSystem>().Play();
+                }
+                break;
             default:
                 break;
         }
 
     }
 
+    public void CoinEffect(Vector3 pos)
+    {
+        if (!canvas) canvas = FindObjectOfType<Canvas>();
+        var _fakeGold = Instantiate(fakeGold, canvas.transform);
+        pos = Camera.main.WorldToScreenPoint(pos);
+        _fakeGold.position = pos;
 
+        _fakeGold.DOMove(GameBase.Instance.MenuManager.PlayTimeMenu.GoldImage.transform.position, 0.5f)
+        .OnComplete(() =>
+        {
+            Destroy(_fakeGold.gameObject);
+        });
+    }
 
+    private void FinishParticle(GameStat stat)
+    {
+        PlayParticle(CameraParticle.Confetti);
+    }
+
+}
+
+public static partial class ParticleExtension
+{
+    public static void Play(this CameraParticle particle)
+    {
+        ParticleCamera.Instance.PlayParticle(particle);
+    }
+    public static void PlayCoinEffect(this CameraParticle particle, Vector3 pos)
+    {
+        if (particle != CameraParticle.Coin) return;
+        ParticleCamera.Instance.CoinEffect(pos);
+    }
 
 }

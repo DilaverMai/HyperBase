@@ -1,11 +1,10 @@
 using UnityEngine;
 using System;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 public class LevelManager : MonoBehaviour
 {
-    public static Action NextLevel;
-    public static Action RestartLevel;
     public GameObject[] _Levels => levels;
     [SerializeField]
     private GameObject[] levels;
@@ -36,8 +35,9 @@ public class LevelManager : MonoBehaviour
     private void LoadLevelFunc()
     {
         Debug.Log("Loading Level");
-        EventManager.OnBeforeLoadedLevel?.Invoke();
+        DOTween.KillAll();
 
+        EventManager.OnBeforeLoadedLevel?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
 
         if (levels.Length == 0)
@@ -59,11 +59,12 @@ public class LevelManager : MonoBehaviour
         DataManager.Instance.PlayerData.level++;
         var currentLevel = DataManager.Instance.PlayerData.level;
         DataManager.Instance.PlayerData.showingLevel++;
+        DOTween.KillAll();
         EventManager.OnBeforeLoadedLevel?.Invoke();
 
         var nextLevel = currentLevel;
 
-        if (nextLevel >= levels.Length)
+        if (nextLevel == levels.Length)
         {
             nextLevel = RandomSelectedLevel(levels.Length);
             DataManager.Instance.PlayerData.level = nextLevel;
@@ -84,6 +85,8 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Restart Level");
         DataManager.ReLoadData?.Invoke();
+        DOTween.KillAll();
+
         EventManager.OnBeforeLoadedLevel?.Invoke();
 
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
@@ -101,19 +104,12 @@ public class LevelManager : MonoBehaviour
     {
         EventManager.NextLevel += NextLevelFunc;
         EventManager.RestartLevel += RestartLevelFunc;
-        // EventManager.WhenLose += RestartLevelFunc;
-        // EventManager.WhenWin += NextLevelFunc;
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
     void OnDisable()
     {
         EventManager.NextLevel -= NextLevelFunc;
         EventManager.RestartLevel -= RestartLevelFunc;
-        // EventManager.WhenLose -= RestartLevelFunc;
-        // EventManager.WhenWin -= NextLevelFunc;
     }
 
     private int RandomSelectedLevel(int currentLevel)

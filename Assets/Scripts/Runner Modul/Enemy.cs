@@ -32,9 +32,9 @@ public abstract class Enemy : MonoBehaviour
             mat.DOColor(Color.black, 1f);
             mat.SetColor("_EmissionColor", Color.black);
         }
-        MenuManager.Instance.CoinEffect(transform.position);
+        CameraParticle.Coin.PlayCoinEffect(transform.position);
 
-        DataManager.AddCoin.Invoke(1);
+        Datas.Coin.CoinAdd(1);
         BeforeActiveFalse();
 
         // if (EnemyManager.Instance != null)

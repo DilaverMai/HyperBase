@@ -14,15 +14,19 @@ public class PoolItem : MonoBehaviour
     {
         transform.position = position;
     }
-
-    public void SetRotation(Quaternion rotation)
+    public void SetLocalPosition(Vector3 position)
     {
-        transform.rotation = rotation;
+        transform.localPosition = position;
     }
 
-    public void SetRotation(Vector3 eulerAngles)
+    public void SetRotation(Vector3 rot)
     {
-        transform.rotation = Quaternion.Euler(eulerAngles);
+        transform.eulerAngles = rot;
+    }
+
+    public void SetLocalRotation(Vector3 rot)
+    {
+        transform.localEulerAngles = rot;
     }
 
     public void SetScale(Vector3 scale)

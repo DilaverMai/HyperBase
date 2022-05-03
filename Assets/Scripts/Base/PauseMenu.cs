@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +15,11 @@ public class PauseMenu : BaseMenu
 
     private void ShakeButtonFunc()
     {
-
+        Haptics.hapticOff = !Haptics.hapticOff;
+        if (Haptics.hapticOff)
+            ShakeButton.GetComponent<Image>().color = Color.gray;
+        else
+            ShakeButton.GetComponent<Image>().color = Color.white;
     }
 
     private void SoundButtonFunc()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Threading.Tasks;
+using System;
 
 public class CameraManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class CameraManager : MonoBehaviour
         }
 
         cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>();
+        Array.Reverse(cinemachineVirtualCameras);
 
         for (int i = 0; i < cinemachineVirtualCameras.Length; i++)
         {
@@ -29,6 +31,14 @@ public class CameraManager : MonoBehaviour
             virtualCameras.Add(vCamera);
         }
 
+    }
+
+    private void HardResetPosition()
+    {
+        foreach (var item in virtualCameras)
+        {
+            item.HardReset();
+        }
     }
 
     public void SetFocusCam(Cameras camera)
@@ -46,6 +56,16 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        EventManager.OnBeforeLoadedLevel += HardResetPosition;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnBeforeLoadedLevel -= HardResetPosition;
+    }
+
     public CinemachineVirtualCamera GetCinemachineVirtualCamera(Cameras camera)
     {
         return virtualCameras[(int)camera].virtualCamera;
@@ -55,9 +75,15 @@ public class CameraManager : MonoBehaviour
     {
         return virtualCameras[(int)camera];
     }
+
+    public Transform GetCameraTransform(Cameras camera)
+    {
+        return virtualCameras[(int)camera].virtualCamera.transform;
+    }
 }
 
-public static class CameraEvents{
+public static class CameraExtension
+{
     public static VirtualCamera GetVirtualCamera(this Cameras camera)
     {
         return CameraManager.Instance.GetVirtualCamera(camera);
@@ -66,6 +92,33 @@ public static class CameraEvents{
     {
         CameraManager.Instance.SetFocusCam(camera);
     }
+
+    public static void SetFollow(this Cameras camera, Transform target)
+    {
+        CameraManager.Instance.GetVirtualCamera(camera).SetFollow(target);
+    }
+
+    public static Transform GetCameraTransform(this Cameras camera)
+    {
+        return CameraManager.Instance.GetCameraTransform(camera);
+    }
+
+    public static void SetAim(this Cameras camera, Transform target)
+    {
+        CameraManager.Instance.GetVirtualCamera(camera).SetAim(target);
+    }
+
+    public static void SetFull(this Cameras camera, Transform target)
+    {
+        CameraManager.Instance.GetVirtualCamera(camera).SetCamera(target);
+    }
+
+    public static void SetOffset(this Cameras camera, Vector3 offset)
+    {
+        CameraManager.Instance.GetVirtualCamera(camera).SetOffset(offset);
+    }
+
+
 }
 
 [System.Serializable]
@@ -102,7 +155,7 @@ public class VirtualCamera
         body.m_FollowOffset = offset;
     }
 
-    public async void Shake(float intensity, float duration,float time)
+    public async void Shake(float intensity, float duration, float time)
     {
         var body = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         body.m_AmplitudeGain = intensity;
@@ -112,5 +165,15 @@ public class VirtualCamera
 
         body.m_AmplitudeGain = 0;
         body.m_FrequencyGain = 0;
+    }
+
+    public void HardReset()
+    {
+        var target = virtualCamera.Follow;
+        virtualCamera.Follow = null;
+        virtualCamera.LookAt = null;
+        virtualCamera.transform.position = Vector3.zero;
+        if (target != null) SetCamera(target);
+        Cameras.cam1.SetFocusCam();
     }
 }

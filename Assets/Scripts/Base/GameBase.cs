@@ -14,12 +14,19 @@ public class GameBase : MonoBehaviour
     public MenuManager MenuManager;
     [HideInInspector]
     public PoolManager PoolManager;
+
     public GameStat _GameStat => gameStat;
     private GameStat gameStat;
     public List<Action> OnFail = new List<Action>();
     public List<Action> OnWin = new List<Action>();
     private async void Awake()
     {
+#if UNITY_EDITOR
+        Debug.unityLogger.logEnabled = true;
+#else
+  Debug.unityLogger.logEnabled = false;
+#endif
+
         if (Instance == null)
         {
             Instance = this;
@@ -57,12 +64,14 @@ public class GameBase : MonoBehaviour
 
     private void OnEnable()
     {
+        EventManager.OnBeforeLoadedLevel += ResetStat;
         EventManager.FirstTouch += StartGame;
         EventManager.BeforeFinishGame += ClearActions;
     }
 
     private void OnDisable()
     {
+        EventManager.OnBeforeLoadedLevel -= ResetStat;
         EventManager.FirstTouch -= StartGame;
         EventManager.BeforeFinishGame -= ClearActions;
     }
@@ -80,6 +89,24 @@ public class GameBase : MonoBehaviour
         OnFail.Clear();
         OnWin.Clear();
     }
+
+    private void ResetStat()
+    {
+        gameStat = GameStat.Start;
+    }
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            if (Time.timeScale == 1)
+            {
+                Time.timeScale = 0;
+            }
+            else Time.timeScale = 1;
+        }
+    }
+#endif
 }
 
 public static class EventManager
