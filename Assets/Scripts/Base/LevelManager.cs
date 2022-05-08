@@ -1,17 +1,16 @@
 using UnityEngine;
 using System;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] _Levels => levels;
-    [SerializeField]
     private GameObject[] levels;
+    [HideInInspector]
     public Transform LevelHolder;
     public void LoadLevel()
     {
-        if (levels.Length > 0)
+        if (levels != null)
         {
             Array.Clear(levels, 0, levels.Length);
         }
@@ -31,11 +30,11 @@ public class LevelManager : MonoBehaviour
 
         LoadLevelFunc();
     }
-    [Button]
+
     private void LoadLevelFunc()
     {
         Debug.Log("Loading Level");
-        DOTween.KillAll();
+        //DOTween.KillAll();
 
         EventManager.OnBeforeLoadedLevel?.Invoke();
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
@@ -52,14 +51,14 @@ public class LevelManager : MonoBehaviour
         levelObject.transform.SetParent(transform);
         EventManager.OnAfterLoadedLevel?.Invoke();
     }
-    [Button]
+
     private void NextLevelFunc()
     {
         Debug.Log("Next Level");
         DataManager.Instance.PlayerData.level++;
         var currentLevel = DataManager.Instance.PlayerData.level;
         DataManager.Instance.PlayerData.showingLevel++;
-        DOTween.KillAll();
+        //DOTween.KillAll();
         EventManager.OnBeforeLoadedLevel?.Invoke();
 
         var nextLevel = currentLevel;
@@ -80,12 +79,12 @@ public class LevelManager : MonoBehaviour
         EventManager.OnAfterLoadedLevel?.Invoke();
         DataManager.Instance.SaveGame();
     }
-    [Button]
+
     private void RestartLevelFunc()
     {
         Debug.Log("Restart Level");
         DataManager.ReLoadData?.Invoke();
-        DOTween.KillAll();
+        //DOTween.KillAll();
 
         EventManager.OnBeforeLoadedLevel?.Invoke();
 

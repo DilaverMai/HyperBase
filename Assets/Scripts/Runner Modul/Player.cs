@@ -42,15 +42,6 @@ public class Player : MonoBehaviour
         TakeDamage -= HealthSystem;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Enum_PoolObject.Test_Obstacle.GetObject().
-            SetPosition(new Vector3(0, 5, 0));
-        }
-    }
-
     public void HealthSystem(int damage)
     {
         if (health <= 0) return;

@@ -7,7 +7,6 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static Action<int, int> OnSetData;
-    // public static Action<int> AddCoin;
     public static Action ReLoadData;
     private string path;
     [SerializeField]
@@ -55,7 +54,6 @@ public class DataManager : MonoBehaviour
     {
         File.WriteAllText(path, JsonUtility.ToJson(playerData));
         backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
-        //CreateData<Data>.CreateMyAsset("backupData");
     }
 
     public void SetData()
@@ -78,14 +76,12 @@ public class DataManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += SetData;
-        // AddCoin += AddCoinFunc;
         ReLoadData += ReLoadSave;
     }
 
     private void OnDisable()
     {
         EventManager.OnAfterLoadedLevel -= SetData;
-        // AddCoin -= AddCoinFunc;
         ReLoadData -= ReLoadSave;
     }
 

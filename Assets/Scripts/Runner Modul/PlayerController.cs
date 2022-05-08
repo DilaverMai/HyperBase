@@ -22,17 +22,11 @@ public class PlayerController : MonoBehaviour
         firstPosition = transform.position;
     }
 
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
     void OnEnable()
     {
         LeanTouch.OnFingerUp += OnFingerUp;
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
     void OnDisable()
     {
         LeanTouch.OnFingerUp -= OnFingerUp;
@@ -85,12 +79,8 @@ public class PlayerController : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), 
         playerData.RotationTurnSpeed * Time.deltaTime);
-        //Vector3.Lerp(transform.eulerAngles, targetRot, Time.deltaTime * playerData.MoveSpeed);
     }
 
-    /// <summary>
-    /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
-    /// </summary>
     void FixedUpdate()
     {
         if (!Base.IsPlaying()) return;

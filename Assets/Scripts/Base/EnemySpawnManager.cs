@@ -16,9 +16,7 @@ public class EnemySpawnerManager : MonoBehaviour
     [SerializeField]
     private int sameTime;
     public static EnemySpawnerManager Instance;
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
+
     void Awake()
     {
         if (Instance == null)
@@ -30,10 +28,7 @@ public class EnemySpawnerManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
+
     void Start()
     {
         for (int i = 0; i < maxEnemy; i++)
@@ -85,19 +80,6 @@ public class EnemySpawnerManager : MonoBehaviour
         }
     }
 
-    // public void EnemyCounter()
-    // {
-    //     if (enemyCount <= 0)
-    //     {
-    //         enemyCount = 0;
-    //         return;
-    //     }
-    //     enemyCount--;
-    // }
-
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
     void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += FindThePlayer;
@@ -110,9 +92,6 @@ public class EnemySpawnerManager : MonoBehaviour
         StartCoroutine("PlusPlus");
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
     void OnDisable()
     {
         Instance = null;
@@ -124,4 +103,9 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         targetPlayer = FindObjectOfType<Player>().transform;
     }
+}
+public class EnemySpawn
+{
+    public Enum_PoolObject EnemyObject;
+    public int MaxSameSpawn; //Ekranda maksimum olabilme sayısı
 }
