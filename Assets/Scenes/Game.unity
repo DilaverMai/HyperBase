@@ -734,11 +734,6 @@ MonoBehaviour:
     SpawnCount: 25
     isActive: 0
     Enum: 1
-  - Prefab: {fileID: 5490692381509496872, guid: b1e684ea37ecc478092765e2a315857f, type: 3}
-    pool: []
-    SpawnCount: 25
-    isActive: 0
-    Enum: 2
   PoolParticles: []
   holdPool: {fileID: 0}
 --- !u!114 &904187655
@@ -775,11 +770,6 @@ MonoBehaviour:
     MaxSpawn: 15
     FarByPlayer: 20
     Lucky: 1
-  - EnemyObject: 2
-    MaxSameSpawn: 1
-    MaxSpawn: 1
-    FarByPlayer: 20
-    Lucky: 10
 --- !u!114 &904187657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,7 +782,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2171d054af41a4edeb4457ef8c333147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioList: []
+  audioList:
+  - E_Audio: 1
+    Clip: {fileID: 8300000, guid: cc2b7da1dfa804ba5b4c931d619827d8, type: 3}
+    Volume: 1
+    Loop: 0
 --- !u!1 &1102298988
 GameObject:
   m_ObjectHideFlags: 0
