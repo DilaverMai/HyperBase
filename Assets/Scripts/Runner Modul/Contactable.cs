@@ -10,7 +10,6 @@ public abstract class Contactable : MonoBehaviour
     public bool MakeTrigger = true;
     public bool AfterDestory = true;
     public LayerMask DetectedMask;
-
     private void Awake()
     {
         Setup();
@@ -38,21 +37,26 @@ public abstract class Contactable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((DetectedMask.value & (1 << other.gameObject.layer)) > 0)
+
+        if (ExtensionMethods.CheckLayer(other.gameObject, DetectedMask))
         {
             if (!MakeTrigger | !Base.IsPlaying()) return;
 
             Contant(other.gameObject);
+            if (Data.AudioEffect != Enum_Audio.Empty)
+                Data.AudioEffect.Play();
         }
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if ((DetectedMask.value & (1 << other.gameObject.layer)) > 0)
+        if (ExtensionMethods.CheckLayer(other.gameObject, DetectedMask))
         {
             if (MakeTrigger | !Base.IsPlaying()) return;
 
             Contant(other.gameObject);
+            if (Data.AudioEffect != Enum_Audio.Empty)
+                Data.AudioEffect.Play();
         }
     }
 
