@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (isDead | !Base.IsPlaying()) return;
+        if (isDead | !Base.IsPlaying() | !target) return;
 
         if (SpeedChanger())
         {
@@ -112,14 +112,13 @@ public class Enemy : MonoBehaviour
     #region Methods
     protected virtual void Setup()
     {
-        if (!target)
-            target = FindObjectOfType<Player>().transform;
+        target = FindObjectOfType<Player>().transform;
         health = MaxHealth;
         randomExtraSpeed = Random.Range(0.25f, 2f);
         _agent.enabled = true;
         _animator.enabled = true;
         _collider.enabled = true;
-        isDead = false;
+        isDead = false; 
     }
 
     protected virtual void Attack()

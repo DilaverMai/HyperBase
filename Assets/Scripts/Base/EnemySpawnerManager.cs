@@ -36,7 +36,7 @@ public class EnemySpawnerManager : MonoBehaviour
 
     private void FirstSpawn()
     {
-        for (int i = 0; i < StartEnemyCount; i++)
+        while (enemys.Count < StartEnemyCount)
         {
             SpawnEnemy();
         }
@@ -46,14 +46,13 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         while (Base.IsPlaying())
         {
-            SpawnEnemy();
-
-            yield return new WaitForSeconds(spawnTime);
+            if (SpawnEnemy())
+                yield return new WaitForSeconds(spawnTime);
         }
         yield return new WaitForEndOfFrame();
     }
 
-    private void SpawnEnemy()
+    private bool SpawnEnemy()
     {
         var enemy = enemySpawns[Random.Range(0, enemySpawns.Count)];
 
@@ -65,13 +64,17 @@ public class EnemySpawnerManager : MonoBehaviour
                 {
                     enemys.Add(enemy.Spawn(CheckFarDistance(enemy.FarByPlayer)));
                     if (!enemy.IsSpawned()) break;
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     void OnEnable()
     {
+        EventManager.OnBeforeLoadedLevel += ResetEnemys;
         EventManager.OnAfterLoadedLevel += FindThePlayer;
         EventManager.OnAfterLoadedLevel += FirstSpawn;
         EventManager.FirstTouch += WhenStartSpawn;
@@ -86,6 +89,7 @@ public class EnemySpawnerManager : MonoBehaviour
     void OnDisable()
     {
         Instance = null;
+        EventManager.OnBeforeLoadedLevel -= ResetEnemys;
         EventManager.OnAfterLoadedLevel -= FirstSpawn;
         EventManager.OnAfterLoadedLevel -= FindThePlayer;
         EventManager.FirstTouch -= WhenStartSpawn;
@@ -116,6 +120,14 @@ public class EnemySpawnerManager : MonoBehaviour
         enemys.Remove(_enemy);
     }
 
+    private void ResetEnemys()
+    {
+        foreach (var item in enemySpawns)
+        {
+            item.Reset();
+        }
+    }
+
 }
 
 [System.Serializable]
@@ -143,5 +155,10 @@ public class EnemySpawn
         spawedEnemy.SetPosition(pos);
         spawnCount++;
         return spawedEnemy.transform;
+    }
+
+    public void Reset()
+    {
+        spawnCount = 0;
     }
 }

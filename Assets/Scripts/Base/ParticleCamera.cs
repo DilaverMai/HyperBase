@@ -1,11 +1,9 @@
 using UnityEngine;
-using System;
 using DG.Tweening;
 public class ParticleCamera : MonoBehaviour
 {
     private Transform confetti, money;
     public static ParticleCamera Instance;
-    [SerializeField]
     private Transform fakeGold;
     private Canvas canvas;
 
@@ -21,6 +19,7 @@ public class ParticleCamera : MonoBehaviour
         }
         money = transform.Find("Money");
         confetti = transform.Find("Confetti");
+        fakeGold = Resources.Load<Transform>("FakeGold");
 
         canvas = FindObjectOfType<Canvas>();
     }
@@ -74,7 +73,8 @@ public class ParticleCamera : MonoBehaviour
 
     private void FinishParticle(GameStat stat)
     {
-        PlayParticle(CameraParticle.Confetti);
+        if(stat == GameStat.Win)
+            PlayParticle(CameraParticle.Confetti);
     }
 
 }

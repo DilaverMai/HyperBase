@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.62659854, g: 0.89823663, b: 0.9427284, a: 1}
+  m_IndirectSpecularColor: {r: 0.6265985, g: 0.8982364, b: 0.9427284, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -154,7 +154,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1564016018}
-  m_Father: {fileID: 2055652744}
+  m_Father: {fileID: 1102298991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &13934604
@@ -212,7 +212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83cb7d10e424f43e8b828198212783f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fakeGold: {fileID: 0}
 --- !u!114 &13934606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,7 +422,7 @@ Transform:
   m_Children:
   - {fileID: 113647258}
   m_Father: {fileID: 2055652744}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470851581
 GameObject:
@@ -734,6 +733,11 @@ MonoBehaviour:
     SpawnCount: 25
     isActive: 0
     Enum: 1
+  - Prefab: {fileID: 5490692381509496872, guid: b1e684ea37ecc478092765e2a315857f, type: 3}
+    pool: []
+    SpawnCount: 25
+    isActive: 0
+    Enum: 2
   PoolParticles: []
   holdPool: {fileID: 0}
 --- !u!114 &904187655
@@ -768,6 +772,11 @@ MonoBehaviour:
   - EnemyObject: 1
     MaxSameSpawn: 1
     MaxSpawn: 15
+    FarByPlayer: 20
+    Lucky: 1
+  - EnemyObject: 2
+    MaxSameSpawn: 1
+    MaxSpawn: 1
     FarByPlayer: 20
     Lucky: 10
 --- !u!1 &1102298988
@@ -854,9 +863,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 13934603}
   m_Father: {fileID: 2055652744}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1102298992
 MonoBehaviour:
@@ -922,8 +932,6 @@ MonoBehaviour:
     m_Bits: 64
   FadeTime: 0.5
   FadeAmount: 0.25
-  FaderMat: {fileID: 0}
-  renders: []
 --- !u!54 &1102298995
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -956,7 +964,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 13934604}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -1328,7 +1337,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 13934603}
   - {fileID: 173037974}
   - {fileID: 1102298991}
   m_Father: {fileID: 0}

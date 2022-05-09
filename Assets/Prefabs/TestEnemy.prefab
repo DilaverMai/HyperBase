@@ -115,9 +115,9 @@ MonoBehaviour:
   CloseSpeed: 15
   MaxHealth: 10
   Damage: 1
-  AttackAfterDead: 0
+  AttackAfterDead: 1
   AttackAfterDelay: 0
-  Delay: 0
+  Delay: 1
   FarDistance: 25
 --- !u!195 &5490692381509496866
 NavMeshAgent:

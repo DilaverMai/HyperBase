@@ -6,6 +6,16 @@ public class PoolItem : MonoBehaviour
 {
     public Enum_PoolObject _PoolEnum;
     public UnityEvent OnDeath;
+
+    void OnEnable()
+    {
+        EventManager.OnBeforeLoadedLevel += Kill;
+    }
+
+    private void Kill()
+    {
+        gameObject.SetActive(false);
+    }
     public void SetEnum(Enum_PoolObject en)
     {
         _PoolEnum = en;
@@ -72,6 +82,7 @@ public class PoolItem : MonoBehaviour
 
     private void OnDisable()
     {
+        EventManager.OnBeforeLoadedLevel -= Kill;
         OnDeath.Invoke();
         PoolManager.Instance.BackToList(this);
     }
