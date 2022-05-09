@@ -1,1 +1,1 @@
-public enum Enum_PoolObject{ Empty, Test_Obstacle,}
+public enum Enum_PoolObject{ Empty, TestEnemy}

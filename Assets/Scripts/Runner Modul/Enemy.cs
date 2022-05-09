@@ -1,189 +1,146 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using System.Threading.Tasks;
 using UnityEngine.AI;
-
-public abstract class Enemy : MonoBehaviour
+using Sirenix.OdinInspector;
+using System.Collections;
+[RequireComponent(typeof(NavMeshAgent))]
+public class Enemy : MonoBehaviour
 {
-    private List<Transform> baseTypes = new List<Transform>();
+    [Title("Stats")]
+    public float FarSpeed;
+    public float CloseSpeed;
+    public int MaxHealth;
+    public int Damage;
+    [Title("Generaly")]
+    public bool AttackAfterDead;
+    public bool AttackAfterDelay;
+    [Title("Attack After")]
+    [ShowIf("AttackAfterDelay")]
+    public float Delay;
+    [Title("Range")]
+    public float FarDistance;
+    protected int health;
+    //Generally
     protected float speed;
-    public float FarSpeed, CloseSpeed;
-    //protected Rigidbody rb;
     protected Transform target;
     protected Collider _collider;
     protected Animator _animator;
-    protected float distance;
-    public float FarDistance;
-    private Renderer _renderer;
-    private bool isDead = false;
-    private Vector3 lastPosition;
-    private float animSpeed;
-    private float randomExtraSpeed;
+    protected bool isDead;
+    protected float animSpeed;
+    protected float randomExtraSpeed;
     protected NavMeshAgent _agent;
-    private Color matColor, emissionColor;
-    internal async void TakeDamage()
-    {
-        isDead = true;
 
-        foreach (var mat in _renderer.materials)
+    #region Delays
+
+    private IEnumerator DelayDie()
+    {
+        yield return new WaitForSeconds(1.5f);
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator DelayAfterAttack()
+    {
+        yield return new WaitForSeconds(Delay);
+        if (AttackAfterDead)
+            TakeDamage();
+        else isDead = false;
+    }
+
+    #endregion
+
+    #region Unity Methods
+    void OnEnable()
+    {
+        EventManager.BeforeFinishGame += WhenFinish;
+        Setup();
+    }
+
+    void OnDisable()
+    {
+        EventManager.BeforeFinishGame -= WhenFinish;
+        EnemySpawnerManager.Instance.RemoveEnemy(transform);
+    }
+
+    void Update()
+    {
+        if (isDead | !Base.IsPlaying()) return;
+
+        if (SpeedChanger())
         {
-            mat.DOColor(Color.black, 1f);
-            mat.SetColor("_EmissionColor", Color.black);
+            _animator.SetFloat("Speed", _agent.velocity.magnitude);
+            if (!_agent.enabled) return;
+            _agent.speed = speed;
+            _agent.SetDestination(target.position);
         }
-        CameraParticle.Coin.PlayCoinEffect(transform.position);
-
-        Datas.Coin.CoinAdd(1);
-        BeforeActiveFalse();
-
-        // if (EnemyManager.Instance != null)
-        //     EnemyManager.Instance.EnemyCounter();
-
-        await Task.Delay(1500);
-        if (Application.isPlaying)
-            gameObject.SetActive(false);
+        else
+        {
+            Attack();
+        }
     }
 
-    protected virtual void BeforeActiveFalse()
-    {
-
-    }
-
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
-    void Awake()
+    protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
         _collider = GetComponent<Collider>();
-        _renderer = GetComponentInChildren<Renderer>();
+    }
+    #endregion
 
-        matColor = _renderer.materials[1].color;
-        emissionColor = _renderer.materials[1].GetColor("_EmissionColor");
+    #region Calculations
 
-        Setup();
+    private bool SpeedChanger()
+    {
+        if (DistanceWithPlayer() > FarDistance)
+        {
+            speed = FarSpeed;
+            return true;
+        }
+        else if (DistanceWithPlayer() > 2)
+        {
+            speed = CloseSpeed;
+            return true;
+        }
+        else return false;
     }
 
+    private float DistanceWithPlayer()
+    {
+        return Vector3.Distance(transform.position, Player.Instance.transform.position);
+    }
+
+    #endregion
+
+    #region Methods
     protected virtual void Setup()
     {
-        _renderer.materials[1].color = matColor;
-        _renderer.materials[1].SetColor("_EmissionColor", emissionColor);
-
+        if (!target)
+            target = FindObjectOfType<Player>().transform;
+        health = MaxHealth;
         randomExtraSpeed = Random.Range(0.25f, 2f);
         _agent.enabled = true;
         _animator.enabled = true;
         _collider.enabled = true;
-
-        speed = FarSpeed;
-        CreateType();
-    }
-
-    protected virtual void CreateType() //Random instantiate body
-    {
-        foreach (Transform item in transform)
-        {
-            baseTypes.Add(item);
-            item.gameObject.SetActive(false);
-        }
-
-        if (baseTypes.Count == 0)
-        {
-            Debug.LogError("No found bodys");
-            return;
-        }
-
-        var selectedBody = baseTypes[Random.Range(0, baseTypes.Count)];
-        selectedBody.gameObject.SetActive(true);
-
-        // var baseType = Instantiate(type.gameObject, transform);
-        // baseType.transform.localPosition = Vector3.zero;
-        // baseType.transform.localRotation = Quaternion.identity;
-    }
-
-    /// <summary>
-    /// Update is called every frame, if the MonoBehaviour is enabled.
-    /// </summary>
-    void Update()
-    {
-        if (isDead) return;
-        if (!Base.IsPlaying()) return;
-
-
-        // animSpeed = (new Vector3(transform.position.x,0,transform.position.z)- lastPosition).magnitude;
-        // lastPosition = new Vector3(transform.position.x,0,transform.position.z);
-
-        _animator.SetFloat("Speed", _agent.velocity.magnitude);
-        var movePos = target.position;
-
-        distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
-         new Vector3(movePos.x, 0, movePos.z));
-
-        //movePos.y = transform.position.y;
-
-        if (distance > FarDistance)
-        {
-            if (speed != FarSpeed) speed = FarSpeed;
-
-            movePos.x = transform.position.x;
-        }
-        else
-        {
-            if (speed != CloseSpeed)
-                speed = CloseSpeed;
-
-            // transform.rotation =
-            // Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), (speed / 5) * Time.deltaTime);
-        }
-
-        if (distance < 2f)
-        {
-            if (Base.IsPlaying())
-            {
-                if (Player.Instance != null)
-                    Player.Instance.HealthSystem(1);
-            }
-        }
-
-        //transform.position = Vector3.MoveTowards(transform.position, movePos, (speed + randomExtraSpeed) * Time.deltaTime);
-        if (!_agent.enabled) return;
-        _agent.speed = speed;
-        _agent.SetDestination(movePos);
-    }
-
-
-    /// <summary>
-    /// LateUpdate is called every frame, if the Behaviour is enabled.
-    /// It is called after all Update functions have been called.
-    /// </summary>
-    void LateUpdate()
-    {
-        if (isDead) return;
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-    }
-
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
-    void OnEnable()
-    {
         isDead = false;
-        EventManager.BeforeFinishGame += WhenWin;
-        target = FindObjectOfType<Player>().transform;
-        Setup();
     }
 
-    /// <summary>
-    /// This function is called when the behaviour becomes disabled or inactive.
-    /// </summary>
-    void OnDisable()
+    protected virtual void Attack()
     {
-        EventManager.BeforeFinishGame -= WhenWin;
+        isDead = true;
+        target.GetComponent<Player>().HealthSystem(Damage);
+        _animator.SetTrigger("Attack");
+        StartCoroutine("DelayAfterAttack");
     }
 
+    internal virtual void TakeDamage(int damage = 1)
+    {
+        health -= damage;
+        if (health > 0 | isDead) return;
+        isDead = true;
+        CameraParticle.Coin.PlayCoinEffect(transform.position);
+        Datas.Coin.CoinAdd(1);
+        StartCoroutine("DelayDie");
+    }
 
-    private void WhenWin(GameStat stat)
+    private void WhenFinish(GameStat stat)
     {
         if (stat == GameStat.Win)
         {
@@ -193,10 +150,13 @@ public abstract class Enemy : MonoBehaviour
         {
             _animator.SetInteger("Victory", Random.Range(1, 3));
 
-            if (!_agent.enabled) return;
-            _agent.SetDestination(transform.position);
-            _agent.enabled = false;
+            if (_agent.enabled)
+            {
+                _agent.isStopped = true;
+                _agent.enabled = false;
+            }
         }
     }
 
+    #endregion
 }

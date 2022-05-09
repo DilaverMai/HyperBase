@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class PoolItem : MonoBehaviour
 {
     public Enum_PoolObject _PoolEnum;
+    public UnityEvent OnDeath;
     public void SetEnum(Enum_PoolObject en)
     {
         _PoolEnum = en;
@@ -71,6 +72,7 @@ public class PoolItem : MonoBehaviour
 
     private void OnDisable()
     {
+        OnDeath.Invoke();
         PoolManager.Instance.BackToList(this);
     }
 

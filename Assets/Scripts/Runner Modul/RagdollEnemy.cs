@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RagdollEnemy : Enemy
@@ -15,13 +13,13 @@ public class RagdollEnemy : Enemy
         SetBodysKinematic(true);
 
         base.Setup();
-
     }
 
-
-    protected override void BeforeActiveFalse()
+    internal override void TakeDamage(int damage = 1)
     {
-        SetBodysKinematic(false);
+        base.TakeDamage(damage);
+        if(isDead)
+            SetBodysKinematic(false);
     }
 
     private void SetBodysKinematic(bool val)
@@ -39,8 +37,6 @@ public class RagdollEnemy : Enemy
             }
         }
 
-
         if(!val) spine.AddForce(new Vector3(0,0.3f,1) * 50,ForceMode.VelocityChange);
-
     }
 }
