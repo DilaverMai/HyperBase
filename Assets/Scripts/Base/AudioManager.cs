@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
     private AudioSource audioSource;
+    public bool stopSound;
     [SerializeField]
     private List<Audio> audioList = new List<Audio>();
     void Awake()
@@ -24,6 +25,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(Enum_Audio audio)
     {
+        if(stopSound) return;
+
         foreach (var item in audioList)
         {
             if (item.E_Audio == audio)

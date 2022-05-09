@@ -7,7 +7,8 @@ public class PauseMenu : BaseMenu
     public Button SoundButton;
     public Button ExitButton;
 
-    private void Start() {
+    private void Start()
+    {
         ShakeButton.onClick.AddListener(ShakeButtonFunc);
         SoundButton.onClick.AddListener(SoundButtonFunc);
         ExitButton.onClick.AddListener(ExitButtonFunc);
@@ -24,7 +25,12 @@ public class PauseMenu : BaseMenu
 
     private void SoundButtonFunc()
     {
+        AudioManager.Instance.stopSound = !AudioManager.Instance.stopSound;
 
+        if (AudioManager.Instance.stopSound)
+            SoundButton.GetComponent<Image>().color = Color.gray;
+        else 
+            SoundButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ExitButtonFunc()
