@@ -13,9 +13,7 @@ public class Door : MonoBehaviour
     private RunnerDoor _doorManager;
     public LayerMask DetectMask;
     private bool _isOpen;
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
+
     void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -27,10 +25,6 @@ public class Door : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
     void Start()
     {
         SetDoorOnText(_Maths);

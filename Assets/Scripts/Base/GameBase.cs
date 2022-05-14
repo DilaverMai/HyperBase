@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 public class GameBase : MonoBehaviour
 {
     public static GameBase Instance;
@@ -17,8 +16,6 @@ public class GameBase : MonoBehaviour
 
     public GameStat _GameStat => gameStat;
     private GameStat gameStat;
-    public List<Action> OnFail = new List<Action>();
-    public List<Action> OnWin = new List<Action>();
     private async void Awake()
     {
 #if UNITY_EDITOR
@@ -66,34 +63,19 @@ public class GameBase : MonoBehaviour
     {
         EventManager.OnBeforeLoadedLevel += ResetStat;
         EventManager.FirstTouch += StartGame;
-        EventManager.BeforeFinishGame += ClearActions;
     }
 
     private void OnDisable()
     {
         EventManager.OnBeforeLoadedLevel -= ResetStat;
         EventManager.FirstTouch -= StartGame;
-        EventManager.BeforeFinishGame -= ClearActions;
-    }
-
-    private void ClearActions(GameStat stat)
-    {
-        if (stat == GameStat.Win)
-            foreach (var item in OnWin)
-                item.Invoke();
-        else
-            foreach (var item in OnFail)
-                item.Invoke();
-
-
-        OnFail.Clear();
-        OnWin.Clear();
     }
 
     private void ResetStat()
     {
         gameStat = GameStat.Start;
     }
+
 #if UNITY_EDITOR
     private void Update()
     {
@@ -105,6 +87,31 @@ public class GameBase : MonoBehaviour
             }
             else Time.timeScale = 1;
         }
+
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+    }
+
+    float deltaTime = 0.0f;
+
+    void OnGUI()
+    {
+        ShowFPS();
+    }
+
+    private void ShowFPS()
+    {
+        int w = Screen.width, h = Screen.height;
+
+        GUIStyle style = new GUIStyle();
+
+        Rect rect = new Rect(0, 0, w, h * 2 / 100);
+        style.alignment = TextAnchor.UpperLeft;
+        style.fontSize = h * 2 / 100;
+        style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
+        float msec = deltaTime * 1000.0f;
+        float fps = 1.0f / deltaTime;
+        string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
+        GUI.Label(rect, text, style);
     }
 #endif
 }
@@ -165,16 +172,6 @@ public static class Base
     public static void FinishGameAddFunc(Action<GameStat> func)
     {
         EventManager.FinishGame += func;
-    }
-
-    public static void WinTimeAddFunc(Action func)
-    {
-        GameBase.Instance.OnWin.Add(func);
-    }
-
-    public static void FailTimeAddFunc(Action func)
-    {
-        GameBase.Instance.OnFail.Add(func);
     }
 
 }

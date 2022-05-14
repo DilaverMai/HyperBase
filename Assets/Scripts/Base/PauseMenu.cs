@@ -6,12 +6,13 @@ public class PauseMenu : BaseMenu
     public Button ShakeButton;
     public Button SoundButton;
     public Button ExitButton;
-
+    public Button ReplayButton;
     private void Start()
     {
         ShakeButton.onClick.AddListener(ShakeButtonFunc);
         SoundButton.onClick.AddListener(SoundButtonFunc);
         ExitButton.onClick.AddListener(ExitButtonFunc);
+        ReplayButton.onClick.AddListener(ReplayButtonFunc);
     }
 
     private void ShakeButtonFunc()
@@ -29,12 +30,19 @@ public class PauseMenu : BaseMenu
 
         if (AudioManager.Instance.stopSound)
             SoundButton.GetComponent<Image>().color = Color.gray;
-        else 
+        else
             SoundButton.GetComponent<Image>().color = Color.white;
     }
 
     private void ExitButtonFunc()
     {
         EventManager.OnPause.Invoke(false);
+    }
+
+    public void ReplayButtonFunc()
+    {
+        Time.timeScale = 1;
+        Hide();
+        EventManager.RestartLevel?.Invoke();
     }
 }

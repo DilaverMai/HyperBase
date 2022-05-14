@@ -49,6 +49,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     [Button]
     private void CreateAudioEnum()
     {
@@ -64,6 +65,7 @@ public class AudioManager : MonoBehaviour
             audioList[i].E_Audio = (Enum_Audio)i + 1;
         }
     }
+#endif
 
 }
 

@@ -1,7 +1,9 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
-public class CreateData<T> where T: ScriptableObject {
+public class CreateData<T> where T : ScriptableObject
+{
     public static T CreateMyAsset(string name)
     {
         T asset = ScriptableObject.CreateInstance<T>();
@@ -16,3 +18,4 @@ public class CreateData<T> where T: ScriptableObject {
         return asset;
     }
 }
+#endif

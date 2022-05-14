@@ -7,6 +7,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static Action<int, int> OnSetData;
+    public static Action WhenAddCoin;
     public static Action ReLoadData;
     private string path;
     [SerializeField]
@@ -67,12 +68,6 @@ public class DataManager : MonoBehaviour
         Debug.Log("Reloading save");
         playerData = new Data(backupData.coin, backupData.level, backupData.showingLevel);
     }
-    private void AddCoinFunc(int _gold)
-    {
-        playerData.coin += _gold;
-        SetData();
-    }
-
     private void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += SetData;
@@ -131,7 +126,7 @@ public static class DataExtension
 
         return -1;
     }
-    
+
     public static void SetData(this Datas data, int value)
     {
         switch (data)
@@ -145,11 +140,12 @@ public static class DataExtension
                 break;
         }
     }
-    
+
     public static void CoinAdd(this Datas data, int _coin)
     {
-        if(data != Datas.Coin) return;
+        if (data != Datas.Coin) return;
         DataManager.Instance.PlayerData.coin += _coin;
+        DataManager.WhenAddCoin?.Invoke();
         DataManager.Instance.SetData();
     }
 }

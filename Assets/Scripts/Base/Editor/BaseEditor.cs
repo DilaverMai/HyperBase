@@ -41,4 +41,14 @@ public class BaseEditor : OdinEditorWindow
     {
         EventManager.RestartLevel?.Invoke();
     }
+    [Button]
+    public void WinLevel()
+    {
+        EventManager.FinishGame?.Invoke(GameStat.Win);
+    }
+    [Button]
+    public void LoseLevel()
+    {
+        EventManager.FinishGame?.Invoke(GameStat.Lose);
+    }
 }

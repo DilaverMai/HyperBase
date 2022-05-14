@@ -34,13 +34,9 @@ public class CameraManager : MonoBehaviour
         foreach (var item in virtualCameras)
         {
             if (item.camera == camera)
-            {
                 item.virtualCamera.Priority = 1;
-            }
             else
-            {
                 item.virtualCamera.Priority = 0;
-            }
         }
     }
 
@@ -55,7 +51,8 @@ public class CameraManager : MonoBehaviour
     }
 }
 
-public static class CameraEvents{
+public static class CameraEvents
+{
     public static VirtualCamera GetVirtualCamera(this Cameras camera)
     {
         return CameraManager.Instance.GetVirtualCamera(camera);
@@ -64,6 +61,12 @@ public static class CameraEvents{
     {
         CameraManager.Instance.SetFocusCam(camera);
     }
+
+    public static CinemachineVirtualCamera GetCinemachineVirtualCamera(this Cameras camera)
+    {
+        return CameraManager.Instance.GetCinemachineVirtualCamera(camera);
+    }
+
 }
 
 [System.Serializable]
@@ -100,7 +103,13 @@ public class VirtualCamera
         body.m_FollowOffset = offset;
     }
 
-    public async void Shake(float intensity, float duration,float time)
+    public void SetAimOffset(Vector3 offset)
+    {
+        var body = virtualCamera.GetCinemachineComponent<CinemachineComposer>();
+        body.m_TrackedObjectOffset = offset;
+    }
+
+    public async void Shake(float intensity, float duration, float time)
     {
         var body = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         body.m_AmplitudeGain = intensity;

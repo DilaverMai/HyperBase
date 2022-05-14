@@ -63,7 +63,7 @@ public class LevelManager : MonoBehaviour
 
         var nextLevel = currentLevel;
 
-        if (nextLevel == levels.Length)
+        if (nextLevel >= levels.Length)
         {
             nextLevel = RandomSelectedLevel(levels.Length);
             DataManager.Instance.PlayerData.level = nextLevel;
@@ -89,6 +89,10 @@ public class LevelManager : MonoBehaviour
         EventManager.OnBeforeLoadedLevel?.Invoke();
 
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
+        
+        if(currentLevel >= levels.Length)
+            currentLevel = 0;
+        
 
         if (LevelHolder != null)
             Destroy(LevelHolder.gameObject);

@@ -8,9 +8,7 @@ public class Bullet : MonoBehaviour
     public UnityEvent ExtraFunc = new UnityEvent();
     public LayerMask DetectedMask;
     private Collider _collider;
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
+    
     void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -23,10 +21,6 @@ public class Bullet : MonoBehaviour
         ExtraFunc.Invoke();
     }
 
-    /// <summary>
-    /// OnTriggerEnter is called when the Collider other enters the trigger.
-    /// </summary>
-    /// <param name="other">The other Collider involved in this collision.</param>
     void OnTriggerEnter(Collider other)
     {
         if ((DetectedMask.value & (1 << other.gameObject.layer)) > 0)
