@@ -1,33 +1,22 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour
+public class DataManager : Singleton<DataManager>
 {
     public static Action<int, int> OnSetData;
     public static Action WhenAddCoin;
     public static Action ReLoadData;
-    private string path;
+
+    public Data PlayerData => playerData;
     [SerializeField]
     private Data playerData;
-    public Data PlayerData => playerData;
     private Data backupData;
-    public int Coin => playerData.coin;
-    public static DataManager Instance;
+    private string path;
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     public Task CheckSave()
     {
         path = Application.persistentDataPath + "/gamedata.json";
@@ -74,8 +63,9 @@ public class DataManager : MonoBehaviour
         ReLoadData += ReLoadSave;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventManager.OnAfterLoadedLevel -= SetData;
         ReLoadData -= ReLoadSave;
     }
@@ -148,6 +138,28 @@ public static class DataExtension
         DataManager.WhenAddCoin?.Invoke();
         DataManager.Instance.SetData();
     }
+
+    public static int GetExtraInt(string dataName)
+    {
+        foreach (var item in DataManager.Instance.PlayerData.ExtraINT)
+        {
+            if (item.DataName == dataName)
+                return item.Value;
+        }
+        return -1;
+    }
+
+    public static void SetExtraInt(string dataName, int value)
+    {
+        foreach (var item in DataManager.Instance.PlayerData.ExtraINT)
+        {
+            if (item.DataName == dataName)
+            {
+                item.SetValue(value);
+                break;
+            }
+        }
+    }
 }
 
 [System.Serializable]
@@ -156,6 +168,7 @@ public partial class Data
     public int coin;
     public int level;
     public int showingLevel;
+    public List<ExtraData<int>> ExtraINT;
 
     public Data(int _coin, int _level, int _showingLevel)
     {
@@ -168,6 +181,19 @@ public partial class Data
         coin = 0;
         level = 0;
         showingLevel = 1;
+        ExtraINT.Clear();
     }
 
+}
+
+[System.Serializable]
+public struct ExtraData<T>
+{
+    public string DataName;
+    public T Value;
+
+    public void SetValue(T value)
+    {
+        Value = value;
+    }
 }

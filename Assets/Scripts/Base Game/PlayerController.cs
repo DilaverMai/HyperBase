@@ -1,5 +1,6 @@
 using UnityEngine;
 using Lean.Touch;
+using System;
 
 public abstract class PlayerController : MonoBehaviour
 {
@@ -23,6 +24,35 @@ public abstract class PlayerController : MonoBehaviour
         transform.position = firstPosition;
     }
 
+    protected virtual void OnEnable()
+    {
+        LeanTouch.OnFingerUp += OnFingerUp;
+        LeanTouch.OnFingerDown += OnFingerDown;
+        EventManager.FinishLine += OnFinishLine;
+    }
+
+
+    protected virtual void OnDisable()
+    {
+        LeanTouch.OnFingerUp -= OnFingerUp;
+        LeanTouch.OnFingerDown -= OnFingerDown;
+        EventManager.FinishLine -= OnFinishLine;
+    }
+
+    protected virtual void OnFingerDown(LeanFinger obj)
+    {
+        Debug.Log("Touch Down");
+    }
+
+    protected virtual void OnFingerUp(LeanFinger obj)
+    {
+        Debug.Log("Touch Up");
+    }
+
+    protected virtual void OnFinishLine()
+    {
+        Debug.Log("Finish Line Started");
+    }
 
     //Gizmos for targetPos
     protected void OnDrawGizmos()
@@ -34,45 +64,4 @@ public abstract class PlayerController : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, targetPos);
     }
-
-    protected virtual void OnEnable()
-    {
-        LeanTouch.OnFingerUp += OnFingerUp;
-        LeanTouch.OnFingerDown += OnFingerDown;
-
-    }
-
-    protected virtual void OnDisable()
-    {
-        LeanTouch.OnFingerUp -= OnFingerUp;
-        LeanTouch.OnFingerDown -= OnFingerDown;
-    }
-
-    protected virtual void OnFingerDown(LeanFinger obj)
-    {
-        if (!Base.IsPlaying()) return;
-        Debug.Log("Touch Down");
-    }
-
-    protected virtual void OnFingerUp(LeanFinger obj)
-    {
-        if (!Base.IsPlaying()) return;
-        Debug.Log("Touch Up");
-    }
-
-    protected virtual void Update()
-    {
-        if (!Base.IsPlaying()) return;
-    }
-
-    protected virtual void FixedUpdate()
-    {
-        if (!Base.IsPlaying()) return;
-    }
-
-    protected virtual void FinishLine()
-    {
-
-    }
-
 }

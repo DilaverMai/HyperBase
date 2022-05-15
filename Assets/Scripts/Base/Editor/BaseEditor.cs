@@ -1,8 +1,6 @@
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-using UnityEngine;
-
 public class BaseEditor : OdinEditorWindow
 {
     [MenuItem("Base/Editor")]
@@ -50,5 +48,11 @@ public class BaseEditor : OdinEditorWindow
     public void LoseLevel()
     {
         EventManager.FinishGame?.Invoke(GameStat.Lose);
+    }
+    [Title("Settings")]
+    [Button]
+    private void GoPlayerControllerData()
+    {
+        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/PlayerData.asset");
     }
 }

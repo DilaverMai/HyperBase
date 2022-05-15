@@ -2,24 +2,15 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    public static AudioManager Instance;
     private AudioSource audioSource;
     public bool stopSound;
     [SerializeField]
     private List<Audio> audioList = new List<Audio>();
-    void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        base.Awake();
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
     public GameObject[] _Levels => levels;
     private GameObject[] levels;
@@ -109,8 +109,9 @@ public class LevelManager : MonoBehaviour
         EventManager.RestartLevel += RestartLevelFunc;
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventManager.NextLevel -= NextLevelFunc;
         EventManager.RestartLevel -= RestartLevelFunc;
     }

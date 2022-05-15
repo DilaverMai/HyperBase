@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,10 +7,16 @@ public abstract class Contactable : MonoBehaviour
     [Title("Generaly")]
     public int Value = 1;
     public bool MakeTrigger = true;
-    public bool AfterDestory = true;
     public Enum_Audio Audio;
     public Enum_PoolParticle Particle;
     public LayerMask DetectedMask;
+    [Title("Contact After")]
+    public bool AfterDestory;
+    [ShowIf("AfterDestory")]
+    public float DestoryDelay;
+    [Title("Effect")]
+    
+//
     private Collider _collider;
 
     private void Awake()
@@ -25,18 +30,28 @@ public abstract class Contactable : MonoBehaviour
         _collider.isTrigger = MakeTrigger;
     }
 
-    protected abstract void Contant(GameObject _gObject);
+    protected virtual void Contant(GameObject _gObject)
+    {
+        if (Audio != Enum_Audio.Empty)
+            Audio.Play();
+        if (Particle != Enum_PoolParticle.Empty)
+            Particle.GetParticle().SetPosition(transform.position);
+        if (AfterDestory)
+            StartCoroutine("DelayDestory");
+    }
+
+    IEnumerator DelayDestory()
+    {
+        yield return new WaitForSeconds(DestoryDelay);
+        gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (ExtensionMethods.CheckLayer(other.gameObject, DetectedMask))
         {
             if (!MakeTrigger | !Base.IsPlaying()) return;
-
             Contant(other.gameObject);
-            if (Audio != Enum_Audio.Empty)
-                Audio.Play();
         }
     }
 
@@ -45,10 +60,7 @@ public abstract class Contactable : MonoBehaviour
         if (ExtensionMethods.CheckLayer(other.gameObject, DetectedMask))
         {
             if (MakeTrigger | !Base.IsPlaying()) return;
-
             Contant(other.gameObject);
-            if (Audio != Enum_Audio.Empty)
-                Audio.Play();
         }
     }
 

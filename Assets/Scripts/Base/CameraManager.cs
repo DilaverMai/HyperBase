@@ -2,22 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Threading.Tasks;
-public class CameraManager : MonoBehaviour
+public class CameraManager : Singleton<CameraManager>
 {
     private CinemachineVirtualCamera[] cinemachineVirtualCameras;
     [SerializeField]
     private List<VirtualCamera> virtualCameras = new List<VirtualCamera>();
-    public static CameraManager Instance;
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
 
         cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>();
 

@@ -17,9 +17,9 @@ public class PlayerControllerJoyStick : PlayerController
         targetPos = transform.position;
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
+        if(!Base.IsPlaying()) return;
         JoyStickMove();
     }
 

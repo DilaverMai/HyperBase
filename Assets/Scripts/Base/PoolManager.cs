@@ -5,27 +5,17 @@ using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using System.Threading.Tasks;
-public class PoolManager : MonoBehaviour
+public class PoolManager : Singleton<PoolManager>
 {
     public List<PoolObject> PoolObjects = new List<PoolObject>();
     public List<PoolParticle> PoolParticles = new List<PoolParticle>();
-    public static PoolManager Instance;
     [HideInInspector]
     public Transform holdPool;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         holdPool = new GameObject("Pool").transform;
         holdPool.SetParent(transform);
-
-
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
     public void StartPool()
@@ -104,8 +94,9 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventManager.OnBeforeLoadedLevel -= ReLoad;
         EventManager.OnAfterLoadedLevel -= CheckEmpty;
     }
@@ -138,6 +129,8 @@ public static class PoolEvents
 {
     public static PoolItem GetObject(this Enum_PoolObject poolObject)
     {
+        if (poolObject == Enum_PoolObject.Empty) return null;
+
         foreach (var item in PoolManager.Instance.PoolObjects)
         {
 
@@ -155,6 +148,8 @@ public static class PoolEvents
 
     public static ParticleItem GetParticle(this Enum_PoolParticle poolParticle)
     {
+        if (poolParticle == Enum_PoolParticle.Empty) return null;
+        
         foreach (var item in PoolManager.Instance.PoolParticles)
         {
 

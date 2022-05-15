@@ -2,9 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
-public class GameBase : MonoBehaviour
+public class GameBase : Singleton<GameBase>
 {
-    public static GameBase Instance;
     [HideInInspector]
     public DataManager DataManager;
     [HideInInspector]
@@ -15,8 +14,9 @@ public class GameBase : MonoBehaviour
     public PoolManager PoolManager;
 
     public GameStat _GameStat => gameStat;
+    [SerializeField]
     private GameStat gameStat;
-    private async void Awake()
+    protected override async void Awake()
     {
 #if UNITY_EDITOR
         Debug.unityLogger.logEnabled = true;
@@ -24,14 +24,7 @@ public class GameBase : MonoBehaviour
   Debug.unityLogger.logEnabled = false;
 #endif
 
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
 
         DataManager = GetComponent<DataManager>();
         LevelManager = GetComponent<LevelManager>();
@@ -65,7 +58,7 @@ public class GameBase : MonoBehaviour
         EventManager.FirstTouch += StartGame;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         EventManager.OnBeforeLoadedLevel -= ResetStat;
         EventManager.FirstTouch -= StartGame;

@@ -17,7 +17,7 @@ public class PlayerControllerRunner : PlayerController
 
     public void Move(Vector2 target)
     {
-        if (!playerData.Move) return;
+        if (!playerData.Move | !Base.IsPlaying()) return;
         RotationMove(target);
 
         var targetToVector3 = Vector3.zero;
@@ -38,7 +38,7 @@ public class PlayerControllerRunner : PlayerController
     protected override void OnFingerUp(LeanFinger obj)
     {
         base.OnFingerUp(obj);
-        if (!playerData.MoveRotation) return;
+        if (!playerData.MoveRotation | !Base.IsPlaying()) return;
         targetRot = Vector3.zero;
     }
 
@@ -56,18 +56,18 @@ public class PlayerControllerRunner : PlayerController
         }
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
+        if (!Base.IsPlaying()) return;
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x, 0.5f, targetPos.z), playerData.MoveSpeed * Time.deltaTime);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot),
         playerData.RotationTurnSpeed * Time.deltaTime);
     }
 
-    protected override void FixedUpdate()
+    private void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (!Base.IsPlaying()) return;
         if (playerData.ZMoving) targetPos.z += Time.fixedDeltaTime * playerData.MoveSpeed;
     }
 

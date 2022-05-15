@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class MenuManager : MonoBehaviour
+public class MenuManager : Singleton<MenuManager>
 {
     [HideInInspector]
     public StartMenu StartMenu;
@@ -16,21 +16,8 @@ public class MenuManager : MonoBehaviour
     public FinishMenu FinishMenu;
     [HideInInspector]
     public MarketPlaceMenu MarketPlaceMenu;
-    
-    public static MenuManager Instance;
     private Canvas canvas;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
 
-    }
     public void Setup()
     {
         StartMenu = FindObjectOfType<StartMenu>();
@@ -38,11 +25,8 @@ public class MenuManager : MonoBehaviour
         PauseMenu = FindObjectOfType<PauseMenu>();
         FinishMenu = FindObjectOfType<FinishMenu>();
         MarketPlaceMenu = FindObjectOfType<MarketPlaceMenu>();
-
         canvas = PlayTimeMenu.transform.GetComponentInParent<Canvas>();
-
     }
-
 
     private void OnEnable()
     {
@@ -52,8 +36,9 @@ public class MenuManager : MonoBehaviour
         EventManager.OnAfterLoadedLevel += ShowStartMenu;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventManager.FirstTouch -= ShowPlayTimeMenu;
         EventManager.FinishGame -= WhenFinish;
         EventManager.OnPause -= Pause;
