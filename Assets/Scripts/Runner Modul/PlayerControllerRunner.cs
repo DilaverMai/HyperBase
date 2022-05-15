@@ -21,7 +21,6 @@ public class PlayerControllerRunner : PlayerController
         RotationMove(target);
 
         var targetToVector3 = Vector3.zero;
-        //new Vector3(target.x, target.y + offsetY, 0);
         if (playerData.XMoving) targetToVector3.x = target.x;
         if (playerData.YMoving) targetToVector3.y = target.y + offsetY;
         targetToVector3.z = 0;
@@ -69,6 +68,12 @@ public class PlayerControllerRunner : PlayerController
     {
         if (!Base.IsPlaying()) return;
         if (playerData.ZMoving) targetPos.z += Time.fixedDeltaTime * playerData.MoveSpeed;
+    }
+
+    private void FinishLine()
+    {
+        if (!Base.IsPlaying()) return;
+        
     }
 
 

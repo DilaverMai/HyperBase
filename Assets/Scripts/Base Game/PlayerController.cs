@@ -28,7 +28,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         LeanTouch.OnFingerUp += OnFingerUp;
         LeanTouch.OnFingerDown += OnFingerDown;
-        EventManager.FinishLine += OnFinishLine;
     }
 
 
@@ -36,7 +35,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         LeanTouch.OnFingerUp -= OnFingerUp;
         LeanTouch.OnFingerDown -= OnFingerDown;
-        EventManager.FinishLine -= OnFinishLine;
     }
 
     protected virtual void OnFingerDown(LeanFinger obj)
@@ -49,10 +47,6 @@ public abstract class PlayerController : MonoBehaviour
         Debug.Log("Touch Up");
     }
 
-    protected virtual void OnFinishLine()
-    {
-        Debug.Log("Finish Line Started");
-    }
 
     //Gizmos for targetPos
     protected void OnDrawGizmos()
