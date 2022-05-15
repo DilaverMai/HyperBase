@@ -56,7 +56,7 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         var enemy = enemySpawns[Random.Range(0, enemySpawns.Count)];
 
-        if (enemy.IsSpawned() & enemys.Count < MaxEnemy)
+        if (enemy.IsSpawned() & enemys.Count < MaxEnemy | enemySpawns.Count == 1)
         {
             if (enemy.IsLucky())
             {

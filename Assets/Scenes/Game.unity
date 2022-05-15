@@ -436,7 +436,7 @@ GameObject:
   m_Layer: 0
   m_Name: Plugins
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -448,13 +448,58 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470851581}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22274.148, y: 7446.9556, z: -15017.436}
+  m_LocalPosition: {x: 0, y: -100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1450998590}
+  - {fileID: 656495104}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &656495103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 656495104}
+  - component: {fileID: 656495105}
+  m_Layer: 0
+  m_Name: '[DOTween]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &656495104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656495103}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 470851582}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &656495105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656495103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -591303064, guid: a811bde74b26b53498b4f6d872b09b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inspectorUpdater: 0
 --- !u!1001 &800261596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -727,12 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1abb6c801d80235418ad53ad9ca6e9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PoolObjects:
-  - Prefab: {fileID: 5490692381509496872, guid: 96aa2145556ead844aedaf73516c9ca6, type: 3}
-    pool: []
-    SpawnCount: 25
-    isActive: 0
-    Enum: 1
+  PoolObjects: []
   PoolParticles: []
   holdPool: {fileID: 0}
 --- !u!114 &904187655

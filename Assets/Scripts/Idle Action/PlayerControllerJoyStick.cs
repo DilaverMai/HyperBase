@@ -1,62 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerJoyStick : MonoBehaviour
+public class PlayerControllerJoyStick : PlayerController
 {
     [SerializeField]
-    private float _rotSpeed = 1f;
-    public float RotSpeed => _rotSpeed;
-    [SerializeField]
-    private float _moveSpeed;
-    public float MoveSpeed => _moveSpeed;
-    [SerializeField]
     private float maxDistance;
-    private Vector3 targetPosition;
     private Rigidbody _rigidbody;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-        targetPosition = transform.position;
+        targetPos = transform.position;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         JoyStickMove();
     }
 
     private void JoyStickMove()
     {
-        var posPower = Vector3.zero;
+        if (JoyStick.Instance == null)
+        {
+            Debug.LogError("JoyStick is null");
+            return;
+        }
 
+        var posPower = Vector3.zero;
         posPower += JoyStick.Instance.GetVector();
 
 
-        if (Vector3.Distance(transform.position, targetPosition) < maxDistance)
+        if (Vector3.Distance(transform.position, targetPos) < maxDistance)
         {
-            targetPosition += (posPower * _rotSpeed) * Time.deltaTime;
+            targetPos += (posPower * playerData.RotationSpeed) * Time.deltaTime;
         }
 
-        transform.LookAt(targetPosition);
+        transform.LookAt(targetPos);
         transform.position = Vector3.MoveTowards(transform.position,
-        targetPosition, Time.deltaTime * MoveSpeed);
-
-    }
-
-    //gizmos for targetposition
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(targetPosition, 0.5f);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(targetPosition, 0.5f);
-        Gizmos.DrawLine(transform.position, targetPosition);
+        targetPos, Time.deltaTime * playerData.MoveSpeed);
     }
 
 }

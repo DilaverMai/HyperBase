@@ -6,7 +6,7 @@ public class Obstacle : Contactable
 {
     protected override void Contant(GameObject _gObject)
     {
-        Player.TakeDamage(value);
+        Player.TakeDamage(Value);
         if(AfterDestory)
             Destroy(gameObject);
     }

@@ -3,11 +3,20 @@ using TMPro;
 
 public class FinishLine : MonoBehaviour
 {
+    public static FinishLine Instance;
     [SerializeField]
     private float zOffset;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else    
+            Destroy(gameObject);
+    }
 
     private void Start()
-    {  
+    {
         var texts = GetComponentsInChildren<TextMeshPro>();
 
         for (int i = 0; i < texts.Length; i++)
@@ -34,13 +43,14 @@ public class FinishLine : MonoBehaviour
     void OnDisable()
     {
         EventManager.FinishLine -= Finish;
+        Instance = null;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<Player>(out var player))
+        if (other.TryGetComponent<Player>(out var player))
         {
-           EventManager.FinishLine.Invoke();
+            EventManager.FinishLine.Invoke();
         }
     }
 }

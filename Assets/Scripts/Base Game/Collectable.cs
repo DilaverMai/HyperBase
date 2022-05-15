@@ -6,7 +6,7 @@ public class Collectable : Contactable
 {
     protected override void Contant(GameObject _gObject)
     {
-        Datas.Coin.CoinAdd(value);
+        Datas.Coin.CoinAdd(Value);
         if (AfterDestory)
             Destroy(gameObject);
     }

@@ -3,38 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Lean.Touch;
-public class PlayerController : MonoBehaviour
+public class PlayerControllerRunner : PlayerController
 {
-    private PlayerData playerData => PlayerData.Current;
-
-    [SerializeField]
-    private Vector3 targetPos = Vector3.zero;
-    [SerializeField]
-    private Vector3 targetRot = Vector3.zero;
     private Vector2 ClampX;
     private Vector2 ClampY;
-    public float offsetY = 0.5f;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ClampX = new Vector2(playerData.ClampX.x, playerData.ClampX.y);
         ClampY = new Vector2(playerData.ClampY.x, playerData.ClampY.y);
-
-        firstPosition = transform.position;
     }
 
-    void OnEnable()
-    {
-        LeanTouch.OnFingerUp += OnFingerUp;
-    }
-
-    void OnDisable()
-    {
-        LeanTouch.OnFingerUp -= OnFingerUp;
-    }
 
     public void Move(Vector2 target)
     {
-        if (!Base.IsPlaying() | !playerData.Move) return;
+        if (!playerData.Move) return;
         RotationMove(target);
 
         var targetToVector3 = Vector3.zero;
@@ -50,14 +33,15 @@ public class PlayerController : MonoBehaviour
         if (playerData.XMoving) check.x = Mathf.Clamp(check.x, ClampX.x, ClampX.y);
 
         targetPos = check;
-        //if(!playerData.YMoving) targetPos.y = transform.position.y;
     }
 
-    private void OnFingerUp(LeanFinger finger)
+    protected override void OnFingerUp(LeanFinger obj)
     {
-        if (!Base.IsPlaying() | !playerData.MoveRotation) return;
+        base.OnFingerUp(obj);
+        if (!playerData.MoveRotation) return;
         targetRot = Vector3.zero;
     }
+
     public void RotationMove(Vector2 rot)
     {
         if (playerData.MoveRotation)
@@ -72,37 +56,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (!Base.IsPlaying()) return;
+        base.Update();
         transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x, 0.5f, targetPos.z), playerData.MoveSpeed * Time.deltaTime);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot), 
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(targetRot),
         playerData.RotationTurnSpeed * Time.deltaTime);
     }
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        if (!Base.IsPlaying()) return;
+        base.FixedUpdate();
         if (playerData.ZMoving) targetPos.z += Time.fixedDeltaTime * playerData.MoveSpeed;
     }
 
-    private Vector3 firstPosition;
-    public void ResetPos()
-    {
-        targetPos = firstPosition;
-        transform.position = firstPosition;
-    }
-
-    //Gizmos for targetPos
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(targetPos, 0.5f);
-
-        //gizmos for distance between player and targetPos
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, targetPos);
-    }
 
 }
