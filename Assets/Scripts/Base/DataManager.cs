@@ -16,6 +16,7 @@ public class DataManager : Singleton<DataManager>
     private Data playerData;
     private Data backupData;
     private string path;
+    public bool ExtraSave;
 
     public Task CheckSave()
     {
@@ -25,6 +26,13 @@ public class DataManager : Singleton<DataManager>
             if (File.Exists(path))
             {
                 playerData = JsonUtility.FromJson<Data>(File.ReadAllText(path));
+                if (!ExtraSave)
+                {
+                    foreach (var item in playerData.ExtraINT)
+                    {
+                        item.SetValue(0);
+                    }
+                }
                 backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
             }
             else

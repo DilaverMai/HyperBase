@@ -140,7 +140,10 @@ public static class Base
 
     public async static void FinisGame(GameStat gameStat, float time = 0f)
     {
-        if (GameBase.Instance._GameStat == GameStat.Playing) GameBase.Instance.ChangeStat(gameStat);
+        if (GameBase.Instance._GameStat == GameStat.Playing |
+        GameBase.Instance._GameStat == GameStat.FinishLine)
+            GameBase.Instance.ChangeStat(gameStat);
+            
         EventManager.BeforeFinishGame?.Invoke(gameStat);
         await Task.Delay((int)time * 1000);
         if (!Application.isPlaying) return;
