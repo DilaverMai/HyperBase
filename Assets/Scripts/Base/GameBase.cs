@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using System.Collections;
 public class GameBase : Singleton<GameBase>
 {
     [HideInInspector]
@@ -12,10 +13,12 @@ public class GameBase : Singleton<GameBase>
     public MenuManager MenuManager;
     [HideInInspector]
     public PoolManager PoolManager;
-
     public GameStat _GameStat => gameStat;
     [SerializeField]
     private GameStat gameStat;
+    private int timer;
+    public int Timer;
+
     protected override async void Awake()
     {
 #if UNITY_EDITOR
@@ -50,6 +53,7 @@ public class GameBase : Singleton<GameBase>
     private void StartGame()
     {
         gameStat = GameStat.Playing;
+        StartCoroutine(Counter());
     }
 
     private void OnEnable()
@@ -67,6 +71,15 @@ public class GameBase : Singleton<GameBase>
     private void ResetStat()
     {
         gameStat = GameStat.Start;
+        timer = 0;
+    }
+    IEnumerator Counter()
+    {
+        while (Base.IsPlaying())
+        {
+            timer++;
+            yield return new WaitForSeconds(1);
+        }
     }
 
 #if UNITY_EDITOR
@@ -138,12 +151,17 @@ public static class Base
         return GameBase.Instance._GameStat == GameStat.Playing;
     }
 
+    public static int GetTimer()
+    {
+        return GameBase.Instance.Timer;
+    }
+
     public async static void FinisGame(GameStat gameStat, float time = 0f)
     {
         if (GameBase.Instance._GameStat == GameStat.Playing |
         GameBase.Instance._GameStat == GameStat.FinishLine)
             GameBase.Instance.ChangeStat(gameStat);
-            
+
         EventManager.BeforeFinishGame?.Invoke(gameStat);
         await Task.Delay((int)time * 1000);
         if (!Application.isPlaying) return;

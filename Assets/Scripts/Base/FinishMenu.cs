@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FinishMenu : BaseMenu
 {
     public Button thisButton;
-    public TextMeshProUGUI FinishText;
+    //public TextMeshProUGUI FinishText;
     public Image WinEmoji, LoseEmoji;
     private TextMeshProUGUI buttonText;
     protected override void Awake()
@@ -32,10 +32,10 @@ public class FinishMenu : BaseMenu
         switch (stat)
         {
             case GameStat.Lose:
-                FinishText.text = "YOU LOSE";
-                FinishText.color = Color.red;
+                //FinishText.text = "YOU LOSE";
+                //FinishText.color = Color.red;
                 LoseEmoji.gameObject.SetActive(true);
-                buttonText.text = "Try Again";
+                buttonText.text = "TRY AGAIN";
                 thisButton.onClick.RemoveAllListeners();
                 thisButton.onClick.AddListener(() =>
                 {
@@ -44,10 +44,10 @@ public class FinishMenu : BaseMenu
                 });
                 break;
             case GameStat.Win:
-                FinishText.text = "YOU WIN";
-                FinishText.color = Color.green;
+                //FinishText.text = "YOU WIN";
+                //FinishText.color = Color.green;
                 WinEmoji.gameObject.SetActive(true);
-                buttonText.text = "Next Level";
+                buttonText.text = "NEXT LEVEL";
                 thisButton.onClick.RemoveAllListeners();
                 thisButton.onClick.AddListener(() =>
                 {
