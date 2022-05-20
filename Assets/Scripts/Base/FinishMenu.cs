@@ -34,6 +34,7 @@ public class FinishMenu : BaseMenu
             case GameStat.Lose:
                 //FinishText.text = "YOU LOSE";
                 //FinishText.color = Color.red;
+                HapticType.Fail.PlayPreset();
                 LoseEmoji.gameObject.SetActive(true);
                 buttonText.text = "TRY AGAIN";
                 thisButton.onClick.RemoveAllListeners();
@@ -46,6 +47,7 @@ public class FinishMenu : BaseMenu
             case GameStat.Win:
                 //FinishText.text = "YOU WIN";
                 //FinishText.color = Color.green;
+                HapticType.Success.PlayPreset();
                 WinEmoji.gameObject.SetActive(true);
                 buttonText.text = "NEXT LEVEL";
                 thisButton.onClick.RemoveAllListeners();

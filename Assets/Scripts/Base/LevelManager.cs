@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
+//using ElephantSDK;
+
 public class LevelManager : Singleton<LevelManager>
 {
     public GameObject[] _Levels => levels;
@@ -49,12 +51,14 @@ public class LevelManager : Singleton<LevelManager>
         var levelObject = Instantiate(level, Vector3.zero, Quaternion.identity);
         LevelHolder = levelObject.transform;
         levelObject.transform.SetParent(transform);
+        //Elephant.LevelStarted(DataManager.Instance.PlayerData.showingLevel);
         EventManager.OnAfterLoadedLevel?.Invoke();
     }
 
     private void NextLevelFunc()
     {
         Debug.Log("Next Level");
+        //Elephant.LevelCompleted(DataManager.Instance.PlayerData.showingLevel);
         DataManager.Instance.PlayerData.level++;
         var currentLevel = DataManager.Instance.PlayerData.level;
         DataManager.Instance.PlayerData.showingLevel++;
@@ -83,16 +87,17 @@ public class LevelManager : Singleton<LevelManager>
     private void RestartLevelFunc()
     {
         Debug.Log("Restart Level");
+        //Elephant.LevelFailed(DataManager.Instance.PlayerData.showingLevel);
         DataManager.ReLoadData?.Invoke();
         //DOTween.KillAll();
 
         EventManager.OnBeforeLoadedLevel?.Invoke();
 
         var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
-        
-        if(currentLevel >= levels.Length)
+
+        if (currentLevel >= levels.Length)
             currentLevel = 0;
-        
+
 
         if (LevelHolder != null)
             Destroy(LevelHolder.gameObject);
@@ -118,7 +123,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private int RandomSelectedLevel(int currentLevel)
     {
-        if(levels.Length == 1) return 0;
+        if (levels.Length == 1) return 0;
         var newLevel = Random.Range(0, levels.Length);
         if (newLevel == currentLevel)
         {

@@ -17,7 +17,7 @@ public class GameBase : Singleton<GameBase>
     [SerializeField]
     private GameStat gameStat;
     private int timer;
-    public int Timer;
+    public int Timer=> timer;
 
     protected override async void Awake()
     {
