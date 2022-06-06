@@ -18,7 +18,7 @@ public class PoolManager : Singleton<PoolManager>
         holdPool.SetParent(transform);
     }
 
-    public void StartPool()
+    public Task StartPool()
     {
         foreach (var item in PoolObjects)
         {
@@ -29,6 +29,8 @@ public class PoolManager : Singleton<PoolManager>
         {
             item.Setup(holdPool, item.Enum);
         }
+        
+        return Task.CompletedTask;
     }
 
 
@@ -75,11 +77,11 @@ public class PoolManager : Singleton<PoolManager>
         await Task.Delay(200);
         foreach (var item in PoolObjects)
         {
-            item.pool.RemoveAll(x => x == null);
+            item.Pool.RemoveAll(x => x == null);
         }
         foreach (var item in PoolParticles)
         {
-            item.pool.RemoveAll(x => x == null);
+            item.Pool.RemoveAll(x => x == null);
         }
 
 

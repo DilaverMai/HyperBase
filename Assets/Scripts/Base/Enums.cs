@@ -17,9 +17,10 @@
         cam1, cam2, cam3
     }
 
-    public enum PlayerStat
+    public enum CharacterAnimStat
     {
         Idle,
+        Walk,
         Run,
         Jump,
         Fall,
@@ -28,15 +29,29 @@
         Die
     }
 
-    public enum EnemyStat
+    public enum ItemType
+    {   
+        Weapon,
+        Armor,
+        Helmet,
+        Boot,
+        Glove,
+        Shield,
+        Ring,
+        Potion,
+        Food,
+        Scroll,
+        Book,
+        Key,
+        Coin,
+        None
+    }
+    
+    
+    public enum EnemyType
     {
-        Idle,
-        Run,
-        Jump,
-        Fall,
-        Attack,
-        Hit,
-        Die
+        Normal,
+        Boss
     }
 
     public enum ItemStat
@@ -59,20 +74,20 @@
         Heavy
     }
 
-    public enum Maths
-    {
-        Add,
-        Subtract,
-        Multiply,
-        Divide
-    }
+    // public enum Maths
+    // {
+    //     Add,
+    //     Subtract,
+    //     Multiply,
+    //     Divide
+    // }
 
-    public enum Skills
-    {
-        DoorSpeed,
-        DoorPower,
-        BagSpeed
-    }
+    // public enum Skills
+    // {
+    //     DoorSpeed,
+    //     DoorPower,
+    //     BagSpeed
+    // }
     
     public enum Menus
     {

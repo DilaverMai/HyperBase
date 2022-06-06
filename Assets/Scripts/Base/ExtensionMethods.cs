@@ -11,16 +11,36 @@ public static class ExtensionMethods
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
-    public static bool CheckLayer(GameObject go, LayerMask layerMask)
+    public static bool CheckLayer(this GameObject go, LayerMask layerMask)
     {
         return layerMask == (layerMask | (1 << go.layer));
     }
-
+    
     public static Color SetAlpha(this Color color, float alpha)
     {
         color.a = alpha;
         return color;
     }
+
+    public static float RandomValueVector2(this Vector2 vector)
+    {
+        return Random.Range(vector.x, vector.y);
+    }
+    
+    public static Transform[] FindWithLayer(GameObject[] list,LayerMask mask)
+    {
+        Transform[] enemys = new Transform[list.Length];
+        for (int i = 0; i < list.Length; i++)
+        {
+            if(CheckLayer(list[i],mask))
+            {
+                enemys[i] = list[i].transform;
+            }
+        }
+
+        return enemys;
+    }
+
 #if UNITY_EDITOR
     public static void DrawDisc(Vector3 center, float radius, Color color)
     {

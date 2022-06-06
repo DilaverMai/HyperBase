@@ -5,25 +5,26 @@ using System.Collections.Generic;
 public abstract class AbstractPoolObject<T> where T : Component
 {
     public GameObject Prefab;
-    public List<GameObject> pool = new List<GameObject>();
+    [HideInInspector]
+    public List<GameObject> Pool = new List<GameObject>();
     public int SpawnCount = 25;
     public bool isActive = false;
 
     public void AddObject(GameObject obj)
     {
-        pool.Add(obj);
+        Pool.Add(obj);
         obj.SetActive(false);
     }
 
     public void Setup(Transform parent = null, Enum_PoolObject en = Enum_PoolObject.Empty)
     {
-        var diffCount = SpawnCount - pool.Count;
+        var diffCount = SpawnCount - Pool.Count;
         if (diffCount <= 0) return;
 
         for (int i = 0; i < diffCount; i++)
         {
             var spawned = GameObject.Instantiate(Prefab, parent);
-
+            
             var poolItem = spawned.GetComponent<PoolItem>();
             if (!poolItem) poolItem = spawned.AddComponent<PoolItem>();
 
@@ -36,7 +37,7 @@ public abstract class AbstractPoolObject<T> where T : Component
 
     public void Setup(Transform parent = null, Enum_PoolParticle en = Enum_PoolParticle.Empty)
     {
-        var diffCount = SpawnCount - pool.Count;
+        var diffCount = SpawnCount - Pool.Count;
         if (diffCount <= 0) return;
 
         for (int i = 0; i < diffCount; i++)
@@ -71,10 +72,10 @@ public abstract class AbstractPoolObject<T> where T : Component
     {
         GameObject obj = null;
 
-        if (pool.Count > 0)
+        if (Pool.Count > 0)
         {
-            obj = pool[0];
-            pool.RemoveAt(0);
+            obj = Pool[0];
+            Pool.RemoveAt(0);
             obj.SetActive(true);
 
             return obj.GetComponent<T>();

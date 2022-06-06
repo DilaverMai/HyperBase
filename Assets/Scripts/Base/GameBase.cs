@@ -41,8 +41,9 @@ public class GameBase : Singleton<GameBase>
 
         //First DataManager
         await DataManager.CheckSave();
+        await PoolManager.StartPool();
         LevelManager.LoadLevel();
-        PoolManager.StartPool();
+
     }
 
     public void ChangeStat(GameStat stat)
@@ -126,12 +127,16 @@ public static class EventManager
 {
     public static Action<GameStat> BeforeFinishGame;
     public static Action<GameStat> FinishGame;
+    
     public static Action NextLevel;
     public static Action RestartLevel;
+
     public static Action FirstTouch;
     public static Action<bool> OnPause;
+    
     public static Action OnBeforeLoadedLevel;
     public static Action OnAfterLoadedLevel;
+    
     public static Action<Transform> FinishLine;
 }
 
@@ -141,7 +146,7 @@ public static class Base
     {
         GameBase.Instance.ChangeStat(stat);
     }
-
+    
     public static Transform GetLevelHolder()
     {
         return GameBase.Instance.LevelManager.LevelHolder;

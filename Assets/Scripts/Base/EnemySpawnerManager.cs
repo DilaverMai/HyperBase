@@ -3,39 +3,39 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class EnemySpawnerManager : MonoBehaviour
+public class EnemySpawnerManager : Singleton<EnemySpawnerManager>
 {
-    [Title("Generally")]
-    [SerializeField]
-    private float spawnTime;
-    [SerializeField]
-    private float maxCordiX;
+    [Title("Generally")] [SerializeField] private float spawnTime;
+    [SerializeField] private float maxCordiX;
+    public float MaxCordiX => maxCordiX;
     public int MaxEnemy;
-    public int StartEnemyCount;
+    public bool HaveStartEnemy;
+    [ShowIf("HaveStartEnemy")] public int StartEnemyCount;
     private List<Transform> enemys = new List<Transform>();
-
-    //No show
-    public static EnemySpawnerManager Instance;
-    private Transform player;
-
-    [Title("Enemys")]
-    [SerializeField]
-    private List<EnemySpawn> enemySpawns = new List<EnemySpawn>();
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    public GameObject[] Targets;
+    public bool TimeByPower;
+    [ShowIf("TimeByPower")] public int MultiplierTimeByPower;
+    [ShowIf("TimeByPower")] public int PowerByTime;
+    [Title("Enemys")] [SerializeField] private List<EnemySpawn> enemySpawns = new List<EnemySpawn>();
 
     private void FirstSpawn()
     {
+        var checkSpawn = 0;
+
+        foreach (var spawn in enemySpawns)
+        {
+            checkSpawn += spawn.MaxSpawn;
+        }
+
+        if (checkSpawn < MaxEnemy)
+            MaxEnemy = checkSpawn;
+
+
+        if (MaxEnemy < StartEnemyCount)
+        {
+            MaxEnemy += StartEnemyCount;
+        }
+
         while (enemys.Count < StartEnemyCount)
         {
             SpawnEnemy();
@@ -48,7 +48,9 @@ public class EnemySpawnerManager : MonoBehaviour
         {
             if (SpawnEnemy())
                 yield return new WaitForSeconds(spawnTime);
+            yield return new WaitForEndOfFrame();
         }
+
         yield return new WaitForEndOfFrame();
     }
 
@@ -56,16 +58,25 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         var enemy = enemySpawns[Random.Range(0, enemySpawns.Count)];
 
-        if (enemy.IsSpawned() & enemys.Count < MaxEnemy | enemySpawns.Count == 1)
+        if (Base.GetTimer() % MultiplierTimeByPower == 0 & Base.GetTimer() != 0)
+        {
+            foreach (var enm in enemySpawns)
+            {
+                enm.AddPower(PowerByTime,PowerByTime);
+            }
+        }
+        
+        if (enemy.IsSpawned() & enemys.Count < MaxEnemy)
         {
             if (enemy.IsLucky())
             {
-                for (int i = 0; i < enemy.MaxSameSpawn; i++)
+                for (int i = 0; i < (int)enemy.MaxSameSpawn.RandomValueVector2(); i++)
                 {
-                    enemys.Add(enemy.Spawn(CheckFarDistance(enemy.FarByPlayer)));
+                    enemys.Add(enemy.Spawn());
                     if (!enemy.IsSpawned()) break;
-                    return true;
                 }
+
+                return true;
             }
         }
 
@@ -75,9 +86,16 @@ public class EnemySpawnerManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.OnBeforeLoadedLevel += ResetEnemys;
-        EventManager.OnAfterLoadedLevel += FindThePlayer;
         EventManager.OnAfterLoadedLevel += FirstSpawn;
         EventManager.FirstTouch += WhenStartSpawn;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        EventManager.OnBeforeLoadedLevel -= ResetEnemys;
+        EventManager.OnAfterLoadedLevel -= FirstSpawn;
+        EventManager.FirstTouch -= WhenStartSpawn;
     }
 
     private void WhenStartSpawn()
@@ -86,38 +104,18 @@ public class EnemySpawnerManager : MonoBehaviour
         StartCoroutine("SpawnManager");
     }
 
-    void OnDisable()
+    public void RemoveEnemy(PoolItem _enemy)
     {
-        Instance = null;
-        EventManager.OnBeforeLoadedLevel -= ResetEnemys;
-        EventManager.OnAfterLoadedLevel -= FirstSpawn;
-        EventManager.OnAfterLoadedLevel -= FindThePlayer;
-        EventManager.FirstTouch -= WhenStartSpawn;
-    }
+        enemys.Remove(_enemy.transform);
 
-    private void FindThePlayer()
-    {
-        player = FindObjectOfType<Player>().transform;
-    }
-
-    private Vector3 CheckFarDistance(float z)
-    {
-        var pos = Vector3.zero;
-        pos.y = 0;
-
-        if (player.position.z - z > 0)
+        foreach (var item in enemySpawns)
         {
-            pos.z = player.position.z - z;
+            if (item.EnemyObject == _enemy._PoolEnum)
+            {
+                item.DownSpawn();
+                break;
+            }
         }
-
-        pos.x = Random.Range(-maxCordiX, maxCordiX);
-
-        return pos;
-    }
-
-    public void RemoveEnemy(Transform _enemy)
-    {
-        enemys.Remove(_enemy);
     }
 
     private void ResetEnemys()
@@ -127,32 +125,68 @@ public class EnemySpawnerManager : MonoBehaviour
             item.Reset();
         }
     }
+}
 
+public static class ExtensionEnemySpawner
+{
+    public static Vector3 CheckDistance(float z)
+    {
+        var pos = Vector3.zero;
+        var _player = Player.Instance.transform;
+        pos.y = 0;
+
+        if (_player.position.z - z > 0)
+        {
+            pos.z = _player.position.z - z;
+        }
+
+        var maxCordiX = EnemySpawnerManager.Instance.MaxCordiX;
+        pos.x = Random.Range(-maxCordiX, maxCordiX);
+
+        return pos;
+    }
+
+    public static Transform GetRandomTarget()
+    {
+        return EnemySpawnerManager.Instance.Targets[Random.Range(0, EnemySpawnerManager.Instance.Targets.Length)]
+            .transform;
+    }
 }
 
 [System.Serializable]
 public class EnemySpawn
 {
     public Enum_PoolObject EnemyObject;
-    public int MaxSameSpawn; //Ekranda maksimum olabilme sayısı
+    [MinMaxSlider(1, 100, true)] public Vector2 MaxSameSpawn; //Ekranda maksimum olabilme sayısı
     public int MaxSpawn; //Max Spawn edilen sayı
-    public float FarByPlayer; //Player ile enemy arasındaki mesafe
+
+    [MinMaxSlider(-100, 100, true)] public Vector2 FarByPlayer; //Player ile enemy arasındaki mesafe
     private int spawnCount; //Spawn edilen sayı
-    [PropertyRange(0, 10)]
-    public int Lucky;
+    [PropertyRange(0, 10)] public int Lucky;
+    public bool TimeDelay;
+    [ShowIf("TimeDelay")] public int Time;
+    [ShowIf("TimeDelay")] public bool OpenByTime;
     public bool IsSpawned()
     {
         return spawnCount < MaxSpawn;
     }
+
+    public void DownSpawn()
+    {
+        spawnCount--;
+    }
+
     public bool IsLucky()
     {
+        if(OpenByTime & Base.GetTimer() < Time) 
+            return false;
         return Lucky > Random.Range(0, 10);
     }
 
-    public Transform Spawn(Vector3 pos)
+    public Transform Spawn()
     {
         var spawedEnemy = EnemyObject.GetObject();
-        spawedEnemy.SetPosition(pos);
+        spawedEnemy.SetPosition(ExtensionEnemySpawner.CheckDistance(ExtensionMethods.RandomValueVector2(FarByPlayer)));
         spawnCount++;
         return spawedEnemy.transform;
     }
@@ -161,4 +195,11 @@ public class EnemySpawn
     {
         spawnCount = 0;
     }
+
+    public void AddPower(int _MaxSpawm, int _MaxSameSpawn)
+    {
+        MaxSpawn += _MaxSpawm;
+        MaxSameSpawn.y += _MaxSameSpawn;
+    }
+
 }

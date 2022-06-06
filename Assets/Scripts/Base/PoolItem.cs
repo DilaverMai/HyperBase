@@ -1,21 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+
 public class PoolItem : MonoBehaviour
 {
-    public Enum_PoolObject _PoolEnum;
+    [HideInInspector] public Enum_PoolObject _PoolEnum;
     public UnityEvent OnDeath;
+    public UnityEvent OnSpawn;
 
     void OnEnable()
     {
+        OnSpawn?.Invoke();
         EventManager.OnBeforeLoadedLevel += Kill;
     }
-
+    private void OnDisable()
+    {
+        OnDeath?.Invoke();
+        EventManager.OnBeforeLoadedLevel -= Kill;
+        PoolManager.Instance.BackToList(this);
+    }
     private void Kill()
     {
         gameObject.SetActive(false);
     }
+
+    #region Defualts
+
     public void SetEnum(Enum_PoolObject en)
     {
         _PoolEnum = en;
@@ -25,6 +34,7 @@ public class PoolItem : MonoBehaviour
     {
         transform.position = position;
     }
+
     public void SetLocalPosition(Vector3 position)
     {
         transform.localPosition = position;
@@ -80,11 +90,5 @@ public class PoolItem : MonoBehaviour
         GetComponent<Rigidbody>().velocity = pow;
     }
 
-    private void OnDisable()
-    {
-        EventManager.OnBeforeLoadedLevel -= Kill;
-        OnDeath.Invoke();
-        PoolManager.Instance.BackToList(this);
-    }
-
+    #endregion
 }

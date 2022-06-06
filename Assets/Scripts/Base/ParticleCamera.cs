@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+
 public class ParticleCamera : MonoBehaviour
 {
     private Transform confetti, money;
@@ -17,6 +18,7 @@ public class ParticleCamera : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         money = transform.Find("Money");
         confetti = transform.Find("Confetti");
         fakeGold = Resources.Load<Transform>("FakeGold");
@@ -50,33 +52,36 @@ public class ParticleCamera : MonoBehaviour
                 {
                     money.GetChild(i).GetComponent<ParticleSystem>().Play();
                 }
+
                 break;
             default:
                 break;
         }
-
     }
 
-    public void CoinEffect(Vector3 pos)
+    public void CoinEffect(Vector3 pos, int Amount = 1)
     {
         if (!canvas) canvas = FindObjectOfType<Canvas>();
-        var _fakeGold = Instantiate(fakeGold, canvas.transform);
-        pos = Camera.main.WorldToScreenPoint(pos);
-        _fakeGold.position = pos;
 
-        _fakeGold.DOMove(GameBase.Instance.MenuManager.PlayTimeMenu.GoldImage.transform.position, 0.5f)
-        .OnComplete(() =>
+        for (int i = 0; i < Amount; i++)
         {
-            Destroy(_fakeGold.gameObject);
-        });
+            var _fakeGold = Instantiate(fakeGold, canvas.transform);
+            pos = Camera.main.WorldToScreenPoint(
+                pos + new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f), 0));
+            _fakeGold.position = pos;
+
+            _fakeGold.DOMove(GameBase.Instance.MenuManager.PlayTimeMenu.GoldImage.transform.position, 0.5f)
+                .SetDelay(i * 0.15f)
+                .OnComplete(() => { Destroy(_fakeGold.gameObject); });
+        }
     }
+
 
     private void FinishParticle(GameStat stat)
     {
-        if(stat == GameStat.Win)
+        if (stat == GameStat.Win)
             PlayParticle(CameraParticle.Confetti);
     }
-
 }
 
 public static partial class ParticleExtension
@@ -85,10 +90,12 @@ public static partial class ParticleExtension
     {
         ParticleCamera.Instance.PlayParticle(particle);
     }
-    public static void PlayCoinEffect(this CameraParticle particle, Vector3 pos)
-    {
-        if (particle != CameraParticle.Coin) return;
-        ParticleCamera.Instance.CoinEffect(pos);
-    }
 
+    public static void PlayCoinEffect(Vector3 pos, int Amount = 1)
+    {
+        for (int i = 0; i < Amount; i++)
+        {
+            ParticleCamera.Instance.CoinEffect(pos);
+        }
+    }
 }
