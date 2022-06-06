@@ -17,7 +17,7 @@ public class EnemySpawnerManager : Singleton<EnemySpawnerManager>
     [ShowIf("TimeByPower")] public int MultiplierTimeByPower;
     [ShowIf("TimeByPower")] public int PowerByTime;
     [Title("Enemys")] [SerializeField] private List<EnemySpawn> enemySpawns = new List<EnemySpawn>();
-
+    
     private void FirstSpawn()
     {
         var checkSpawn = 0;
@@ -132,7 +132,7 @@ public static class ExtensionEnemySpawner
     public static Vector3 CheckDistance(float z)
     {
         var pos = Vector3.zero;
-        var _player = Player.Instance.transform;
+        var _player = GameBase.Instance.Player.transform;
         pos.y = 0;
 
         if (_player.position.z - z > 0)
@@ -157,7 +157,8 @@ public static class ExtensionEnemySpawner
 public class EnemySpawn
 {
     public Enum_PoolObject EnemyObject;
-    [MinMaxSlider(1, 100, true)] public Vector2 MaxSameSpawn; //Ekranda maksimum olabilme sayısı
+    [MinMaxSlider(1, 100, true)] public Vector2 MaxSameSpawn; //Ayni anda kaç adet spawn edecek
+    public bool RandomSameSpawn;
     public int MaxSpawn; //Max Spawn edilen sayı
 
     [MinMaxSlider(-100, 100, true)] public Vector2 FarByPlayer; //Player ile enemy arasındaki mesafe

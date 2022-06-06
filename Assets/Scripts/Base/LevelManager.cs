@@ -50,7 +50,8 @@ public class LevelManager : Singleton<LevelManager>
         var level = levels[currentLevel];
         var levelObject = Instantiate(level, Vector3.zero, Quaternion.identity);
         LevelHolder = levelObject.transform;
-        levelObject.transform.SetParent(transform);
+        levelObject.name = "Level " + currentLevel;
+        //levelObject.transform.SetParent(transform);
         //Elephant.LevelStarted(DataManager.Instance.PlayerData.showingLevel);
         EventManager.OnAfterLoadedLevel?.Invoke();
     }
@@ -77,7 +78,7 @@ public class LevelManager : Singleton<LevelManager>
             Destroy(LevelHolder.gameObject);
 
         var lvl = Instantiate(levels[nextLevel]);
-        lvl.transform.SetParent(transform);
+        //lvl.transform.SetParent(transform);
         LevelHolder = lvl.transform;
 
         EventManager.OnAfterLoadedLevel?.Invoke();
@@ -103,7 +104,7 @@ public class LevelManager : Singleton<LevelManager>
             Destroy(LevelHolder.gameObject);
 
         var lvl = Instantiate(levels[currentLevel]);
-        lvl.transform.SetParent(transform);
+        //lvl.transform.SetParent(transform);
         LevelHolder = lvl.transform;
         EventManager.OnAfterLoadedLevel?.Invoke();
     }

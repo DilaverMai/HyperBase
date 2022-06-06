@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Sirenix.OdinInspector;
 using UnityEngine;
+using Object = System.Object;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -12,8 +12,7 @@ public class DataManager : Singleton<DataManager>
     public static Action ReLoadData;
 
     public Data PlayerData => playerData;
-    [SerializeField]
-    private Data playerData;
+    [SerializeField] private Data playerData;
     private Data backupData;
     private string path;
     public bool ExtraSave;
@@ -28,11 +27,12 @@ public class DataManager : Singleton<DataManager>
                 playerData = JsonUtility.FromJson<Data>(File.ReadAllText(path));
                 if (!ExtraSave)
                 {
-                    foreach (var item in playerData.ExtraINT)
+                    foreach (var item in playerData.ExtraDatas)
                     {
                         item.SetValue(0);
                     }
                 }
+
                 backupData = new Data(playerData.coin, playerData.level, playerData.showingLevel);
             }
             else
@@ -43,7 +43,6 @@ public class DataManager : Singleton<DataManager>
             }
 
             Debug.Log("SAVE LOADED");
-
         });
     }
 
@@ -65,6 +64,7 @@ public class DataManager : Singleton<DataManager>
         Debug.Log("Reloading save");
         playerData = new Data(backupData.coin, backupData.level, backupData.showingLevel);
     }
+
     private void OnEnable()
     {
         EventManager.OnAfterLoadedLevel += SetData;
@@ -77,7 +77,6 @@ public class DataManager : Singleton<DataManager>
         EventManager.OnAfterLoadedLevel -= SetData;
         ReLoadData -= ReLoadSave;
     }
-
 }
 
 public static class DataExtension
@@ -149,17 +148,30 @@ public static class DataExtension
 
     public static int GetExtraInt(string dataName)
     {
-        foreach (var item in DataManager.Instance.PlayerData.ExtraINT)
+        foreach (var item in DataManager.Instance.PlayerData.ExtraDatas)
         {
             if (item.DataName == dataName)
-                return item.Value;
+                return Convert.ToInt32(item.Value);
         }
+
         return -1;
     }
 
-    public static void SetExtraInt(string dataName, int value)
+    public static string GetExtraString(string dataName)
     {
-        foreach (var item in DataManager.Instance.PlayerData.ExtraINT)
+        foreach (var item in DataManager.Instance.PlayerData.ExtraDatas)
+        {
+            if (item.DataName == dataName)
+                return item.Value.ToString();
+        }
+
+        return null;
+    }
+
+
+    public static void SetExtraData(string dataName, int value)
+    {
+        foreach (var item in DataManager.Instance.PlayerData.ExtraDatas)
         {
             if (item.DataName == dataName)
             {
@@ -176,7 +188,7 @@ public partial class Data
     public int coin;
     public int level;
     public int showingLevel;
-    public List<ExtraData<int>> ExtraINT;
+    public List<ExtraData> ExtraDatas;
 
     public Data(int _coin, int _level, int _showingLevel)
     {
@@ -184,23 +196,23 @@ public partial class Data
         level = _level;
         showingLevel = _showingLevel;
     }
+
     public void Res()
     {
         coin = 0;
         level = 0;
         showingLevel = 1;
-        ExtraINT.Clear();
+        ExtraDatas.Clear();
     }
-
 }
 
 [System.Serializable]
-public struct ExtraData<T>
+public class ExtraData
 {
     public string DataName;
-    public T Value;
+    public Object Value;
 
-    public void SetValue(T value)
+    public void SetValue(Object value)
     {
         Value = value;
     }

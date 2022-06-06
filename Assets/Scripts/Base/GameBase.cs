@@ -13,12 +13,17 @@ public class GameBase : Singleton<GameBase>
     public MenuManager MenuManager;
     [HideInInspector]
     public PoolManager PoolManager;
+    [HideInInspector]
+    public AudioManager AudioManager;
+    [HideInInspector]
+    public CameraManager CameraManager;
     public GameStat _GameStat => gameStat;
     [SerializeField]
     private GameStat gameStat;
     private int timer;
     public int Timer=> timer;
-
+    [HideInInspector]
+    public GameObject Player;
     protected override async void Awake()
     {
 #if UNITY_EDITOR
@@ -29,21 +34,23 @@ public class GameBase : Singleton<GameBase>
 
         base.Awake();
 
-        DataManager = GetComponent<DataManager>();
-        LevelManager = GetComponent<LevelManager>();
-        PoolManager = GetComponent<PoolManager>();
+        DataManager = GetComponentInChildren<DataManager>();
+        LevelManager = GetComponentInChildren<LevelManager>();
+        PoolManager = GetComponentInChildren<PoolManager>();
+        AudioManager = GetComponentInChildren<AudioManager>();
+        CameraManager = GetComponentInChildren<CameraManager>();
 
         gameStat = GameStat.Start;
         SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
         await Task.Delay(100);
-        MenuManager = GetComponent<MenuManager>();
+        MenuManager = GetComponentInChildren<MenuManager>();
         MenuManager.Setup();
 
         //First DataManager
         await DataManager.CheckSave();
         await PoolManager.StartPool();
         LevelManager.LoadLevel();
-
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void ChangeStat(GameStat stat)

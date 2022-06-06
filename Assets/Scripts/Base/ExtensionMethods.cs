@@ -40,6 +40,10 @@ public static class ExtensionMethods
 
         return enemys;
     }
+    public static bool CheckTag(this GameObject gb, string tag)
+    {
+        return gb.CompareTag(tag);
+    }
 
 #if UNITY_EDITOR
     public static void DrawDisc(Vector3 center, float radius, Color color)

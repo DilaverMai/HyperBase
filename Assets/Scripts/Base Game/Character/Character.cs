@@ -10,6 +10,7 @@ public class Character : MonoBehaviour
     //Unity Functions
     public Action OnStart;
     public Action OnUpdate;
+    public Action OnAwake;
 
     //Touch Functions
     public Action OnFirstTouch;
@@ -17,10 +18,19 @@ public class Character : MonoBehaviour
     public Action OnTouchUp;
 
     public CharacterStat _CharacterStat = CharacterStat.live;
+    [HideInInspector]
     public CharacterAnimation _CharacterAnimation;
+    [HideInInspector]
     public CharacterAI _CharacterAI;
 
-    private void Start()
+    protected virtual void Awake()
+    {
+        OnAwake?.Invoke();
+        _CharacterAnimation = GetComponent<CharacterAnimation>();
+        _CharacterAI = GetComponent<CharacterAI>();
+    }
+    
+    protected virtual void Start()
     {
         OnStart?.Invoke();
     }
@@ -29,6 +39,22 @@ public class Character : MonoBehaviour
     {
         OnUpdate?.Invoke();
     }
+
+    // private void OnEnable()
+    // {
+    //     OnStart += OnStartFunc;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     OnStart -= OnStartFunc;
+    // }
+
+    // protected virtual void OnStartFunc()
+    // {
+    //     
+    // }
+    
 }
 
 public enum CharacterStat

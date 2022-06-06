@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Threading.Tasks;
+
 public class CameraManager : Singleton<CameraManager>
 {
     private CinemachineVirtualCamera[] cinemachineVirtualCameras;
-    [SerializeField]
-    private List<VirtualCamera> virtualCameras = new List<VirtualCamera>();
+    [SerializeField] private List<VirtualCamera> virtualCameras = new List<VirtualCamera>();
+
     protected override void Awake()
     {
         base.Awake();
@@ -18,7 +19,6 @@ public class CameraManager : Singleton<CameraManager>
             var vCamera = new VirtualCamera(cinemachineVirtualCameras[i], (Cameras)i);
             virtualCameras.Add(vCamera);
         }
-
     }
 
     public void SetFocusCam(Cameras camera)
@@ -49,16 +49,59 @@ public static class CameraEvents
     {
         return CameraManager.Instance.GetVirtualCamera(camera);
     }
-    public static void SetFocusCam(this Cameras camera)
-    {
-        CameraManager.Instance.SetFocusCam(camera);
-    }
-
+    
     public static CinemachineVirtualCamera GetCinemachineVirtualCamera(this Cameras camera)
     {
         return CameraManager.Instance.GetCinemachineVirtualCamera(camera);
     }
 
+    public static Cameras SetFocusCam(this Cameras camera)
+    {
+        CameraManager.Instance.SetFocusCam(camera);
+        return camera;
+    }
+
+    public static Cameras SetOffset(this Cameras camera,Vector3 offset)
+    {
+        camera.GetVirtualCamera().SetOffset(offset);
+        return camera;
+    }
+    
+    public static Cameras CameraSetAim(this Cameras camera, Transform target)
+    {
+        camera.GetVirtualCamera().SetAim(target);
+        return camera;
+    }
+
+    public static Cameras CameraSetFull(this Cameras camera, Transform target)
+    {
+        camera.GetVirtualCamera().SetFullCamera(target);
+        return camera;
+    }
+
+    public static Cameras CameraSetFollow(this Cameras camera, Transform target)
+    {
+        camera.GetVirtualCamera().SetFollow(target);
+        return camera;
+    }
+
+    // public static Cameras CameraSetLookAt(this Cameras camera, Transform target)
+    // {
+    //     camera.GetVirtualCamera().SetAim(target);
+    //     return camera;
+    // }
+
+    // public static Cameras CameraSetOrtho(this Cameras camera, Transform target)
+    // {
+    //     camera.GetVirtualCamera().CameraSetOrtho(target);
+    //     return camera;
+    // }
+
+    public static Cameras CameraShake(this Cameras camera, float intensity, float duration, float time)
+    {
+        camera.GetVirtualCamera().Shake(intensity, duration, time);
+        return camera;
+    }
 }
 
 [System.Serializable]
@@ -73,7 +116,7 @@ public class VirtualCamera
         this.camera = camera;
     }
 
-    public void SetCamera(Transform target)
+    public void SetFullCamera(Transform target)
     {
         virtualCamera.Follow = target;
         virtualCamera.LookAt = target;

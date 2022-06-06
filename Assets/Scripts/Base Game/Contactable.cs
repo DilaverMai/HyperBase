@@ -1,20 +1,20 @@
 using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Contactable : MonoBehaviour
 {
-    [Title("Generaly")]
-    public int Value = 1;
+    [Title("Generaly")] public int Value = 1;
     public bool MakeTrigger = true;
     public Enum_Audio Audio;
     public Enum_PoolParticle Particle;
     public LayerMask DetectedMask;
     [Title("Contact After")]
-    public bool AfterDestory;
-    [ShowIf("AfterDestory")]
     public float DestoryDelay;
-    [Title("Effect")]
+    [Title("Events")]
+    public UnityEvent OnContact;
+    public UnityEvent OnDestroy;
     
 //
     private Collider _collider;
@@ -36,13 +36,14 @@ public abstract class Contactable : MonoBehaviour
             Audio.Play();
         if (Particle != Enum_PoolParticle.Empty)
             Particle.GetParticle().SetPosition(transform.position);
-        if (AfterDestory)
-            StartCoroutine("DelayDestory");
+        OnContact?.Invoke();
+        StartCoroutine("DelayDestory");
     }
 
     IEnumerator DelayDestory()
     {
         yield return new WaitForSeconds(DestoryDelay);
+        OnDestroy?.Invoke();
         gameObject.SetActive(false);
     }
 

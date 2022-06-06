@@ -156,6 +156,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.ikimedya.HyperBase
     Standalone: com.ikimedya.HyperBase
+    iPhone: com.ikimedya.HyperBase
   buildNumber:
     Standalone: 0
     iPhone: 0

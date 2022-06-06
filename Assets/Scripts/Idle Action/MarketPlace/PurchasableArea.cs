@@ -19,7 +19,7 @@ public class PurchasableArea : MonoBehaviour
     public GameObject CloseType;
     public GameObject OpenType;
     private TextMeshPro priceText;
-    private Player _player;
+    private Character _player;
     private void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -50,8 +50,8 @@ public class PurchasableArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>
-                (out Player player))
+        if (other.TryGetComponent<Character>
+                (out Character player))
         {
             if (_player == null) _player = player;
 
@@ -72,7 +72,7 @@ public class PurchasableArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<Player>(out Player player))
+        if (other.gameObject.CheckTag("Player"))
         {
             Debug.Log("Stoptted Buy");
             StopCoroutine("MoneyTransfer");

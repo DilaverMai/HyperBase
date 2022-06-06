@@ -69,11 +69,11 @@ public class FinishLine : Singleton<FinishLine>
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Player>(out var player))
+        if (other.gameObject.CheckTag("Player"))
         {
             Base.ChangeStat(GameStat.FinishLine);
-            player.transform.DOMoveX(0, 1F).OnComplete(
-                () => player.transform.DOMove(PlayerMove(player.transform.position), sayac * 0.5f).OnComplete(
+            other.transform.DOMoveX(0, 1F).OnComplete(
+                () => other.transform.DOMove(PlayerMove(other.transform.position), sayac * 0.5f).OnComplete(
                     () => Base.FinisGame(GameStat.Win, 1f))
             );
         }
