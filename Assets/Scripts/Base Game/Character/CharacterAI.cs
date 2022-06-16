@@ -17,10 +17,15 @@ public class CharacterAI : CharacterSetup
     [ShowIf("@CanMove && !DontNeedView")] public float FarSpeed;
     [ShowIf("CanMove")] public float NearSpeed;
     [ShowIf("CanMove")] public bool DontNeedView;
-    [ShowIf("CanMove")] public Transform[] Targets;
+    [ShowIf("@CanMove && !FindTarget")] public Transform[] Targets;
     [ShowIf("CanMove")] public bool FindTarget;
     [ShowIf("FindTarget")] public LayerMask TargetLayer;
-
+    
+    [ShowIf("CanMove")] public bool OverridePos;
+    [ShowIf("OverridePos")] public Vector3 OverridePosition;
+    [ShowIf("OverridePos")]public bool OverrideX;
+    [ShowIf("OverridePos")]public bool OverrideY;
+    [ShowIf("OverridePos")]public bool OverrideZ;
 
 //
     protected NavMeshAgent agent;
@@ -59,6 +64,17 @@ public class CharacterAI : CharacterSetup
         if (_character._CharacterStat != CharacterStat.live) return;
 
         var goTo = TargetPos() + MoveOffset;
+
+        if (OverridePos)
+        {
+            if(OverrideX)
+                goTo.x = OverridePosition.x;
+            if (OverrideY)
+                goTo.y = OverridePosition.y;
+            if (OverrideZ)
+                goTo.z = OverridePosition.z;
+        }
+        
         SpeedChanger();
         if (!WithNavMesh)
         {
@@ -76,10 +92,7 @@ public class CharacterAI : CharacterSetup
 
     protected override void OnDeath()
     {
-        if (!WithNavMesh)
-        {
-        }
-        else
+        if (WithNavMesh)
         {
             agent.destination = transform.position;
             agent.isStopped = true;

@@ -1,15 +1,15 @@
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class CharacterAnimation : CharacterSetup
 {
-    protected Animator _animator;
+    private Animator _animator;
     private Vector3 lastPosition;
-    [SerializeField] public bool RandAnim;
     private int rand;
-    public bool FakeWalking;
+    // public bool FakeWalking;
     private float speed;
-    public float SpeedForAnim => speed; 
+    
+    // [SerializeField] public bool RandAnim;
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,21 +41,17 @@ public class CharacterAnimation : CharacterSetup
     private void Setup()
     {
         _animator.SetBool("Die", false);
-        if (RandAnim)
-        {
-            rand = Random.Range(0, 2);
-            _animator.SetInteger("Rand", rand);
-        }
+        // if (RandAnim)
+        // {
+        //     rand = Random.Range(0, 2);
+        //     _animator.SetInteger("Rand", rand);
+        // }
     }
 
     protected override void OnUpdate()
     {
-        if (FakeWalking) speed = 1f;
-        else
-        {
-            speed = (transform.position - lastPosition).magnitude;
-            lastPosition = transform.position;
-        }
+        speed = (transform.position - lastPosition).magnitude;
+        lastPosition = transform.position;
         _animator.SetFloat("Speed", speed);
         _animator.SetBool("Ground", IsGrounded());
     }

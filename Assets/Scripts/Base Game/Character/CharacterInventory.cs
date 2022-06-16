@@ -7,16 +7,19 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
-public abstract class Inventory : MonoBehaviour
+public class CharacterInventory : MonoBehaviour
 {
+    [Title("Player Equipment")]
     public bool HaveHelmet;
     [ShowIf("HaveHelmet")] public Item Helmet;
+    [ShowIf("HaveHelmet")] public Transform SpawnPointForHelmet;
 
     public bool HaveArmor;
     [ShowIf("HaveArmor")] public Item Armor;
     [ShowIf("HaveArmor")] public Transform SpawnPointForArmor;
     public bool HaveBoots;
     [ShowIf("HaveBoots")] public Item Boots;
+    [ShowIf("HaveBoots")] public Transform SpawnPointForBoots;
 
     public bool HaveWeapon;
     [ShowIf("HaveWeapon")] public Item Weapon;
@@ -24,13 +27,16 @@ public abstract class Inventory : MonoBehaviour
 
     public bool HaveShield;
     [ShowIf("HaveShield")] public Item Shield;
+    [ShowIf("HaveShield")] public Transform SpawnPointForShield;
 
     public bool HaveRing;
     [ShowIf("HaveRing")] public Item Ring;
+    [ShowIf("HaveRing")] public Transform SpawnPointForRing;
 
+    [Title("Inventory")]
     public int MaxSize;
     public List<Item> items = new List<Item>();
-    public bool Auto_Equip;
+    public bool AutoEquip;
     
     private CharacterLevel _characterLevel;
 
@@ -41,14 +47,14 @@ public abstract class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Auto_Equip)
-            _characterLevel.OnLevelUp += AutoEquip;
+        if (AutoEquip)
+            _characterLevel.OnLevelUp += AutoEquipFunc;
     }
 
     private void OnDisable()
     {
-        if (Auto_Equip)
-            _characterLevel.OnLevelUp -= AutoEquip;
+        if (AutoEquip)
+            _characterLevel.OnLevelUp -= AutoEquipFunc;
     }
 
     public Item GetItemLocationWithType(ItemType itemType)
@@ -88,7 +94,7 @@ public abstract class Inventory : MonoBehaviour
         return null;
     }
 
-    protected void AutoEquip()
+    protected void AutoEquipFunc()
     {
         foreach (var item in items)
         {
@@ -136,44 +142,3 @@ public abstract class Inventory : MonoBehaviour
     }
 }
 
-public static class InventoryExtension
-{
-    public static bool IsFull(this Inventory inventory)
-    {
-        return inventory.items.Count >= inventory.MaxSize;
-    }
-
-    public static Item CheckBodyItems(this ItemType itemType, Inventory _Inventory, int Level)
-    {
-        foreach (var item in _Inventory.items)
-        {
-            if (item.ItemType == itemType)
-            {
-                if (_Inventory.Armor == null)
-                    _Inventory.Armor = item;
-                else if (_Inventory.Armor.ItemLevel < item.ItemLevel & _Inventory.Armor.ItemLevel < Level)
-                    _Inventory.Armor = item;
-            }
-        }
-
-        return null;
-    }
-
-    public static void DropRandomItem(this List<DropItem> list, [Optional] Vector3 pos)
-    {
-        list[Random.Range(0, list.Count)].DropTheItem(pos);
-    }
-
-    public static void AddItem(this Item item, Inventory inventory)
-    {
-        if (inventory.IsFull())
-            return;
-
-        inventory.items.Add(item);
-    }
-
-    public static void RemoveItem(this Item item, Inventory inventory)
-    {
-        inventory.items.Remove(item);
-    }
-}

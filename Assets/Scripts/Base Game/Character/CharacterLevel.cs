@@ -1,38 +1,35 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
-using Sirenix.OdinInspector;
-using UnityEngine;
 
-public class CharacterLevel : MonoBehaviour, ILevelable
+public class CharacterLevel : CharacterSetup
 {
-    public Action OnLevelUp;
+    public int Level;
     public int Exp;
     public int MaxExp;
-    public int LevelLayer;
-    public Transform SpawnPoint;
-    public int Level { get; set; }
-
-    // public override void Setup()
-    // {
-    //     Level = DataExtension.GetExtraInt(transform.name);
-    //     MaxHealth += Level * 10;
-    //     AttackPower += Level * 5;
-    //     base.Setup();
-    //
-    //     SpawnItems();
-    // }
-
+    public float ExpMultiplier;
+    
+    public Action OnLevelUp;
+    public Action WhenGetExp;
+    
     public void LevelUp(int exp)
     {
         Exp += exp;
+        WhenGetExp?.Invoke();
         if (Exp >= MaxExp)
         {
             Level++;
-            MaxExp = (int)(MaxExp * 1.5f);
+            MaxExp = (int)(MaxExp * ExpMultiplier);
             Exp = 0;
             OnLevelUp?.Invoke();
         }
+    }
+    
+    protected override void OnStart()
+    {
+        
+    }
+
+    protected override void OnUpdate()
+    {
+        
     }
 }

@@ -13,23 +13,17 @@ public class Character : MonoBehaviour
     public Action OnAwake;
 
     //Touch Functions
-    public Action OnFirstTouch;
-    public Action OnTouchDown;
-    public Action OnTouchUp;
-
     public CharacterStat _CharacterStat = CharacterStat.live;
-    [HideInInspector]
-    public CharacterAnimation _CharacterAnimation;
-    [HideInInspector]
-    public CharacterAI _CharacterAI;
+    [HideInInspector] public CharacterAnimation _CharacterAnimation;
+    [HideInInspector] public CharacterAI _CharacterAI;
 
     protected virtual void Awake()
     {
-        OnAwake?.Invoke();
         _CharacterAnimation = GetComponent<CharacterAnimation>();
         _CharacterAI = GetComponent<CharacterAI>();
+        OnAwake?.Invoke();
     }
-    
+
     protected virtual void Start()
     {
         OnStart?.Invoke();
@@ -37,24 +31,9 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
+        if(!Base.IsPlaying()) return;
         OnUpdate?.Invoke();
     }
-
-    // private void OnEnable()
-    // {
-    //     OnStart += OnStartFunc;
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     OnStart -= OnStartFunc;
-    // }
-
-    // protected virtual void OnStartFunc()
-    // {
-    //     
-    // }
-    
 }
 
 public enum CharacterStat

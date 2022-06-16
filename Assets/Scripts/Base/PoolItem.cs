@@ -25,69 +25,82 @@ public class PoolItem : MonoBehaviour
 
     #region Defualts
 
-    public void SetEnum(Enum_PoolObject en)
+    public PoolItem SetEnum(Enum_PoolObject en)
     {
         _PoolEnum = en;
+        return this;
     }
 
-    public void SetPosition(Vector3 position)
+    public PoolItem SetPosition(Vector3 position)
     {
         transform.position = position;
+        return this;
     }
 
-    public void SetLocalPosition(Vector3 position)
+    public PoolItem SetLocalPosition(Vector3 position)
     {
         transform.localPosition = position;
+        return this;
     }
 
-    public void SetRotation(Vector3 rot)
+    public PoolItem SetRotation(Vector3 rot)
     {
         transform.eulerAngles = rot;
+        return this;
     }
 
-    public void SetLocalRotation(Vector3 rot)
+    public PoolItem SetLocalRotation(Vector3 rot)
     {
         transform.localEulerAngles = rot;
+        return this;
     }
 
-    public void SetScale(Vector3 scale)
+    public PoolItem SetScale(Vector3 scale)
     {
         transform.localScale = scale;
+        return this;
     }
 
-    public void SetActive(bool active)
+    public PoolItem SetActive(bool active)
     {
         gameObject.SetActive(active);
+        return this;
     }
 
-    public void SetParent(Transform parent)
+    public PoolItem SetParent(Transform parent)
     {
         transform.SetParent(parent);
+        return this;
     }
 
-    public void SetLayer(int layer)
+    public PoolItem SetLayer(int layer)
     {
         gameObject.layer = layer;
+        return this;
     }
 
-    public void SetTag(string tag)
+    public PoolItem SetTag(string tag)
     {
         gameObject.tag = tag;
+        return this;
     }
 
-    public void SetName(string name)
+    public PoolItem SetName(string name)
     {
         gameObject.name = name;
+        return this;
     }
 
-    public void DeActive()
+    public PoolItem DeActive()
     {
         gameObject.SetActive(false);
+        return this;
     }
 
-    public void AddPower(Vector3 pow)
+    public PoolItem AddPower(Vector3 pow)
     {
         GetComponent<Rigidbody>().velocity = pow;
+        return this;
     }
 
     #endregion
