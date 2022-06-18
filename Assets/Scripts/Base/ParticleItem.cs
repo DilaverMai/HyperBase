@@ -25,7 +25,7 @@ public class ParticleItem : MonoBehaviour
         _particleSystem.Play();
     }
 
-    public async void DelayPlay(float delay)
+    public async Task<ParticleItem> DelayPlay(float delay)
     {
         _particleSystem.Stop();
         _particleSystem.Clear();
@@ -33,10 +33,12 @@ public class ParticleItem : MonoBehaviour
         await Task.Delay((int)(delay * 1000));
 
         _particleSystem.Play();
+        return this;
     }
 
-    public void SetPosition()
+    public ParticleItem SetPosition()
     {
         transform.position = Vector3.zero;
+        return this;
     }
 }

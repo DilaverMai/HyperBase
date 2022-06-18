@@ -161,9 +161,9 @@ public class EnemySpawn
     public bool RandomSameSpawn;
     public int MaxSpawn; //Max Spawn edilen sayı
 
-    [MinMaxSlider(-100, 100, true)] public Vector2 FarByPlayer; //Player ile enemy arasındaki mesafe
+    [MinMaxSlider(-500, 500, true)] public Vector2 FarByPlayer; //Player ile enemy arasındaki mesafe
     private int spawnCount; //Spawn edilen sayı
-    [PropertyRange(0, 10)] public int Lucky;
+    [PropertyRange(1, 10)] public int Lucky;
     public bool TimeDelay;
     [ShowIf("TimeDelay")] public int Time;
     [ShowIf("TimeDelay")] public bool OpenByTime;
