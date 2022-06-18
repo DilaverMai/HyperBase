@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9290f0f0ca8e5d246a0175967511a235, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  moveSpeed: 12
+  moveSpeed: 2.5
   rotationTurnSpeed: 7
-  rotationSpeed: 100
+  rotationSpeed: 5
+  controllReverse: 0
   maxYangle: 25
   clampX: {x: -3, y: 3}
   clampY: {x: 0, y: 0}
