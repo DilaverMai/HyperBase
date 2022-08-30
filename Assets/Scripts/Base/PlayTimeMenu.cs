@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -8,13 +7,11 @@ public class PlayTimeMenu : BaseMenu
     public TextMeshProUGUI LevelText;
     public TextMeshProUGUI GoldText;
     public Image GoldImage;
-    public GameObject JoyStick;
 
     private void Start()
     {
         PauseButton.onClick.AddListener(PauseButtonFunc);
         ReplayButton.onClick.AddListener(ReplayButtonFunc);
-        JoyStick.gameObject.SetActive(false);
     }
 
     private void PauseButtonFunc()
@@ -37,12 +34,7 @@ public class PlayTimeMenu : BaseMenu
         LevelText.text = "LEVEL " + level;
         GoldText.text = gold.ToString();
     }
-
-    public void JoyStickOption(bool o)
-    {
-        JoyStick.SetActive(o);
-    }
-
+    
     public void ReplayButtonFunc()
     {
         EventManager.RestartLevel?.Invoke();

@@ -14,7 +14,7 @@ public class MenuManager : Singleton<MenuManager>
 
     public Task Setup()
     {
-        Canvas = GetComponent<Canvas>();
+        Canvas = PlayTimeMenu.GetComponentInParent<Canvas>();
 
         StartMenu = FindObjectOfType<StartMenu>();
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
