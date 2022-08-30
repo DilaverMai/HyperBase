@@ -3,27 +3,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using System.Collections;
+
 public class GameBase : Singleton<GameBase>
 {
-    [HideInInspector]
-    public DataManager DataManager;
-    [HideInInspector]
+    [Header("Base Managers")] public DataManager DataManager;
     public LevelManager LevelManager;
-    [HideInInspector]
     public MenuManager MenuManager;
-    [HideInInspector]
     public PoolManager PoolManager;
-    [HideInInspector]
     public AudioManager AudioManager;
-    [HideInInspector]
     public CameraManager CameraManager;
-    public GameStat _GameStat => gameStat;
-    [SerializeField]
-    private GameStat gameStat;
-    private int timer;
-    public int Timer=> timer;
-    [HideInInspector]
-    public GameObject Player;
+
+    [Header("Game Stats")] public GameStat GameStat;
+    public int Timer;
+    public bool ShowFps;
+    public bool ShowConsole;
+    [Header("Objects")] public GameObject RunTimeConsole;
+
     protected override async void Awake()
     {
 #if UNITY_EDITOR
@@ -33,35 +28,25 @@ public class GameBase : Singleton<GameBase>
 #endif
 
         base.Awake();
+        SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
+        GameStat = GameStat.Start;
+        RunTimeConsole.SetActive(ShowConsole);
 
         DataManager = GetComponentInChildren<DataManager>();
         LevelManager = GetComponentInChildren<LevelManager>();
         PoolManager = GetComponentInChildren<PoolManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
         CameraManager = GetComponentInChildren<CameraManager>();
-
-        gameStat = GameStat.Start;
-        SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
-        await Task.Delay(100);
         MenuManager = GetComponentInChildren<MenuManager>();
-        MenuManager.Setup();
 
-        //First DataManager
-        await DataManager.CheckSave();
-        await PoolManager.StartPool();
+
+        await CameraManager.Setup();
+        await MenuManager.Setup();
+        await DataManager.Setup();
+        await PoolManager.Setup();
+        await AudioManager.Setup();
+
         LevelManager.LoadLevel();
-        Player = GameObject.FindGameObjectWithTag("Player");
-    }
-
-    public void ChangeStat(GameStat stat)
-    {
-        gameStat = stat;
-    }
-
-    private void StartGame()
-    {
-        gameStat = GameStat.Playing;
-        StartCoroutine(Counter());
     }
 
     private void OnEnable()
@@ -74,20 +59,6 @@ public class GameBase : Singleton<GameBase>
     {
         EventManager.OnBeforeLoadedLevel -= ResetStat;
         EventManager.FirstTouch -= StartGame;
-    }
-
-    private void ResetStat()
-    {
-        gameStat = GameStat.Start;
-        timer = 0;
-    }
-    IEnumerator Counter()
-    {
-        while (Base.IsPlaying())
-        {
-            timer++;
-            yield return new WaitForSeconds(1);
-        }
     }
 
 #if UNITY_EDITOR
@@ -109,7 +80,8 @@ public class GameBase : Singleton<GameBase>
 
     void OnGUI()
     {
-        ShowFPS();
+        if (ShowFps)
+            ShowFPS();
     }
 
     private void ShowFPS()
@@ -128,22 +100,51 @@ public class GameBase : Singleton<GameBase>
         GUI.Label(rect, text, style);
     }
 #endif
+
+    public void ChangeStat(GameStat stat)
+    {
+        if (Equals(GameStat, stat))
+            return;
+
+        GameStat = stat;
+    }
+
+    private void StartGame()
+    {
+        ChangeStat(GameStat.Start);
+        StartCoroutine(Counter());
+    }
+
+    private void ResetStat()
+    {
+        GameStat = GameStat.Start;
+        Timer = 0;
+    }
+
+    private IEnumerator Counter()
+    {
+        while (Base.IsPlaying())
+        {
+            Timer++;
+            yield return new WaitForSeconds(1);
+        }
+    }
 }
 
 public static class EventManager
 {
     public static Action<GameStat> BeforeFinishGame;
     public static Action<GameStat> FinishGame;
-    
+
     public static Action NextLevel;
     public static Action RestartLevel;
 
     public static Action FirstTouch;
     public static Action<bool> OnPause;
-    
+
     public static Action OnBeforeLoadedLevel;
     public static Action OnAfterLoadedLevel;
-    
+
     public static Action<Transform> FinishLine;
 }
 
@@ -153,14 +154,15 @@ public static class Base
     {
         GameBase.Instance.ChangeStat(stat);
     }
-    
+
     public static Transform GetLevelHolder()
     {
         return GameBase.Instance.LevelManager.LevelHolder;
     }
+
     public static bool IsPlaying()
     {
-        return GameBase.Instance._GameStat == GameStat.Playing;
+        return GameBase.Instance.GameStat == GameStat.Playing;
     }
 
     public static int GetTimer()
@@ -170,8 +172,8 @@ public static class Base
 
     public async static void FinisGame(GameStat gameStat, float time = 0f)
     {
-        if (GameBase.Instance._GameStat == GameStat.Playing |
-        GameBase.Instance._GameStat == GameStat.FinishLine)
+        if (GameBase.Instance.GameStat == GameStat.Playing |
+            GameBase.Instance.GameStat == GameStat.FinishLine)
             GameBase.Instance.ChangeStat(gameStat);
 
         EventManager.BeforeFinishGame?.Invoke(gameStat);
@@ -199,5 +201,4 @@ public static class Base
     {
         EventManager.FinishGame += func;
     }
-
 }

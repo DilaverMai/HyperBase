@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,17 +7,23 @@ public class AudioManager : Singleton<AudioManager>
 {
     private AudioSource audioSource;
     public bool stopSound;
-    [SerializeField]
-    private List<Audio> audioList = new List<Audio>();
+    [SerializeField] private List<Audio> audioList = new List<Audio>();
+
     protected override void Awake()
     {
         base.Awake();
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
+    public Task Setup()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        return Task.CompletedTask;
+    }
+
     public void PlaySound(Enum_Audio audio)
     {
-        if(stopSound) return;
+        if (stopSound) return;
 
         foreach (var item in audioList)
         {
@@ -35,7 +42,6 @@ public class AudioManager : Singleton<AudioManager>
         {
             if (item.E_Audio == audio)
             {
-                
             }
         }
     }
@@ -57,7 +63,6 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 #endif
-
 }
 
 public static class AudioManagerExtension
@@ -76,8 +81,7 @@ public static class AudioManagerExtension
 [System.Serializable]
 public class Audio
 {
-    [HideInInspector]
-    public Enum_Audio E_Audio;
+    [HideInInspector] public Enum_Audio E_Audio;
     public AudioClip Clip;
     public float Volume = 1;
     public bool Loop;

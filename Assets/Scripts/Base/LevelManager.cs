@@ -18,18 +18,7 @@ public class LevelManager : Singleton<LevelManager>
         }
 
         levels = Resources.LoadAll<GameObject>("Levels");
-        var currentLevel = GameBase.Instance.DataManager.PlayerData.level;
-
-        if (levels.Length == 0)
-        {
-            Debug.LogError("No Levels Found");
-        }
-
-        if (levels.Length < currentLevel)
-        {
-            currentLevel = 1;
-        }
-
+        
         LoadLevelFunc();
     }
 

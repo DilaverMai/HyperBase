@@ -1,31 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 public class MenuManager : Singleton<MenuManager>
 {
-    [HideInInspector]
     public StartMenu StartMenu;
-    [HideInInspector]
-
     public PlayTimeMenu PlayTimeMenu;
-    [HideInInspector]
     public PauseMenu PauseMenu;
-    [HideInInspector]
     public FinishMenu FinishMenu;
-    [HideInInspector]
-    public MarketPlaceMenu MarketPlaceMenu;
-    private Canvas canvas;
+    public Canvas Canvas;
 
-    public void Setup()
+    public Task Setup()
     {
+        Canvas = GetComponent<Canvas>();
+
         StartMenu = FindObjectOfType<StartMenu>();
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
         PauseMenu = FindObjectOfType<PauseMenu>();
         FinishMenu = FindObjectOfType<FinishMenu>();
-        MarketPlaceMenu = FindObjectOfType<MarketPlaceMenu>();
-        canvas = PlayTimeMenu.transform.GetComponentInParent<Canvas>();
+
+        return Task.CompletedTask;
     }
 
     private void OnEnable()
@@ -78,39 +74,5 @@ public class MenuManager : Singleton<MenuManager>
     }
 
 
-
-}
-
-public static class ExtensionMenuManager
-{
-    public static void Show(this Menus menu)
-    {
-        switch (menu)
-        {
-            case Menus.MarketMenu:
-                MenuManager.Instance.MarketPlaceMenu.Show();
-                break;
-            case Menus.PauseMenu:
-                break;
-            case Menus.GameOverMenu:
-                break;
-        }
-     
-    }
-    
-    public static void Hide(this Menus menu)
-    {
-        switch (menu)
-        {
-            case Menus.MarketMenu:
-                MenuManager.Instance.MarketPlaceMenu.Hide();
-                break;
-            case Menus.PauseMenu:
-                break;
-            case Menus.GameOverMenu:
-                break;
-        }
-     
-    }
 
 }

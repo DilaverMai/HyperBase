@@ -8,10 +8,8 @@ public class CameraManager : Singleton<CameraManager>
     private CinemachineVirtualCamera[] cinemachineVirtualCameras;
     [SerializeField] private List<VirtualCamera> virtualCameras = new List<VirtualCamera>();
 
-    protected override void Awake()
+    public Task Setup()
     {
-        base.Awake();
-
         cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>();
 
         for (int i = 0; i < cinemachineVirtualCameras.Length; i++)
@@ -19,6 +17,8 @@ public class CameraManager : Singleton<CameraManager>
             var vCamera = new VirtualCamera(cinemachineVirtualCameras[i], (Cameras)i);
             virtualCameras.Add(vCamera);
         }
+
+        return Task.CompletedTask;
     }
 
     public void SetFocusCam(Cameras camera)
@@ -49,7 +49,7 @@ public static class CameraEvents
     {
         return CameraManager.Instance.GetVirtualCamera(camera);
     }
-    
+
     public static CinemachineVirtualCamera GetCinemachineVirtualCamera(this Cameras camera)
     {
         return CameraManager.Instance.GetCinemachineVirtualCamera(camera);
@@ -61,12 +61,12 @@ public static class CameraEvents
         return camera;
     }
 
-    public static Cameras SetOffset(this Cameras camera,Vector3 offset)
+    public static Cameras SetOffset(this Cameras camera, Vector3 offset)
     {
         camera.GetVirtualCamera().SetOffset(offset);
         return camera;
     }
-    
+
     public static Cameras CameraSetAim(this Cameras camera, Transform target)
     {
         camera.GetVirtualCamera().SetAim(target);

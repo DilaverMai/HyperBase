@@ -17,7 +17,7 @@ public class DataManager : Singleton<DataManager>
     private string path;
     public bool ExtraSave;
 
-    public Task CheckSave()
+    public Task Setup()
     {
         path = Application.persistentDataPath + "/gamedata.json";
         return Task.Run(() =>
@@ -94,7 +94,6 @@ public static class DataExtension
             data.coin = 0;
             data.level = 0;
             data.showingLevel = 1;
-            data.areDatas.Clear();
             File.WriteAllText(Application.persistentDataPath + "/gamedata.json", JsonUtility.ToJson(data));
             Debug.LogWarning("Cleared data");
         }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
@@ -18,7 +16,7 @@ public class PoolManager : Singleton<PoolManager>
         holdPool.SetParent(transform);
     }
 
-    public Task StartPool()
+    public Task Setup()
     {
         foreach (var item in PoolObjects)
         {
@@ -174,9 +172,9 @@ public static class PoolEvents
         particleItem.transform.position = pos;
     }
 
-    public static void DelayPlay(this ParticleItem particleItem, float delay)
+    public static async Task DelayPlay(this ParticleItem particleItem, float delay)
     {
-        particleItem.DelayPlay(delay);
+        await particleItem.DelayPlay(delay);
     }
 
     public static void SetRotation(this ParticleItem particleItem, Vector3 eulerAngles)
