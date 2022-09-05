@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using Random = UnityEngine.Random;
 //using ElephantSDK;
@@ -10,7 +11,7 @@ public class LevelManager : Singleton<LevelManager>
     private GameObject[] levels;
     [HideInInspector]
     public Transform LevelHolder;
-    public void LoadLevel()
+    public Task Setup()
     {
         if (levels != null)
         {
@@ -22,10 +23,12 @@ public class LevelManager : Singleton<LevelManager>
         if (levels.Length == 0)
         {
             Debug.LogError("No Levels Found");
-            return;
+            return Task.CompletedTask;
         }
         
         LoadLevelFunc();
+        
+        return Task.CompletedTask;
     }
 
     private void LoadLevelFunc()

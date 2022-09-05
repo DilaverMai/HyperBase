@@ -1,8 +1,6 @@
-
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-using System;
 
 public class StartMenu : BaseMenu
 {
@@ -27,6 +25,12 @@ public class StartMenu : BaseMenu
     private void OnDisable()
     {
         EventManager.FirstTouch -= Hide;
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+        Base.ChangeStat(GameStat.Playing);
     }
 
     private void StartTextAnim()

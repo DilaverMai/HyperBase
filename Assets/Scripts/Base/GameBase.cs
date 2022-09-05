@@ -38,15 +38,18 @@ public class GameBase : Singleton<GameBase>
         AudioManager = GetComponentInChildren<AudioManager>();
         CameraManager = GetComponentInChildren<CameraManager>();
         MenuManager = GetComponentInChildren<MenuManager>();
-
-
-        await CameraManager.Setup();
-        await MenuManager.Setup();
+        
+        
         await DataManager.Setup();
         await PoolManager.Setup();
+        await MenuManager.Setup();
+        
+        await CameraManager.Setup();
         await AudioManager.Setup();
 
-        LevelManager.LoadLevel();
+        await LevelManager.Setup();
+        
+        Debug.Log("GameBase Setup Complete");
     }
 
     private void OnEnable()

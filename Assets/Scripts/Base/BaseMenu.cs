@@ -18,7 +18,7 @@ public abstract class BaseMenu : MonoBehaviour
         BG.gameObject.SetActive(true);
     }
 
-    internal void Hide()
+    public virtual void Hide()
     {
         BG.gameObject.SetActive(false);
     }
