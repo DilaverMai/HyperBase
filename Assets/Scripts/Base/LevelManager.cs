@@ -19,6 +19,12 @@ public class LevelManager : Singleton<LevelManager>
 
         levels = Resources.LoadAll<GameObject>("Levels");
         
+        if (levels.Length == 0)
+        {
+            Debug.LogError("No Levels Found");
+            return;
+        }
+        
         LoadLevelFunc();
     }
 

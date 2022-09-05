@@ -12,14 +12,16 @@ public class MenuManager : Singleton<MenuManager>
     public FinishMenu FinishMenu;
     public Canvas Canvas;
 
-    public Task Setup()
+    public async Task<Task> Setup()
     {
-        Canvas = PlayTimeMenu.GetComponentInParent<Canvas>();
-
         StartMenu = FindObjectOfType<StartMenu>();
         PlayTimeMenu = FindObjectOfType<PlayTimeMenu>();
         PauseMenu = FindObjectOfType<PauseMenu>();
         FinishMenu = FindObjectOfType<FinishMenu>();
+
+        await Task.Delay(100);
+        
+        Canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
 
         return Task.CompletedTask;
     }

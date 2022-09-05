@@ -2349,7 +2349,6 @@ MonoBehaviour:
   LevelText: {fileID: 1495210441}
   GoldText: {fileID: 1288545689}
   GoldImage: {fileID: 1643530241}
-  JoyStick: {fileID: 0}
 --- !u!1 &1579214165
 GameObject:
   m_ObjectHideFlags: 0
@@ -3062,7 +3061,7 @@ GameObject:
   - component: {fileID: 1961518000}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

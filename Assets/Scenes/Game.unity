@@ -369,6 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 145296519}
   - component: {fileID: 145296520}
+  - component: {fileID: 145296521}
   m_Layer: 0
   m_Name: PoolManager
   m_TagString: Untagged
@@ -406,6 +407,20 @@ MonoBehaviour:
   PoolObjects: []
   PoolParticles: []
   holdPool: {fileID: 0}
+--- !u!114 &145296521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145296518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e94bc5d311df9a46b9636179c559da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sprites: []
+  Prefabs: []
 --- !u!1 &173037972
 GameObject:
   m_ObjectHideFlags: 0
