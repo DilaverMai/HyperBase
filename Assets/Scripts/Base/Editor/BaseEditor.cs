@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
+using UnityEngine;
+
 public class BaseEditor : OdinEditorWindow
 {
     [MenuItem("Base/Editor")]
@@ -26,6 +28,8 @@ public class BaseEditor : OdinEditorWindow
     {
         base.OnEnable();
         playerData = DataExtension.GetData();
+        if (Application.isPlaying)
+            RefreshPools();
     }
     [Title("Level System")]
     [Button]
@@ -54,5 +58,20 @@ public class BaseEditor : OdinEditorWindow
     private void GoPlayerControllerData()
     {
         Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/PlayerData.asset");
+    }
+    
+    
+    [Title("Pool System")]
+    public string[] PoolNames;
+    
+    [Button]
+    public void ClearPool()
+    {
+        RefreshPools();
+    }
+
+    private void RefreshPools()
+    {
+        PoolNames = PoolManager.Instance.GetPoolNames();
     }
 }

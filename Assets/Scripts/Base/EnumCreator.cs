@@ -17,7 +17,7 @@ public static class EnumCreator
         var Item = ItemName + ".cs";
         var AllPath = BasePath + Item;
 
-        var FileInside = "public enum Enum_" + ItemName + "{ Empty,";
+        var FileInside = "public enum " + ItemName + "{ Empty,";
         if (ItemsToEnum.Length > 0)
         {
             
