@@ -9,9 +9,9 @@ public class GameBase : Singleton<GameBase>
     [Header("Base Managers")] public DataManager DataManager;
     public LevelManager LevelManager;
     public MenuManager MenuManager;
-    public PoolManager PoolManager;
     public AudioManager AudioManager;
     public CameraManager CameraManager;
+    //public PoolManager PoolManager;
 
     [Header("Game Stats")] public GameStat GameStat;
     public int Timer;
@@ -34,21 +34,21 @@ public class GameBase : Singleton<GameBase>
 
         DataManager = GetComponentInChildren<DataManager>();
         LevelManager = GetComponentInChildren<LevelManager>();
-        PoolManager = GetComponentInChildren<PoolManager>();
         AudioManager = GetComponentInChildren<AudioManager>();
         CameraManager = GetComponentInChildren<CameraManager>();
         MenuManager = GetComponentInChildren<MenuManager>();
-        
-        
+        //PoolManager = GetComponentInChildren<PoolManager>();
+
+
         await DataManager.Setup();
-        await PoolManager.Setup();
+        //await PoolManager.Setup();
         await MenuManager.Setup();
-        
+
         await CameraManager.Setup();
         await AudioManager.Setup();
 
         await LevelManager.Setup();
-        
+
         Debug.Log("GameBase Setup Complete");
     }
 
@@ -147,8 +147,6 @@ public static class EventManager
 
     public static Action OnBeforeLoadedLevel;
     public static Action OnAfterLoadedLevel;
-
-    public static Action<Transform> FinishLine;
 }
 
 public static class Base

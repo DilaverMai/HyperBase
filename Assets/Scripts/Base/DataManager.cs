@@ -168,7 +168,19 @@ public static class DataExtension
     }
 
 
-    public static void SetExtraData(string dataName, int value)
+    public static void SetExtraDataInt(string dataName, int value)
+    {
+        foreach (var item in DataManager.Instance.PlayerData.ExtraDatas)
+        {
+            if (item.DataName == dataName)
+            {
+                item.SetValue(value);
+                break;
+            }
+        }
+    }
+    
+    public static void SetExtraDataString(string dataName, string value)
     {
         foreach (var item in DataManager.Instance.PlayerData.ExtraDatas)
         {

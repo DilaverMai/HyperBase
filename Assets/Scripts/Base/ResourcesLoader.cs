@@ -26,7 +26,7 @@ public static class ResourcesLoaderExtensions
         return ResourcesLoader.Instance.Sprites.First(x => x.name.StripPunctuation() == theSprite.ToString().StripPunctuation());
     }
     
-    public static GameObject GetPrefab(this Enum_Sprites thePrefab)
+    public static GameObject GetPrefab(this Enum_Prefabs thePrefab)
     {
         return ResourcesLoader.Instance.Prefabs.First(x => x.name.StripPunctuation() == thePrefab.ToString().StripPunctuation());
     }

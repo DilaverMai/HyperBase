@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "PlayerData", menuName = "HyperBase/PlayerData", order = 0)]
+[CreateAssetMenu(fileName = "PlayerData", menuName = "HyperBase/Data/PlayerData", order = 0)]
 public class PlayerData : Settings<PlayerData>
 {
     [SerializeField]

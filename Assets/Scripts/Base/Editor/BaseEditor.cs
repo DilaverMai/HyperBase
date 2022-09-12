@@ -10,27 +10,24 @@ public class BaseEditor : OdinEditorWindow
     {
         GetWindow<BaseEditor>().Show();
     }
-    [InfoBox("F1 = GAME PAUSE // GAME RESUME")]
-    [Title("Data System")]
+
+    [InfoBox("F1 = GAME PAUSE // GAME RESUME")] [Title("Data System")]
     public Data playerData;
+
     [Button]
     public void ClearData()
     {
         DataExtension.ClearData();
         playerData = DataExtension.GetData();
     }
+
     [Button]
     public void SaveData()
     {
         DataExtension.SaveData(playerData);
     }
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        playerData = DataExtension.GetData();
-        if (Application.isPlaying)
-            RefreshPools();
-    }
+
+
     [Title("Level System")]
     [Button]
     public void NextLevel()
@@ -43,35 +40,54 @@ public class BaseEditor : OdinEditorWindow
     {
         EventManager.RestartLevel?.Invoke();
     }
+
     [Button]
     public void WinLevel()
     {
         EventManager.FinishGame?.Invoke(GameStat.Win);
     }
+
     [Button]
     public void LoseLevel()
     {
         EventManager.FinishGame?.Invoke(GameStat.Lose);
     }
+
     [Title("Settings")]
     [Button]
     private void GoPlayerControllerData()
     {
         Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/PlayerData.asset");
     }
-    
-    
-    [Title("Pool System")]
-    public string[] PoolNames;
-    
+
     [Button]
-    public void ClearPool()
+    private void GoGameData()
     {
-        RefreshPools();
+        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/GameData.asset");
     }
 
-    private void RefreshPools()
+    [Title("Game Datas")] public GameData GameData;
+
+
+    protected override void OnEnable()
     {
-        PoolNames = PoolManager.Instance.GetPoolNames();
+        base.OnEnable();
+        playerData = DataExtension.GetData();
+        // if (Application.isPlaying)
+        //     RefreshPools();
     }
+
+    // [Title("Pool System")]
+    // public string[] PoolNames;
+    //
+    // [Button]
+    // public void ClearPool()
+    // {
+    //     RefreshPools();
+    // }
+
+    // private void RefreshPools()
+    // {
+    //     PoolNames = PoolManager.Instance.GetPoolNames();
+    // }
 }
