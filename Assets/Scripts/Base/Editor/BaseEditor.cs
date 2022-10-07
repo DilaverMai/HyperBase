@@ -57,18 +57,17 @@ public class BaseEditor : OdinEditorWindow
     [Button]
     private void GoPlayerControllerData()
     {
-        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/PlayerData.asset");
+        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/Settings/PlayerData.asset");
     }
 
     [Button]
     private void GoGameData()
     {
-        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/GameData.asset");
+        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/Settings/GameData.asset");
     }
 
-    [Title("Game Datas")] public GameData GameData;
-
-
+    [Title("Game Datas")] 
+    
     protected override void OnEnable()
     {
         base.OnEnable();
