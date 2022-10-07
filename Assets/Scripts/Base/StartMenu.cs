@@ -32,9 +32,7 @@ public class StartMenu : BaseMenu
         base.Hide();
         
         if (Base.GetStat() == GameStat.Start)
-        {
             Base.ChangeStat(GameStat.Playing);
-        }
     }
 
     private void StartTextAnim()

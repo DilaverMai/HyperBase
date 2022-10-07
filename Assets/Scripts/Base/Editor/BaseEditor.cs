@@ -44,13 +44,13 @@ public class BaseEditor : OdinEditorWindow
     [Button]
     public void WinLevel()
     {
-        EventManager.FinishGame?.Invoke(GameStat.Win);
+        Base.FinisGame(GameStat.Win, 0);
     }
 
     [Button]
     public void LoseLevel()
     {
-        EventManager.FinishGame?.Invoke(GameStat.Lose);
+        Base.FinisGame(GameStat.Lose, 0);
     }
 
     [Title("Settings")]
