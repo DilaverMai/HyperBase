@@ -7,7 +7,6 @@
         Start,
         Playing,
         Paused,
-        FinishLine,
         Lose,
         Win
     }

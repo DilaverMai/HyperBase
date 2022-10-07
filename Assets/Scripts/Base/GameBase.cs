@@ -151,6 +151,11 @@ public static class EventManager
 
 public static class Base
 {
+    public static GameStat GetStat()
+    {
+        return GameBase.Instance.GameStat;
+    }
+    
     public static void ChangeStat(GameStat stat)
     {
         GameBase.Instance.ChangeStat(stat);
@@ -171,10 +176,9 @@ public static class Base
         return GameBase.Instance.Timer;
     }
 
-    public async static void FinisGame(GameStat gameStat, float time = 0f)
+    public static async void FinisGame(GameStat gameStat, float time = 0f)
     {
-        if (GameBase.Instance.GameStat == GameStat.Playing |
-            GameBase.Instance.GameStat == GameStat.FinishLine)
+        if (GameBase.Instance.GameStat == GameStat.Playing)
             GameBase.Instance.ChangeStat(gameStat);
 
         EventManager.BeforeFinishGame?.Invoke(gameStat);

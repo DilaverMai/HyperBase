@@ -30,7 +30,11 @@ public class StartMenu : BaseMenu
     public override void Hide()
     {
         base.Hide();
-        Base.ChangeStat(GameStat.Playing);
+        
+        if (Base.GetStat() == GameStat.Start)
+        {
+            Base.ChangeStat(GameStat.Playing);
+        }
     }
 
     private void StartTextAnim()

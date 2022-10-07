@@ -37,7 +37,7 @@ public class DataManager : Singleton<DataManager>
             }
             else
             {
-                playerData = new Data(0, 1, 1);
+                playerData = new Data(0, 0, 1);
                 Debug.Log("No save file found so we created a new one");
                 SaveGame();
             }
