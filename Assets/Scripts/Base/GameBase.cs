@@ -187,22 +187,22 @@ public static class Base
         EventManager.FinishGame?.Invoke(gameStat);
     }
 
-    public static void StartGameAddFunc(Action func)
+    public static void StartGameAddFunc(this Action func)
     {
         EventManager.FirstTouch += func;
     }
 
-    public static void NextLevelAddFunc(Action func)
+    public static void NextLevelAddFunc(this Action func)
     {
         EventManager.NextLevel += func;
     }
 
-    public static void RestartLevelAddFunc(Action func)
+    public static void RestartLevelAddFunc(this Action func)
     {
         EventManager.RestartLevel += func;
     }
 
-    public static void FinishGameAddFunc(Action<GameStat> func)
+    public static void FinishGameAddFunc(this Action<GameStat> func)
     {
         EventManager.FinishGame += func;
     }
