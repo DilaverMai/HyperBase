@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9290f0f0ca8e5d246a0175967511a235, type: 3}
+  m_Script: {fileID: 11500000, guid: 19188ec9f3eeed54981eb164410e4f64, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
-  rotationTurnSpeed: 7
-  rotationSpeed: 5
+  moveSpeed: 0
+  rotationTurnSpeed: 0
+  rotationSpeed: 0
   controllReverse: 0
-  maxYangle: 25
-  clampX: {x: -3, y: 3}
+  maxYangle: 0
+  clampX: {x: 0, y: 0}
   clampY: {x: 0, y: 0}
-  move: 1
-  moveRotation: 1
+  move: 0
+  moveRotation: 0
   yMoving: 0
   xMoving: 1
-  zMoving: 1
+  zMoving: 0
