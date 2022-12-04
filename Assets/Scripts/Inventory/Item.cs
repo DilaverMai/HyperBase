@@ -1,5 +1,4 @@
-﻿using Sirenix.OdinInspector;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Item
 {
@@ -11,10 +10,22 @@ public class Item
     public int Power;
     public bool Stackable;
     
-    [ShowIf("Stackable")]
     public int Amount;
     
     public Item(ItemData data)
+    {
+        if(!data) return;
+        this.Id = data.Id;
+        this.Name = data.Name;
+        this.Price = data.Price;
+        this.Type = data.Type;
+        this.Power = data.Power;
+        this.Stackable = data.Stackable;
+        this.Icon = data.Icon;
+        this.Amount = data.Amount;
+    }
+    
+    public void LoadItemData(ItemData data)
     {
         this.Id = data.Id;
         this.Name = data.Name;
@@ -23,8 +34,9 @@ public class Item
         this.Power = data.Power;
         this.Stackable = data.Stackable;
         this.Icon = data.Icon;
+        this.Amount = data.Amount;
     }
-
+    
 }
 
 public enum ItemType

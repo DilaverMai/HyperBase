@@ -1,49 +1,52 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
-
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : Singleton<InventoryUI>
 {
     public PlayerInventory playerInventory;
-    public Inventory inventory => playerInventory.TheInventory;
-    public ItemSlot[,] ItemSlots;
+    private Inventory inventory => playerInventory.TheInventory;
+    private InventoryItem[] inventoryItems;
     private void Awake()
     {
-       var itemSlots = GetComponentsInChildren<ItemSlot>();
-       
-       ItemSlots = new ItemSlot[inventory.XSize, inventory.YSize];
-       
-       for (int i = 0; i < inventory.XSize; i++)
-       {
-           for (int j = 0; j < inventory.YSize; j++)
-           {
-               ItemSlots[i, j] = itemSlots[i + j];
-               //Debug.Log( "Index i " + i + " j " + j +" = Item ındex"+ (i + j));
-           }
-       }
-       
-       
+        inventoryItems = GetComponentsInChildren<InventoryItem>();
     }
-
+    
     private void OnEnable()
     {
         UpdateUI();
     }
 
-    public void UpdateUI()
+    private void UpdateUI()
     {
-        for (int i = 0; i < ItemSlots.GetLength(0); i++)
+        for (var i = 0; i < inventoryItems.Length; i++)
         {
-            for (int j = 0; j < ItemSlots.GetLength(1); j++)
-            {
-                if(inventory.InventoryGrid[i, j] != null)
-                    ItemSlots[i, j].UpdateItem(inventory.InventoryGrid[i, j]);
-            }
+            inventoryItems[i].SetItem(inventory.InventoryGrid[i],i);
+        }
+    }
+    
+    public bool PutItemInInventory(Vector2 screenPos,InventoryItem index)
+    {
+        var list = inventoryItems.Where(x => x != index).ToList();
+        
+        var select = list.OrderBy(i => 
+            Vector2.Distance(i.transform.position,screenPos)).First();
+
+        if (select == index)
+        {
+            Debug.Log("same");
+            return false;
         }
         
-        // for (int i = 0; i < inventory.GetItemCount(); i++)
-        // {
-        //     
-        // }
+        if (select.item == null)
+        {
+            select.UpdateItem(ref index.item);
+            index.ClearSlot();
+            inventory.MoveItem(select.item,select.SlotIndex);
+            return true;
+        }
+        
+        return false;
     }
+    
 }

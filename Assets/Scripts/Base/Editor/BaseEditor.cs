@@ -88,21 +88,6 @@ public class BaseEditor : OdinEditorWindow
     {
         base.OnEnable();
         playerData = DataExtension.GetData();
-        // if (Application.isPlaying)
-        //     RefreshPools();
     }
-
-    // [Title("Pool System")]
-    // public string[] PoolNames;
-    //
-    // [Button]
-    // public void ClearPool()
-    // {
-    //     RefreshPools();
-    // }
-
-    // private void RefreshPools()
-    // {
-    //     PoolNames = PoolManager.Instance.GetPoolNames();
-    // }
+    
 }

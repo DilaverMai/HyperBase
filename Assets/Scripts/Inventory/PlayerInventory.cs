@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -7,8 +6,7 @@ public class PlayerInventory : MonoBehaviour
     public ItemData testitem;
     private void Awake()
     {
-        var item = new Item(testitem);
-        TheInventory = new Inventory(6,6);
-        TheInventory.InventoryGrid[3, 4] = item;
+        TheInventory.CreateInventory(25);
+        TheInventory.InventoryGrid[0] = new Item(testitem);
     }
 }

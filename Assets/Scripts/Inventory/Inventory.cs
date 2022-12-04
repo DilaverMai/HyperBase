@@ -3,14 +3,16 @@
 [System.Serializable]
 public class Inventory
 {
-    public int XSize, YSize;
-    public Item[,] InventoryGrid;
+    public List<Item> InventoryGrid;
     public int Gold;
-    
-    public Inventory(int xSize, int ySize)
+    public int InventorySize;
+    public void CreateInventory(int size)
     {
-        XSize = xSize;
-        YSize = ySize;
-        InventoryGrid = new Item[XSize, YSize];
+        InventoryGrid = new List<Item>(InventorySize);
+        
+        for (var x = 0; x < InventorySize; x++)
+        {
+            InventoryGrid.Add(null);
+        }
     }
 }
