@@ -1,10 +1,11 @@
 fileFormatVersion: 2
-guid: 7c096722d4077694882b4bae06e4e084
-ScriptedImporter:
-  internalIDToNameTable: []
+guid: 81a9d012b42478744887bde16b55e0bc
+MonoImporter:
   externalObjects: {}
   serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {instanceID: 0}
