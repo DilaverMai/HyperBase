@@ -25,11 +25,6 @@ public static class ExtensionMethods
         return color;
     }
 
-    public static float RandomValueVector2(this Vector2 vector)
-    {
-        return Random.Range(vector.x, vector.y);
-    }
-
     public static Transform[] FindWithLayer(GameObject[] list, LayerMask mask)
     {
         Transform[] enemys = new Transform[list.Length];
@@ -42,11 +37,6 @@ public static class ExtensionMethods
         }
 
         return enemys;
-    }
-
-    public static bool CheckTag(this GameObject gb, string tag)
-    {
-        return gb.CompareTag(tag);
     }
 
     public static string StripPunctuation(this string s)
